@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 2020_10_12_090221) do
     t.bigint "house_id", null: false
     t.bigint "flat_id", null: false
     t.bigint "tenant_id", null: false
-    t.bigint "partner_id", null: false
+    t.string "partner_array"
     t.bigint "user_id", null: false
     t.string "title"
     t.text "description"
@@ -50,7 +50,6 @@ ActiveRecord::Schema.define(version: 2020_10_12_090221) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["flat_id"], name: "index_tasks_on_flat_id"
     t.index ["house_id"], name: "index_tasks_on_house_id"
-    t.index ["partner_id"], name: "index_tasks_on_partner_id"
     t.index ["tenant_id"], name: "index_tasks_on_tenant_id"
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
@@ -81,7 +80,6 @@ ActiveRecord::Schema.define(version: 2020_10_12_090221) do
   add_foreign_key "flats", "houses"
   add_foreign_key "tasks", "flats"
   add_foreign_key "tasks", "houses"
-  add_foreign_key "tasks", "partners"
   add_foreign_key "tasks", "tenants"
   add_foreign_key "tasks", "users"
   add_foreign_key "tenants", "flats"
