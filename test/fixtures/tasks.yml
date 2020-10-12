@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  task_number: MyString
+  house: one
+  flat: one
+  tenant: one
+  partner: one
+  user: one
+  title: MyString
+  description: MyText
+  due_date: 2020-10-12 11:02:21
+
+two:
+  task_number: MyString
+  house: two
+  flat: two
+  tenant: two
+  partner: two
+  user: two
+  title: MyString
+  description: MyText
+  due_date: 2020-10-12 11:02:21
