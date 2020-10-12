@@ -1,7 +1,10 @@
 class Task < ApplicationRecord
   belongs_to :house
-  belongs_to :flat
-  belongs_to :tenant
-  belongs_to :partner
+  belongs_to :flat, optional: true
+  belongs_to :tenant, optional: true
   belongs_to :user
+
+  def partners
+    self.partner_array.split(';&').map { |partner_id| Partner.find(partner_id) }
+  end
 end

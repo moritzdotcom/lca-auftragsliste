@@ -1,10 +1,11 @@
 class CreateTasks < ActiveRecord::Migration[6.0]
   def change
     create_table :tasks do |t|
-      t.string :task_number
+      t.integer :task_number
       t.references :house, null: false, foreign_key: true
       t.references :flat, null: false, foreign_key: true
       t.references :tenant, null: false, foreign_key: true
+      t.string :location
       t.string :partner_array
       t.references :user, null: false, foreign_key: true
       t.string :title

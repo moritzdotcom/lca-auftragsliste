@@ -25,22 +25,30 @@ ActiveRecord::Schema.define(version: 2020_10_12_090221) do
 
   create_table "houses", force: :cascade do |t|
     t.string "address"
+    t.string "postal_code"
+    t.string "city"
+    t.string "company"
+    t.integer "object_number"
+    t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_houses_on_user_id"
   end
 
   create_table "partners", force: :cascade do |t|
     t.string "name"
     t.string "email"
+    t.string "phone_number"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "tasks", force: :cascade do |t|
-    t.string "task_number"
+    t.integer "task_number"
     t.bigint "house_id", null: false
     t.bigint "flat_id", null: false
     t.bigint "tenant_id", null: false
+    t.string "location"
     t.string "partner_array"
     t.bigint "user_id", null: false
     t.string "title"
@@ -71,6 +79,8 @@ ActiveRecord::Schema.define(version: 2020_10_12_090221) do
     t.datetime "remember_created_at"
     t.string "first_name"
     t.string "last_name"
+    t.string "phone_number"
+    t.string "mobile_phone"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -78,6 +88,7 @@ ActiveRecord::Schema.define(version: 2020_10_12_090221) do
   end
 
   add_foreign_key "flats", "houses"
+  add_foreign_key "houses", "users"
   add_foreign_key "tasks", "flats"
   add_foreign_key "tasks", "houses"
   add_foreign_key "tasks", "tenants"
