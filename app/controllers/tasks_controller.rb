@@ -9,7 +9,7 @@ class TasksController < ApplicationController
   end
 
   def new
-    @task = Task.new
+    @task = Task.new(task_number: Task.next_number, status: 0)
   end
 
   def edit
@@ -55,6 +55,6 @@ class TasksController < ApplicationController
     end
 
     def task_params
-      params.require(:task).permit(:task_number, :house_id, :flat_id, :tenant_id, :partner_array, :user_id, :title, :description, :due_date)
+      params.require(:task).permit(:task_number, :house_id, :flat_id, :tenant_id, :location, :partner_array, :user_id, :title, :description, :due_date, :created_at)
     end
 end

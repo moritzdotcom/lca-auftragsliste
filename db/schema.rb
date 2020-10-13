@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 2020_10_12_090221) do
     t.string "title"
     t.text "description"
     t.datetime "due_date"
+    t.integer "status"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["flat_id"], name: "index_tasks_on_flat_id"

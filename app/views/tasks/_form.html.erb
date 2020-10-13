@@ -1,17 +1,14 @@
-<%= form_with(model: task, local: true) do |form| %>
-  <% if task.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
-
-      <ul>
-        <% task.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+<%= simple_form_for @task do |f| %>
+  <%= f.input :task_number, label: 'Auftragsnummer', error: 'Username is mandatory, please specify one' %>
+  <%= f.input :created_at, as: :date, label: 'Datum', value: Date.today, order: [:day, :month, :year] %>
+  <%= f.input :house_id, label: 'Objekt', collection: House.all.map { |house| ([house.address, house.id]) } %>
+  <%= f.input :flat_id, label: 'Wohnung' %>
+  <%= f.input :tenant_id, label: 'Mieter' %>
+  <%= f.input :title, label: 'Beschreibung der Tätigkeit' %>
+  <%= f.input :description, label: 'Weitere Bemerkungen' %>
+  <%= f.input :due_date, as: :date, label: 'Zu erledigen bis', value: Date.tomorrow, order: [:day, :month, :year] %>
+  <%= f.input :user_id, label: 'Ausgestellt von', collection: User.all.map { |user| ([user.abbreviated_name, user.id]) } %>
+  <%= f.button :submit %>
 <% end %>
+
+:partners

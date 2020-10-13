@@ -197,6 +197,6 @@ tasks.each do |task|
   end
   task[:partner_array] = partner_array.join(';&')
   task[:partners] = nil
-  Task.find_by(task_number: task[:task_number]) ? Task.find_by(task_number: task[:task_number]).update(task.compact) : Task.create(task.compact)
+  Task.find_by(task_number: task[:task_number]) ? Task.find_by(task_number: task[:task_number]).update(task.compact) : Task.create!(task.compact)
 end
 
