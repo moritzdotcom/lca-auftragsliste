@@ -4,7 +4,7 @@
   <%= f.input :house_id, label: 'Objekt', collection: House.all.map { |house| ([house.address, house.id]) } %>
 
   <%= f.input :flat_id, as: :hidden %>
-  <div class="autocomplete-container">
+  <div class="autocomplete-container input">
     <label for="task_flat_location">Wohnung</label>
     <div class="autocomplete-input">
       <input type="text" id="task_flat_location">
@@ -31,6 +31,25 @@
       .then(response => response.json())
   };
 
+  function setLabels() {
+    document.querySelectorAll('.input').forEach(input => {
+      if ((input.querySelector('input') && input.querySelector('input').value) || (input.querySelector('select') && input.querySelector('select').options.selectedIndex != 0)) {
+        input.classList.add('has-value')
+      }
+      else {
+        input.classList.remove('has-value')
+      }
+      input.addEventListener('change', () => {
+        if ((input.querySelector('input') && input.querySelector('input').value) || (input.querySelector('select') && input.querySelector('select').options.selectedIndex != 0)) {
+          input.classList.add('has-value')
+        }
+        else {
+          input.classList.remove('has-value')
+        }
+      })
+    })
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     hiddenFlatInput = document.getElementById('task_flat_id');
     flatLocationInput = document.getElementById('task_flat_location');
@@ -40,8 +59,12 @@
     tenantNameInput = document.getElementById('task_tenant_name');
 
     houseSelector = document.getElementById('task_house_id');
+    setLabels()
+
     houseSelector.addEventListener('change', (e) => {
       flatAutocomplete.innerHTML = ''
+      hiddenTenantInput.value = ''
+      tenantNameInput.value = ''
 
       fetchFlats(e.target.value)
         .then(results => {
@@ -68,6 +91,8 @@
     flatLocationInput.addEventListener('focus', () => {
       flatLocationInput.value = ''
       hiddenFlatInput.value = ''
+      hiddenTenantInput.value = ''
+      tenantNameInput.value = ''
       flatAutocomplete.style.display = 'block';
     })
 
