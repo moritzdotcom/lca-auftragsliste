@@ -2,8 +2,20 @@
   <%= f.input :task_number, label: 'Auftragsnummer', error: 'Username is mandatory, please specify one' %>
   <%= f.input :created_at, as: :date, label: 'Datum', value: Date.today, order: [:day, :month, :year] %>
   <%= f.input :house_id, label: 'Objekt', collection: House.all.map { |house| ([house.address, house.id]) } %>
-  <%= f.input :flat_id, label: 'Wohnung' %>
-  <%= f.input :tenant_id, label: 'Mieter' %>
+
+  <%= f.input :flat_id, as: :hidden %>
+  <div class="autocomplete-container">
+    <label for="task_flat_location">Wohnung</label>
+    <div class="autocomplete-input">
+      <input type="text" id="task_flat_location">
+      <div id="flat_location_autocomplete" class="autocomplete-box"></div>
+    </div>
+  </div>
+
+  <%= f.input :tenant_id, as: :hidden %>
+  <label for="task_tenant_name">Mieter</label>
+  <input type="text" id="task_tenant_name">
+
   <%= f.input :title, label: 'Beschreibung der Tätigkeit' %>
   <%= f.input :description, label: 'Weitere Bemerkungen' %>
   <%= f.input :due_date, as: :date, label: 'Zu erledigen bis', value: Date.tomorrow, order: [:day, :month, :year] %>
@@ -12,3 +24,56 @@
 <% end %>
 
 :partners
+
+<script>
+  function fetchFlats(house_id) {
+    return fetch('<%= root_url %>/houses/' + house_id + '/flats.json')
+      .then(response => response.json())
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    hiddenFlatInput = document.getElementById('task_flat_id');
+    flatLocationInput = document.getElementById('task_flat_location');
+    flatAutocomplete = document.getElementById('flat_location_autocomplete');
+
+    hiddenTenantInput = document.getElementById('task_tenant_id');
+    tenantNameInput = document.getElementById('task_tenant_name');
+
+    houseSelector = document.getElementById('task_house_id');
+    houseSelector.addEventListener('change', (e) => {
+      flatAutocomplete.innerHTML = ''
+
+      fetchFlats(e.target.value)
+        .then(results => {
+          results.forEach(result => {
+            flatAutocomplete.innerHTML += `<div data-value="${result.id}" data-tenant-id="${result.tenant_id || ''}" data-tenant-name="${result.tenant_name || ''}" class="autocomplete-item autocomplete_flat_item">${result.location}</div>`
+          })
+          document.querySelectorAll('.autocomplete_flat_item').forEach(flatItem => {
+            flatItem.addEventListener('mousedown', () => {
+              hiddenFlatInput.value = flatItem.dataset.value;
+              flatLocationInput.value = flatItem.innerText;
+
+              if (flatItem.dataset.tenantId) {
+                hiddenTenantInput.value = flatItem.dataset.tenantId;
+                tenantNameInput.value = flatItem.dataset.tenantName;
+              } else {
+                hiddenTenantInput.value = ''
+                tenantNameInput.value = ''
+              }
+            })
+          })
+        });
+    })
+
+    flatLocationInput.addEventListener('focus', () => {
+      flatLocationInput.value = ''
+      hiddenFlatInput.value = ''
+      flatAutocomplete.style.display = 'block';
+    })
+
+    flatLocationInput.addEventListener('blur', () => {
+      flatAutocomplete.style.display = 'none';
+    })
+  });
+
+</script>

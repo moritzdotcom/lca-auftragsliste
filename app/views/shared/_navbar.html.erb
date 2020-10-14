@@ -1,6 +1,6 @@
 <div class="navbar">
   <%= link_to 'Aufträge', tasks_path, class: "nav-link #{'active' if controller.controller_name == 'tasks' && controller.action_name == 'index' }"  %>
-  <%= link_to 'Mieter', tenants_path, class: "nav-link #{'active' if controller.controller_name == 'tenants' }"  %>
+  <%= link_to 'Objekte', houses_path, class: "nav-link #{'active' if controller.controller_name == 'houses' }"  %>
   <%= link_to 'Partner', partners_path, class: "nav-link #{'active' if controller.controller_name == 'partners' }"  %>
   <%= link_to 'Neu', new_task_path, class: "nav-link #{'active' if controller.controller_name == 'tasks' && controller.action_name == 'new' }"  %>
 

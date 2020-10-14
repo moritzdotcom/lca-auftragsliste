@@ -1,0 +1,31 @@
+.autocomplete-container {
+  display: flex;
+  align-items: center;
+
+  .autocomplete-input {
+    position: relative;
+
+    .autocomplete-box {
+      display: none;
+      position: absolute;
+      bottom: 1px;
+      left: 0;
+      width: 100%;
+      background: white;
+      border: #EFEFEF 1px solid;
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+      transform: translateY(100%);
+      line-height: 1.7rem;
+
+      .autocomplete-item {
+        border-bottom: 1px solid #EFEFEF;
+        cursor: pointer;
+
+        &:hover {
+          background: #33AAFF;
+        }
+      }
+    }
+  }
+}

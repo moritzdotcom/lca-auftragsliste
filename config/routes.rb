@@ -4,4 +4,7 @@ Rails.application.routes.draw do
   resources :tasks
   resources :tenants
   resources :partners
+  resources :houses do
+    resources :flats
+  end
 end
