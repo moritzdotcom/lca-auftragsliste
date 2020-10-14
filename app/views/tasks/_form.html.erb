@@ -1,10 +1,15 @@
-<%= simple_form_for @task do |f| %>
+<%= simple_form_for @task, defaults: { wrapper_html: {class: 'input-field'} } do |f| %>
   <%= f.input :task_number, label: 'Auftragsnummer', error: 'Username is mandatory, please specify one' %>
-  <%= f.input :created_at, as: :date, label: 'Datum', value: Date.today, order: [:day, :month, :year] %>
+
+  <div class="input-date">
+    <label for="task_created_at">Datum</label>
+    <input type="date" value="<%= Date.today %>" name="task[created_at]" id="task_created_at">
+  </div>
+
   <%= f.input :house_id, label: 'Objekt', collection: House.all.map { |house| ([house.address, house.id]) } %>
 
-  <%= f.input :flat_id, as: :hidden %>
-  <div class="autocomplete-container input">
+  <%= f.input :flat_id, as: :hidden, wrapper_html: {class: ''} %>
+  <div class="autocomplete-container input-field">
     <label for="task_flat_location">Wohnung</label>
     <div class="autocomplete-input">
       <input type="text" id="task_flat_location">
@@ -12,13 +17,19 @@
     </div>
   </div>
 
-  <%= f.input :tenant_id, as: :hidden %>
-  <label for="task_tenant_name">Mieter</label>
-  <input type="text" id="task_tenant_name">
+  <%= f.input :tenant_id, as: :hidden, wrapper_html: {class: ''} %>
+  <div class="input-field">
+    <label for="task_tenant_name">Mieter</label>
+    <input type="text" id="task_tenant_name">
+  </div>
 
   <%= f.input :title, label: 'Beschreibung der Tätigkeit' %>
   <%= f.input :description, label: 'Weitere Bemerkungen' %>
-  <%= f.input :due_date, as: :date, label: 'Zu erledigen bis', value: Date.tomorrow, order: [:day, :month, :year] %>
+
+  <div class="input-date">
+    <label for="task_due_date">Zu erledigen bis:</label>
+    <input type="date" value="<%= Date.tomorrow %>" name="task[due_date]" id="task_due_date">
+  </div>
   <%= f.input :user_id, label: 'Ausgestellt von', collection: User.all.map { |user| ([user.abbreviated_name, user.id]) } %>
   <%= f.button :submit %>
 <% end %>
@@ -50,55 +61,53 @@
     })
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    hiddenFlatInput = document.getElementById('task_flat_id');
-    flatLocationInput = document.getElementById('task_flat_location');
-    flatAutocomplete = document.getElementById('flat_location_autocomplete');
+  setLabels()
+  hiddenFlatInput = document.getElementById('task_flat_id');
+  flatLocationInput = document.getElementById('task_flat_location');
+  flatAutocomplete = document.getElementById('flat_location_autocomplete');
 
-    hiddenTenantInput = document.getElementById('task_tenant_id');
-    tenantNameInput = document.getElementById('task_tenant_name');
+  hiddenTenantInput = document.getElementById('task_tenant_id');
+  tenantNameInput = document.getElementById('task_tenant_name');
 
-    houseSelector = document.getElementById('task_house_id');
-    setLabels()
+  houseSelector = document.getElementById('task_house_id');
 
-    houseSelector.addEventListener('change', (e) => {
-      flatAutocomplete.innerHTML = ''
-      hiddenTenantInput.value = ''
-      tenantNameInput.value = ''
+  houseSelector.addEventListener('change', (e) => {
+    flatAutocomplete.innerHTML = ''
+    hiddenTenantInput.value = ''
+    tenantNameInput.value = ''
 
-      fetchFlats(e.target.value)
-        .then(results => {
-          results.forEach(result => {
-            flatAutocomplete.innerHTML += `<div data-value="${result.id}" data-tenant-id="${result.tenant_id || ''}" data-tenant-name="${result.tenant_name || ''}" class="autocomplete-item autocomplete_flat_item">${result.location}</div>`
+    fetchFlats(e.target.value)
+      .then(results => {
+        results.forEach(result => {
+          flatAutocomplete.innerHTML += `<div data-value="${result.id}" data-tenant-id="${result.tenant_id || ''}" data-tenant-name="${result.tenant_name || ''}" class="autocomplete-item autocomplete_flat_item">${result.location}</div>`
+        })
+        document.querySelectorAll('.autocomplete_flat_item').forEach(flatItem => {
+          flatItem.addEventListener('mousedown', () => {
+            hiddenFlatInput.value = flatItem.dataset.value;
+            flatLocationInput.value = flatItem.innerText;
+
+            if (flatItem.dataset.tenantId) {
+              hiddenTenantInput.value = flatItem.dataset.tenantId;
+              tenantNameInput.value = flatItem.dataset.tenantName;
+            } else {
+              hiddenTenantInput.value = ''
+              tenantNameInput.value = ''
+            }
           })
-          document.querySelectorAll('.autocomplete_flat_item').forEach(flatItem => {
-            flatItem.addEventListener('mousedown', () => {
-              hiddenFlatInput.value = flatItem.dataset.value;
-              flatLocationInput.value = flatItem.innerText;
+        })
+      });
+  })
 
-              if (flatItem.dataset.tenantId) {
-                hiddenTenantInput.value = flatItem.dataset.tenantId;
-                tenantNameInput.value = flatItem.dataset.tenantName;
-              } else {
-                hiddenTenantInput.value = ''
-                tenantNameInput.value = ''
-              }
-            })
-          })
-        });
-    })
+  flatLocationInput.addEventListener('focus', () => {
+    flatLocationInput.value = ''
+    hiddenFlatInput.value = ''
+    hiddenTenantInput.value = ''
+    tenantNameInput.value = ''
+    flatAutocomplete.style.display = 'block';
+  })
 
-    flatLocationInput.addEventListener('focus', () => {
-      flatLocationInput.value = ''
-      hiddenFlatInput.value = ''
-      hiddenTenantInput.value = ''
-      tenantNameInput.value = ''
-      flatAutocomplete.style.display = 'block';
-    })
-
-    flatLocationInput.addEventListener('blur', () => {
-      flatAutocomplete.style.display = 'none';
-    })
-  });
+  flatLocationInput.addEventListener('blur', () => {
+    flatAutocomplete.style.display = 'none';
+  })
 
 </script>
