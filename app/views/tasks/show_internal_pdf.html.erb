@@ -1,1 +1,30 @@
-<h1>Intern</h1>
+<h1>Auftrag Nr. <%= @task.prefix_number %></h1>
+
+<table>
+  <tr>
+    <td>Objekt Nr.</td>
+    <td><%= @task.house.object_number %></td>
+    <td>Adresse:</td>
+    <td><%= @task.house.formatted_address %></td>
+  </tr>
+  <tr>
+    <td>Wohnung:</td>
+    <td><%= @task.flat.location %></td>
+    <td>Mieter:</td>
+    <td><%= @task.tenant.name %></td>
+  </tr>
+  <tr>
+    <td>Ausgestellt von:</td>
+    <td><%= @task.user.abbreviated_name %></td>
+    <td>Telefon Nr.:</td>
+    <td><%= @task.tenant.phone_number %></td>
+  </tr>
+  <tr>
+    <td>Weitergeleitet an:</td>
+    <td><%= @task.partner_names %></td>
+    <td></td>
+    <td></td>
+    <td>Datum:</td>
+    <td><%= @task.created_at.strftime('%d.%m.%Y') %></td>
+  </tr>
+</table>
