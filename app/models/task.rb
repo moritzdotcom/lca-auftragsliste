@@ -17,7 +17,7 @@ class Task < ApplicationRecord
   end
 
   def partners
-    self.partner_array.split(';&').map { |partner_id| Partner.find(partner_id) }
+    self.partner_array ? self.partner_array.split(';&').map { |partner_id| Partner.find(partner_id) } : []
   end
 
   def partner_names

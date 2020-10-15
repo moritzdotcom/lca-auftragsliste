@@ -1,33 +1,33 @@
 <%= simple_form_for @task, defaults: { wrapper_html: {class: 'input-field'} } do |f| %>
-  <%= f.input :task_number, label: 'Auftragsnummer', error: 'Username is mandatory, please specify one' %>
+  <%= f.input :task_number, label: 'Auftragsnummer', error: 'Auftragsnummer muss angegeben werden' %>
 
   <div class="input-date">
-    <label for="task_created_at">Datum</label>
+    <label for="task_created_at">Ausgestellt am</label>
     <input type="date" value="<%= Date.today %>" name="task[created_at]" id="task_created_at">
   </div>
 
   <%= f.input :house_id, label: 'Objekt', collection: House.all.map { |house| ([house.address, house.id]) } %>
 
   <%= f.input :flat_id, as: :hidden, wrapper_html: {class: ''} %>
-  <div class="autocomplete-container input-field">
+  <div class="autocomplete-container input flat-autocomplete">
     <label for="task_flat_location">Wohnung</label>
+    <input type="text" name="task[flat_location]" id="task_flat_location">
     <div class="autocomplete-input">
-      <input type="text" id="task_flat_location">
       <div id="flat_location_autocomplete" class="autocomplete-box"></div>
     </div>
   </div>
 
   <%= f.input :tenant_id, as: :hidden, wrapper_html: {class: ''} %>
-  <div class="input-field">
+  <div class="input-field input">
     <label for="task_tenant_name">Mieter</label>
-    <input type="text" id="task_tenant_name">
+    <input type="text" name="task[tenant_name]" id="task_tenant_name">
   </div>
 
   <%= f.input :title, label: 'Beschreibung der Tätigkeit' %>
   <%= f.input :description, label: 'Weitere Bemerkungen' %>
 
   <div class="input-date">
-    <label for="task_due_date">Zu erledigen bis:</label>
+    <label for="task_due_date">Zu erledigen bis</label>
     <input type="date" value="<%= Date.tomorrow %>" name="task[due_date]" id="task_due_date">
   </div>
   <%= f.input :user_id, label: 'Ausgestellt von', collection: User.all.map { |user| ([user.abbreviated_name, user.id]) } %>
@@ -44,14 +44,14 @@
 
   function setLabels() {
     document.querySelectorAll('.input').forEach(input => {
-      if ((input.querySelector('input') && input.querySelector('input').value) || (input.querySelector('select') && input.querySelector('select').options.selectedIndex != 0)) {
+      if ((input.querySelector('input') && input.querySelector('input').value) || (input.querySelector('select') && input.querySelector('select').options.selectedIndex != 0) || (input.querySelector('textarea') && input.querySelector('textarea').value)) {
         input.classList.add('has-value')
       }
       else {
         input.classList.remove('has-value')
       }
       input.addEventListener('change', () => {
-        if ((input.querySelector('input') && input.querySelector('input').value) || (input.querySelector('select') && input.querySelector('select').options.selectedIndex != 0)) {
+        if ((input.querySelector('input') && input.querySelector('input').value) || (input.querySelector('select') && input.querySelector('select').options.selectedIndex != 0) || (input.querySelector('textarea') && input.querySelector('textarea').value)) {
           input.classList.add('has-value')
         }
         else {
@@ -65,6 +65,7 @@
   hiddenFlatInput = document.getElementById('task_flat_id');
   flatLocationInput = document.getElementById('task_flat_location');
   flatAutocomplete = document.getElementById('flat_location_autocomplete');
+  flatAutocompleteContainer = document.querySelector('.flat-autocomplete');
 
   hiddenTenantInput = document.getElementById('task_tenant_id');
   tenantNameInput = document.getElementById('task_tenant_name');
@@ -73,6 +74,7 @@
 
   houseSelector.addEventListener('change', (e) => {
     flatAutocomplete.innerHTML = ''
+    flatAutocompleteContainer.classList.remove('has-value');
     hiddenTenantInput.value = ''
     tenantNameInput.value = ''
 
@@ -85,6 +87,7 @@
           flatItem.addEventListener('mousedown', () => {
             hiddenFlatInput.value = flatItem.dataset.value;
             flatLocationInput.value = flatItem.innerText;
+            flatAutocompleteContainer.classList.add('has-value');
 
             if (flatItem.dataset.tenantId) {
               hiddenTenantInput.value = flatItem.dataset.tenantId;
@@ -101,6 +104,7 @@
   flatLocationInput.addEventListener('focus', () => {
     flatLocationInput.value = ''
     hiddenFlatInput.value = ''
+    flatAutocompleteContainer.classList.remove('has-value');
     hiddenTenantInput.value = ''
     tenantNameInput.value = ''
     flatAutocomplete.style.display = 'block';

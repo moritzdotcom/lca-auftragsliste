@@ -6,6 +6,21 @@ class TasksController < ApplicationController
   end
 
   def show
+    respond_to do |format|
+      format.html
+
+      format.pdf do
+        template = params[:internal] ? 'internal' : 'external'
+        render pdf: "Auftrag Nr. #{@task.prefix_number}",
+               page_size: 'A4',
+               template: "tasks/show_#{template}_pdf.html.erb",
+               layout: 'pdf.html',
+               orientation: 'Portrait',
+               lowquality: true,
+               zoom: 1,
+               dpi: 75
+      end
+    end
   end
 
   def new
@@ -16,16 +31,46 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.new(task_params)
+    @task = Task.new
 
-    respond_to do |format|
-      if @task.save
-        format.html { redirect_to @task, notice: 'Task was successfully created.' }
-        format.json { render :show, status: :created, location: @task }
+    parameters = task_params
+    house = House.find(parameters[:house_id])
+
+    if parameters[:flat_id].length == 0
+      flat = Flat.new(location: parameters[:flat_location])
+      flat.house = house
+
+      if flat.save
+        parameters[:flat_id] = flat.id
       else
-        format.html { render :new }
-        format.json { render json: @task.errors, status: :unprocessable_entity }
+        @task.errors.add(:flat, 'Wohnung muss angegeben werden')
       end
+    else
+      flat = Flat.find(parameters[:flat_id])
+    end
+
+    if parameters[:tenant_id].length == 0
+      @tenant = Tenant.new(name: parameters[:tenant_name])
+      @tenant.flat = flat
+
+      if @tenant.save
+        create_tenant = true
+        parameters[:tenant_id] = tenant.id
+      else
+        @task.errors.add(:tenant, 'Mieter muss angegeben werden')
+      end
+    else
+      @tenant = Tenant.find(parameters[:tenant_id])
+    end
+
+    @task.update(parameters.except(:flat_location, :tenant_name))
+
+    if @task.save && create_tenant
+      redirect_to edit_tenant_path(@tenant), notice: 'Trage eine Telefonnummer für den Mieter ein'
+    elsif @task.save
+      redirect_to @task, notice: 'Auftrag wurde erfolgreich erstellt'
+    else
+      render :new
     end
   end
 
@@ -55,6 +100,10 @@ class TasksController < ApplicationController
     end
 
     def task_params
-      params.require(:task).permit(:task_number, :house_id, :flat_id, :tenant_id, :location, :partner_array, :user_id, :title, :description, :due_date, :created_at)
+      parameters = params.require(:task).permit(:task_number, :house_id, :flat_id, :flat_location, :tenant_id, :tenant_name, :location, :partner_array, :user_id, :title, :description, :due_date, :created_at)
+      parameters[:created_at] = parameters[:created_at].to_datetime
+      parameters[:due_date] = parameters[:due_date].to_datetime
+
+      return parameters
     end
 end

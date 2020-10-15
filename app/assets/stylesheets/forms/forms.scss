@@ -47,10 +47,29 @@
     background: transparent;
     border: none;
     font-size: 1.5rem;
+    outline: none;
 
     option {
       font-size: 0.8rem;
     }
+
+    &:valid {
+      color: #AAFFAA;
+    }
+
+    &:invalid {
+      color: #FFAAAA;
+    }
+  }
+
+  textarea {
+    font-family: inherit;
+    width: 567px;
+    height: 39px;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    outline: none;
 
     &:valid {
       color: #AAFFAA;
@@ -99,6 +118,7 @@
   }
 
   input {
+    font-family: inherit;
     width: 100%;
     font-size: 1.5rem;
     background: none;
@@ -156,35 +176,35 @@
 
 
 @media only screen and (max-width: 600px) {
-  .input-field, .input-date, .form-inputs-inline, .form-error-message {
+  .input-field, .autocomplete-container, .input-date, .form-inputs-inline, .form-error-message {
     width: 80vw;
   }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-  .input-field, .input-date, .form-inputs-inline, .form-error-message {
+  .input-field, .autocomplete-container, .input-date, .form-inputs-inline, .form-error-message {
     width: 70vw;
   }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-  .input-field, .input-date, .form-inputs-inline, .form-error-message {
+  .input-field, .autocomplete-container, .input-date, .form-inputs-inline, .form-error-message {
     width: 60vw;
   }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
-  .input-field, .input-date, .form-inputs-inline, .form-error-message {
+  .input-field, .autocomplete-container, .input-date, .form-inputs-inline, .form-error-message {
     width: 50vw;
   }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
-  .input-field, .input-date, .form-inputs-inline, .form-error-message {
+  .input-field, .autocomplete-container, .input-date, .form-inputs-inline, .form-error-message {
     width: 40vw;
   }
 }

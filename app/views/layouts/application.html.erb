@@ -11,8 +11,31 @@
 
   <body>
     <%= render 'shared/navbar' %>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+
+    <% if notice %>
+      <p class="notice"><%= notice %></p>
+    <% end %>
+
+    <% if alert %>
+      <p class="alert"><%= alert %></p>
+    <% end %>
+
     <%= yield %>
   </body>
+
+  <script>
+    notice = document.querySelector('.notice');
+    alert = document.querySelector('.alert');
+
+    if (notice) {
+      setTimeout(function() { notice.style.opacity = 0; }, 8000);
+      setTimeout(function() { notice.style.display = 'none'; }, 9000);
+    }
+
+    if (alert) {
+      setTimeout(function() { alert.style.opacity = 0; }, 8000);
+      setTimeout(function() { alert.style.display = 'none'; }, 9000);
+    }
+  </script>
+
 </html>

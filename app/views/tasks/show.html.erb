@@ -1,2 +1,10 @@
-<%= link_to 'Edit', edit_task_path(@task) %> |
-<%= link_to 'Back', tasks_path %>
+<header>
+  <h1>Auftrag <%= @task.prefix_number %></h1>
+  <h3>Ausgestellt am <%= @task.created_at.strftime('%d.%m.%Y') %> von <%= @task.user.full_name %></h3>
+  <div class="quick-actions">
+    <%= link_to 'PDF Intern', task_path(@task, format: 'pdf', internal: true) %>
+    <%= link_to 'PDF Extern', task_path(@task, format: 'pdf') %>
+    <%= link_to 'Email schicken', @task %>
+  </div>
+</header>
+

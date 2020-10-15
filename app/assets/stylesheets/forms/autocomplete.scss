@@ -1,6 +1,52 @@
 .autocomplete-container {
-  display: flex;
-  align-items: center;
+  position: relative;
+  border-bottom: 2px dashed #A3A3A3;
+  margin: 4rem auto 1rem;
+  font-size: 1.5rem;
+
+  label {
+    color: #A3A3A3;
+    z-index: -1;
+    position: absolute;
+    transform: translateY(0);
+    transform-origin: 0%;
+    transition: transform 400ms;
+  }
+
+  &:focus-within {
+    border-color: transparent;
+
+    label {
+      transform: scale(0.8) translateY(-2rem);
+    }
+  }
+
+  &.has-value {
+    label {
+      transform: scale(0.8) translateY(-2rem);
+    }
+  }
+
+  input {
+    font-size: 1.5rem;
+    outline: none;
+    border: none;
+    overflow: hidden;
+    margin: 0;
+    width: 100%;
+    padding: 0.25rem 0;
+    background: none;
+    color: black;
+
+    &:valid {
+      color: #AAFFAA;
+    }
+
+    &:invalid {
+      color: #FFAAAA;
+    }
+
+  }
 
   .autocomplete-input {
 

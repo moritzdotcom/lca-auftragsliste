@@ -1,6 +1,7 @@
 @import "tasks/tasks";
 @import "forms/forms";
 @import "navbar/navbar";
+@import "notice-alert/notice-alert";
 
 body {
   font-family: sans-serif;
@@ -11,4 +12,13 @@ body {
 header {
   width: 100%;
   text-align: center;
+
+  a {
+    color: #A3A3A3;
+    text-decoration: none;
+
+    &:hover {
+      color: #AAFFAA;
+    }
+  }
 }
