@@ -1,30 +1,81 @@
+<style>
+  body {
+    font-family: sans-serif;
+  }
+
+  table {
+    margin-top: 100px;
+  }
+
+  img {
+    width: 20%;
+  }
+
+  .bold {
+    font-weight: bolder;
+  }
+</style>
+
 <h1>Auftrag Nr. <%= @task.prefix_number %></h1>
+
+<%= wicked_pdf_image_tag 'lca_logo.png', style: 'float: right;' %>
 
 <table>
   <tr>
-    <td>Objekt Nr.</td>
+    <td class="bold">Objekt Nr.</td>
     <td><%= @task.house.object_number %></td>
-    <td>Adresse:</td>
+    <td class="bold">Adresse:</td>
     <td><%= @task.house.formatted_address %></td>
   </tr>
   <tr>
-    <td>Wohnung:</td>
+    <td class="bold">Wohnung:</td>
     <td><%= @task.flat.location %></td>
-    <td>Mieter:</td>
+    <td class="bold">Mieter:</td>
     <td><%= @task.tenant.name %></td>
   </tr>
   <tr>
-    <td>Ausgestellt von:</td>
+    <td class="bold">Ausgestellt von:</td>
     <td><%= @task.user.abbreviated_name %></td>
-    <td>Telefon Nr.:</td>
+    <td class="bold">Telefon Nr.:</td>
     <td><%= @task.tenant.phone_number %></td>
   </tr>
   <tr>
-    <td>Weitergeleitet an:</td>
+    <td class="bold">Weitergeleitet an:</td>
     <td><%= @task.partner_names %></td>
     <td></td>
     <td></td>
-    <td>Datum:</td>
+    <td class="bold">Datum:</td>
     <td><%= @task.created_at.strftime('%d.%m.%Y') %></td>
   </tr>
 </table>
+
+<h3>Beschreibung:</h3>
+<h4><%= @task.title %></h4>
+<p><%= @task.description %></p>
+
+<table>
+  <tr>
+    <td class="bold">Termin vereinbart:</td>
+    <td class="bold">Arbeitszeit (von/bis):</td>
+    <td class="bold">Mitarbeiter Name:</td>
+  </tr>
+  <tr>
+    <td>(Datum/Uhrzeit)</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>_________ /______ Uhr</td>
+    <td>von _______bis________ Uhr</td>
+    <td>___________________________</td>
+  </tr>
+  <tr>
+    <td>_________ /______ Uhr</td>
+    <td>von _______bis________ Uhr</td>
+    <td>___________________________</td>
+  </tr>
+</table>
+
+<h3>Material:</h3>
+<h3>Auftrag abgeschlossen durch:</h3>
+<h3>Notiz:</h3>
