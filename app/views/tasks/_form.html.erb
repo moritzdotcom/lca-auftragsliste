@@ -9,12 +9,12 @@
   <%= f.input :house_id, label: 'Objekt', collection: House.all.map { |house| ([house.address, house.id]) } %>
 
   <%= f.input :flat_id, as: :hidden, wrapper_html: {class: ''} %>
-  <div class="autocomplete-container input flat-autocomplete">
-    <label for="task_flat_location">Wohnung</label>
-    <input type="text" name="task[flat_location]" id="task_flat_location">
-    <div class="autocomplete-input">
-      <div id="flat_location_autocomplete" class="autocomplete-box"></div>
-    </div>
+  <div class="input-field input">
+    <label for="task_flat_location">Wohnung:</label>
+    <input list="flat_location_autocomplete" id="task_flat_location" name="task[flat_location]" />
+
+    <datalist id="flat_location_autocomplete">
+    </datalist>
   </div>
 
   <%= f.input :tenant_id, as: :hidden, wrapper_html: {class: ''} %>
@@ -65,7 +65,6 @@
   hiddenFlatInput = document.getElementById('task_flat_id');
   flatLocationInput = document.getElementById('task_flat_location');
   flatAutocomplete = document.getElementById('flat_location_autocomplete');
-  flatAutocompleteContainer = document.querySelector('.flat-autocomplete');
 
   hiddenTenantInput = document.getElementById('task_tenant_id');
   tenantNameInput = document.getElementById('task_tenant_name');
@@ -74,44 +73,38 @@
 
   houseSelector.addEventListener('change', (e) => {
     flatAutocomplete.innerHTML = ''
-    flatAutocompleteContainer.classList.remove('has-value');
     hiddenTenantInput.value = ''
     tenantNameInput.value = ''
 
     fetchFlats(e.target.value)
       .then(results => {
         results.forEach(result => {
-          flatAutocomplete.innerHTML += `<div data-value="${result.id}" data-tenant-id="${result.tenant_id || ''}" data-tenant-name="${result.tenant_name || ''}" class="autocomplete-item autocomplete_flat_item">${result.location}</div>`
+          flatAutocomplete.innerHTML += `<option data-value="${result.id}" data-tenant-id="${result.tenant_id || ''}" data-tenant-name="${result.tenant_name || ''}">${result.location}</option>`
         })
-        document.querySelectorAll('.autocomplete_flat_item').forEach(flatItem => {
-          flatItem.addEventListener('mousedown', () => {
-            hiddenFlatInput.value = flatItem.dataset.value;
-            flatLocationInput.value = flatItem.innerText;
-            flatAutocompleteContainer.classList.add('has-value');
-
-            if (flatItem.dataset.tenantId) {
-              hiddenTenantInput.value = flatItem.dataset.tenantId;
-              tenantNameInput.value = flatItem.dataset.tenantName;
-            } else {
-              hiddenTenantInput.value = ''
-              tenantNameInput.value = ''
-            }
-          })
-        })
-      });
+      })
   })
 
-  flatLocationInput.addEventListener('focus', () => {
-    flatLocationInput.value = ''
+  flatLocationInput.addEventListener('input', (e) => {
+    input = e.target;
+    options = flatAutocomplete.querySelectorAll('option');
+    inputValue = input.value;
+
     hiddenFlatInput.value = ''
-    flatAutocompleteContainer.classList.remove('has-value');
-    hiddenTenantInput.value = ''
-    tenantNameInput.value = ''
-    flatAutocomplete.style.display = 'block';
-  })
+    hiddenTenantInput.value = '';
+    tenantNameInput.value = '';
+    tenantNameInput.parentElement.classList.remove('has-value');
 
-  flatLocationInput.addEventListener('blur', () => {
-    flatAutocomplete.style.display = 'none';
+    options.forEach(option => {
+      if (option.innerText == inputValue) {
+        hiddenFlatInput.value = option.dataset.value;
+
+        if (option.dataset.tenantId) {
+          hiddenTenantInput.value = option.dataset.tenantId;
+          tenantNameInput.value = option.dataset.tenantName;
+          tenantNameInput.parentElement.classList.add('has-value');
+        }
+      }
+    })
   })
 
 </script>
