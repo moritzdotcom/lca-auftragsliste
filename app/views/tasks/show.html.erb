@@ -6,5 +6,20 @@
     <%= link_to 'PDF Extern', task_path(@task, format: 'pdf') %>
     <%= link_to 'Email schicken', @task %>
   </div>
+
+  <h3>Weitergeleitet an</h3>
 </header>
 
+<div class="partners">
+  <% @task.partners.each do |partner| %>
+    <% if partner.email && partner.phone_number %>
+      <div class="partner">
+        <p><%= partner.name %></p>
+        <p><%= partner.email %></p>
+        <p><%= partner.phone_number %></p>
+      </div>
+    <% else %>
+      <%= render 'partners/form', partner: partner, task: @task %>
+    <% end %>
+  <% end %>
+</div>

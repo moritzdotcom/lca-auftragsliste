@@ -35,6 +35,7 @@ class TasksController < ApplicationController
 
     parameters = task_params
     house = House.find(parameters[:house_id])
+    update_tenant = false
 
     if parameters[:flat_id].length == 0
       flat = Flat.new(location: parameters[:flat_location])
@@ -54,8 +55,8 @@ class TasksController < ApplicationController
       @tenant.flat = flat
 
       if @tenant.save
-        create_tenant = true
-        parameters[:tenant_id] = tenant.id
+        update_tenant = true
+        parameters[:tenant_id] = @tenant.id
       else
         @task.errors.add(:tenant, 'Mieter muss angegeben werden')
       end
@@ -63,9 +64,24 @@ class TasksController < ApplicationController
       @tenant = Tenant.find(parameters[:tenant_id])
     end
 
+    if parameters[:partner_array].length.positive?
+      partners = parameters[:partner_array].split(';&')
+      partners.map! do |partner|
+        db_partner = Partner.find(partner)
+        if db_partner
+          db_partner.id
+        else
+          new_partner = Partner.create(name: partner)
+          new_partner.id
+        end
+      end
+
+      parameters[:partner_array] = partners.join(';&')
+    end
+
     @task.update(parameters.except(:flat_location, :tenant_name))
 
-    if @task.save && create_tenant
+    if @task.save && update_tenant
       redirect_to edit_tenant_path(@tenant), notice: 'Trage eine Telefonnummer für den Mieter ein'
     elsif @task.save
       redirect_to @task, notice: 'Auftrag wurde erfolgreich erstellt'

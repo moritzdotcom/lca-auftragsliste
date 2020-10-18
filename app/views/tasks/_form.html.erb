@@ -10,7 +10,7 @@
 
   <%= f.input :flat_id, as: :hidden, wrapper_html: {class: ''} %>
   <div class="input-field input">
-    <label for="task_flat_location">Wohnung:</label>
+    <label for="task_flat_location">Wohnung</label>
     <input list="flat_location_autocomplete" id="task_flat_location" name="task[flat_location]" />
 
     <datalist id="flat_location_autocomplete">
@@ -30,11 +30,26 @@
     <label for="task_due_date">Zu erledigen bis</label>
     <input type="date" value="<%= Date.tomorrow %>" name="task[due_date]" id="task_due_date">
   </div>
-  <%= f.input :user_id, label: 'Ausgestellt von', collection: User.all.map { |user| ([user.abbreviated_name, user.id]) } %>
+  <% if user_signed_in? %>
+    <%= f.input :user_id, label: 'Ausgestellt von', collection: User.all.map { |user| ([user.abbreviated_name, user.id]) }, selected: current_user %>
+  <% else %>
+    <%= f.input :user_id, label: 'Ausgestellt von', collection: User.all.map { |user| ([user.abbreviated_name, user.id]) } %>
+  <% end %>
+  <%= f.input :partner_array, as: :hidden, wrapper_html: {class: ''} %>
+  <div class="input-field input">
+    <label for="task_partner_names">Weitergeleitet an</label>
+    <input list="partner_array" id="task_partner_names" name="task[partner_array_names]" />
+    <div class="button add-partner">&plus;</div>
+
+    <datalist id="partner_array">
+      <% Partner.all.each do |partner| %>
+        <option data-value="<%= partner.id %>"><%= partner.name %></option>
+      <% end %>
+    </datalist>
+  </div>
+  <div class="partner-names"></div>
   <%= f.button :submit %>
 <% end %>
-
-:partners
 
 <script>
   function fetchFlats(house_id) {
@@ -68,6 +83,12 @@
 
   hiddenTenantInput = document.getElementById('task_tenant_id');
   tenantNameInput = document.getElementById('task_tenant_name');
+
+  addPartnerButton = document.querySelector('.add-partner');
+  partnerInput = document.getElementById('task_partner_names');
+  hiddenPartnerInput = document.getElementById('task_partner_array');
+  partnerAutocomplete = document.getElementById('partner_array');
+  partnerNames = document.querySelector('.partner-names')
 
   houseSelector = document.getElementById('task_house_id');
 
@@ -105,6 +126,40 @@
         }
       }
     })
+  })
+
+  function deletePartner(evenet) {
+    hiddenPartnerInput.value = hiddenPartnerInput.value.split(';&').filter(partner => partner != event.target.dataset.delete).join(';&')
+
+    event.target.parentNode.remove()
+  }
+
+  addPartnerButton.addEventListener('click', () => {
+    if (partnerInput.value && !hiddenPartnerInput.value.split(';&').includes(partnerInput.value)) {
+      partnerId = null;
+      options = partnerAutocomplete.querySelectorAll('option');
+
+      options.forEach(option => {
+        if (option.innerText == partnerInput.value) {
+          partnerId = option.dataset.value;
+        }
+      })
+
+      if (partnerId) {
+        partnerNames.innerHTML += `<div title="Partner ist angelegt" class="partner-name in-database">${partnerInput.value} <span data-delete="${partnerId}" onclick="deletePartner()">&#10005;</span></div>`
+        hiddenPartnerInput.value += `${partnerId};&`
+      } else {
+        partnerNames.innerHTML += `<div title="Noch nicht angelegt" class="partner-name">${partnerInput.value} <span data-delete="${partnerInput.value}" onclick="deletePartner()">&#10005;</span></div>`
+        hiddenPartnerInput.value += `${partnerInput.value};&`
+      }
+
+      partnerInput.value = ''
+      partnerInput.focus();
+      partnerInput.parentNode.classList.remove('has-value');
+
+
+
+    }
   })
 
 </script>

@@ -1,0 +1,17 @@
+.partners {
+  .partner {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 100px;
+    margin: 1rem 3rem;
+    column-gap: 1rem;
+    text-align: center;
+
+    input {
+      width: 100%;
+    }
+
+    .input {
+      text-align: left;
+    }
+  }
+}
