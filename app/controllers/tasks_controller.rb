@@ -102,6 +102,13 @@ class TasksController < ApplicationController
     end
   end
 
+  def update_status
+    @task = Task.find(params[:task_id])
+    status_params = params.require(:task).permit(:status)
+    @task.update(status_params)
+    redirect_to @task
+  end
+
   def destroy
     @task.destroy
     respond_to do |format|

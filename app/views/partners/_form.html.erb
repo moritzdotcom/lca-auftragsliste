@@ -1,7 +1,9 @@
-<%= simple_form_for(partner, remote: true, html: {class: 'partner'}) do |f| %>
+<%= simple_form_for(partner, remote: true, html: {class: 'partner-card'}) do |f| %>
   <input type="hidden" name="partner[task_id]" value="<%= task.id %>">
-  <%= f.input :name, label: 'Name' %>
-  <%= f.input :email, label: 'Email' %>
-  <%= f.input :phone_number, label: 'Tel.' %>
+  <div class="form-content">
+    <%= f.input :name, label: 'Name:' %>
+    <%= f.input :email, label: 'Email:' %>
+    <%= f.input :phone_number, label: 'Tel.' %>
+  </div>
   <%= f.button :submit, 'Update' %>
 <% end %>

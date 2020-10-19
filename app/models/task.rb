@@ -12,6 +12,10 @@ class Task < ApplicationRecord
     Task.maximum(:task_number).to_i + 1
   end
 
+  def self.status_options
+    ['Offen', 'Wird erledigt', 'Erledigt', 'Problem']
+  end
+
   def prefix_number
     "#{created_at.strftime('%y')}-#{task_number}"
   end
@@ -25,7 +29,7 @@ class Task < ApplicationRecord
   end
 
   def humanized_status
-    ['Offen', 'Wird erledigt', 'Erledigt', 'Problem'][status]
+    Task.status_options[status]
   end
 
   private

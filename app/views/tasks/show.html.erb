@@ -7,19 +7,37 @@
     <%= link_to 'Email schicken', @task %>
   </div>
 
-  <h3>Weitergeleitet an</h3>
+  <h3>Status</h3>
+  <form class="status-form" id="status-form" action="/tasks/<%= @task.id %>/update_status" accept-charset="UTF-8" data-remote="true" method="post">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input type="hidden" name="_method" value="put">
+    <select class="select optional" name="task[status]" id="task_status">
+      <% Task.status_options.each_with_index do |status, i| %>
+        <option value="<%= i %>" <%= 'selected' if @task.status == i %>><%= status %></option>
+      <% end %>
+    </select>
+  </form>
 </header>
 
-<div class="partners">
-  <% @task.partners.each do |partner| %>
-    <% if partner.email && partner.phone_number %>
-      <div class="partner">
-        <p><%= partner.name %></p>
-        <p><%= partner.email %></p>
-        <p><%= partner.phone_number %></p>
-      </div>
-    <% else %>
-      <%= render 'partners/form', partner: partner, task: @task %>
+<section>
+  <h3>Weitergeleitet an</h3>
+
+  <div class="partners">
+    <% @task.partners.each do |partner| %>
+      <% if partner.email && partner.phone_number %>
+        <%= render 'partners/card', partner: partner %>
+      <% else %>
+        <%= render 'partners/form', partner: partner, task: @task %>
+      <% end %>
     <% end %>
-  <% end %>
-</div>
+  </div>
+</section>
+
+<script>
+  statusForm = document.getElementById('status-form');
+  statusSelector = document.getElementById('task_status');
+
+  statusSelector.addEventListener('input', () => {
+    statusForm.submit();
+  })
+</script>
