@@ -2,7 +2,7 @@ class PartnersController < ApplicationController
   before_action :set_partner, only: [:show, :edit, :update]
 
   def index
-    @partners = Partner.all
+    @partners = Partner.all.order(:name)
   end
 
   def show
@@ -30,13 +30,13 @@ class PartnersController < ApplicationController
       if partner_params[:task_id]
         redirect_to Task.find(partner_params[:task_id]), notice: 'Partner wurde aktualisiert'
       else
-        redirect_to @partner
+        redirect_to @partner, notice: 'Partner wurde aktualisiert'
       end
     else
       if partner_params[:task_id]
         redirect_to Task.find(partner_params[:task_id]), alert: @partner.errors.full_messages.join('& ')
       else
-        render :edit
+        redirect_to @partner, alert: @partner.errors.full_messages.join('& ')
       end
     end
   end

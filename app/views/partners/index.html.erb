@@ -1,0 +1,9 @@
+<header>
+  <h1>Partner</h1>
+</header>
+
+<div class="partners">
+  <% @partners.each do |partner| %>
+    <%= link_to (render 'partners/card', partner: partner), partner %>
+  <% end %>
+</div>
