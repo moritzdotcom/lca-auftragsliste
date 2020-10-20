@@ -1,6 +1,20 @@
 class TenantsController < ApplicationController
   before_action :set_tenant, only: [:edit, :update]
 
+  def new
+    @tenant = Tenant.new(flat_id: params[:flat])
+  end
+
+  def create
+    @tenant = Tenant.new(tenant_params)
+
+    if @tenant.save
+      redirect_to houses_path(house: @tenant.flat.house.id), notice: 'Mieter wurde gespeichert'
+    else
+      render :new
+    end
+  end
+
   def edit
   end
 

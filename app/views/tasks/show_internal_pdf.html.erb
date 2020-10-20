@@ -4,23 +4,39 @@
   }
 
   table {
-    margin-top: 100px;
+    width: 100%;
+  }
+
+  .mbt-100 {
+    margin: 100px 0;
+  }
+
+  tr {
+    height: 2rem;
   }
 
   img {
     width: 20%;
   }
 
+  .col-blue {
+    color: rgb(38, 73, 123);
+  }
+
   .bold {
     font-weight: bolder;
   }
+
+  .description {
+    height: 100px;
+  }
 </style>
 
-<h1>Auftrag Nr. <%= @task.prefix_number %></h1>
+<h1>Auftrag Nr. <span class="col-blue"><%= @task.prefix_number %></span></h1>
 
 <%= wicked_pdf_image_tag 'lca_logo.png', style: 'float: right;' %>
 
-<table>
+<table class="mbt-100">
   <tr>
     <td class="bold">Objekt Nr.</td>
     <td><%= @task.house.object_number %></td>
@@ -49,9 +65,9 @@
   </tr>
 </table>
 
-<h3>Beschreibung:</h3>
-<h4><%= @task.title %></h4>
-<p><%= @task.description %></p>
+<h3 class="mb-0">Beschreibung:</h3>
+<p class="col-blue bold"><%= @task.title %></p>
+<p class="description"><%= @task.description %></p>
 
 <table>
   <tr>

@@ -34,9 +34,9 @@ class PartnersController < ApplicationController
       end
     else
       if partner_params[:task_id]
-        redirect_to Task.find(partner_params[:task_id]), alert: @partner.errors.full_messages.join('& ')
+        redirect_to Task.find(partner_params[:task_id]), alert: @partner.errors.full_messages.join(' & ')
       else
-        redirect_to @partner, alert: @partner.errors.full_messages.join('& ')
+        redirect_to @partner, alert: @partner.errors.full_messages.join(' & ')
       end
     end
   end

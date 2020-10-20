@@ -7,6 +7,11 @@
     <%= link_to 'Email schicken', @task %>
   </div>
 
+  <% if @task.due_date %>
+    <h3>Zu erledigen bis:</h3>
+    <h4 style="color: <%= 'red' if @task.due_date < Date.today %>"><%= @task.due_date.strftime('%d.%m.%Y') %></h4>
+  <% end %>
+
   <h3>Status</h3>
   <form class="status-form" id="status-form" action="/tasks/<%= @task.id %>/update_status" accept-charset="UTF-8" data-remote="true" method="post">
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">

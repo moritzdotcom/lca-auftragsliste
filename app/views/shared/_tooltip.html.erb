@@ -1,0 +1,7 @@
+<div class="tooltip"><%= text %>
+  <span class="tooltiptext">
+    <% info.each do |element| %>
+      <%= "#{element[:title]}: #{element[:value]}" %>
+    <% end %>
+  </span>
+</div>

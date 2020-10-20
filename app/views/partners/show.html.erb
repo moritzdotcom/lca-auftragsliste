@@ -3,8 +3,8 @@
 
   <%= simple_form_for @partner, html: {remote: true} do |f| %>
     <%= f.input :email, as: :email, label: 'Email' %>
-    <%= f.input :phone_number, as: :tel, label: 'Tel.' %>
-    <%= f.button :submit %>
+    <%= f.input :phone_number, label: 'Tel.' %>
+    <%= f.button :submit, 'Aktualisieren', disabled: true, id: 'submit-button' %>
   <% end %>
 </header>
 
@@ -52,3 +52,14 @@
     </div>
   </div>
 <% end %>
+
+<script>
+  submitButton = document.getElementById('submit-button');
+
+  document.querySelectorAll('input').forEach(input => {
+    input.addEventListener('input', () => {
+      console.log(input.value)
+      submitButton.disabled = false;
+    })
+  })
+</script>

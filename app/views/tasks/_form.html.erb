@@ -6,7 +6,7 @@
     <input type="date" value="<%= Date.today %>" name="task[created_at]" id="task_created_at">
   </div>
 
-  <%= f.input :house_id, label: 'Objekt', collection: House.all.map { |house| ([house.address, house.id]) } %>
+  <%= f.input :house_id, label: 'Objekt', collection: House.all.map { |house| ([house.address, house.id]) }, error: 'Objekt muss angegeben werden' %>
 
   <%= f.input :flat_id, as: :hidden, wrapper_html: {class: ''} %>
   <div class="input-field input">
@@ -35,6 +35,7 @@
   <% else %>
     <%= f.input :user_id, label: 'Ausgestellt von', collection: User.all.map { |user| ([user.abbreviated_name, user.id]) } %>
   <% end %>
+
   <%= f.input :partner_array, as: :hidden, wrapper_html: {class: ''} %>
   <div class="input-field input">
     <label for="task_partner_names">Weitergeleitet an</label>
@@ -48,7 +49,7 @@
     </datalist>
   </div>
   <div class="partner-names"></div>
-  <%= f.button :submit %>
+  <%= f.button :submit, 'Fertig' %>
 <% end %>
 
 <script>
@@ -128,7 +129,7 @@
     })
   })
 
-  function deletePartner(evenet) {
+  function deletePartner() {
     hiddenPartnerInput.value = hiddenPartnerInput.value.split(';&').filter(partner => partner != event.target.dataset.delete).join(';&')
 
     event.target.parentNode.remove()

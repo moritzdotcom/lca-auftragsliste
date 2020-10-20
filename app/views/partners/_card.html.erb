@@ -7,4 +7,7 @@
     <p>Tel.</p>
     <p><%= partner.phone_number %></p>
   </div>
+  <% if partner.tasks.count.positive? %>
+    <span class="badge"><%= partner.tasks.count %></span>
+  <% end %>
 </div>

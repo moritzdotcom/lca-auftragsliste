@@ -2,7 +2,7 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   def index
-    @tasks = Task.all
+    @tasks = Task.all.order(task_number: :desc)
   end
 
   def show
@@ -34,21 +34,27 @@ class TasksController < ApplicationController
     @task = Task.new
 
     parameters = task_params
-    house = House.find(parameters[:house_id])
-    update_tenant = false
+    if parameters[:house_id].length.positive?
+      house = House.find(parameters[:house_id])
 
-    if parameters[:flat_id].length == 0
-      flat = Flat.new(location: parameters[:flat_location])
-      flat.house = house
+      if parameters[:flat_id].length == 0
+        flat = Flat.new(location: parameters[:flat_location])
+        flat.house = house
 
-      if flat.save
-        parameters[:flat_id] = flat.id
+        if flat.save
+          parameters[:flat_id] = flat.id
+        else
+          @task.errors[:flat_id] << 'Wohnung muss angegeben werden'
+        end
       else
-        @task.errors.add(:flat, 'Wohnung muss angegeben werden')
+        flat = Flat.find(parameters[:flat_id])
       end
+
     else
-      flat = Flat.find(parameters[:flat_id])
+      @task.errors[:house_id] << 'Objekt muss angegeben werden'
     end
+
+    update_tenant = false
 
     if parameters[:tenant_id].length == 0
       @tenant = Tenant.new(name: parameters[:tenant_name])
@@ -58,7 +64,7 @@ class TasksController < ApplicationController
         update_tenant = true
         parameters[:tenant_id] = @tenant.id
       else
-        @task.errors.add(:tenant, 'Mieter muss angegeben werden')
+        @task.errors[:tenant] << 'Mieter muss angegeben werden'
       end
     else
       @tenant = Tenant.find(parameters[:tenant_id])
@@ -67,7 +73,7 @@ class TasksController < ApplicationController
     if parameters[:partner_array].length.positive?
       partners = parameters[:partner_array].split(';&')
       partners.map! do |partner|
-        db_partner = Partner.find(partner)
+        db_partner = partner.to_i.to_s == partner ? Partner.find(partner) : nil
         if db_partner
           db_partner.id
         else

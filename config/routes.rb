@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   resources :tenants
   resources :partners
   resources :houses do
-    resources :flats
+    resources :flats, only: [:index, :new, :create]
   end
+
+  resources :flats, only: [:edit, :update, :destroy]
 end

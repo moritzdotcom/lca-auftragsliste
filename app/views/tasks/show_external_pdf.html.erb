@@ -1,1 +1,100 @@
-<h1>Extern</h1>
+<style>
+  body {
+    font-family: sans-serif;
+  }
+
+  table {
+    margin: 100px 0;
+    width: 100%;
+  }
+
+  tr {
+    height: 2rem;
+  }
+
+  img {
+    width: 20%;
+  }
+
+  .col-blue {
+    color: rgb(38, 73, 123);
+  }
+
+  .bold {
+    font-weight: bolder;
+  }
+
+  .signature {
+    margin-top: 50px;
+  }
+
+  .mb-0 {
+    margin-bottom: 5px;
+  }
+
+  .mt-0 {
+    margin-top: 5px;
+  }
+
+  .description {
+    height: 100px;
+  }
+</style>
+
+<h1>Auftrag Nr. <span class="col-blue"><%= @task.prefix_number %></span></h1>
+
+<table>
+  <tr>
+    <td class="bold">Objekt Nr.</td>
+    <td><%= @task.house.object_number %></td>
+    <td class="bold">Adresse:</td>
+    <td><%= @task.house.formatted_address %></td>
+  </tr>
+  <tr>
+    <td class="bold">Wohnung:</td>
+    <td><%= @task.flat.location %></td>
+    <td class="bold">Mieter:</td>
+    <td><%= @task.tenant.name %></td>
+  </tr>
+  <tr>
+    <td class="bold">Ausgestellt von:</td>
+    <td><%= @task.user.abbreviated_name %></td>
+    <td class="bold">Telefon Nr.:</td>
+    <td><%= @task.tenant.phone_number %></td>
+  </tr>
+  <tr>
+    <td class="bold">Weitergeleitet an:</td>
+    <td><%= @task.partner_names %></td>
+    <td></td>
+    <td></td>
+    <td class="bold">Datum:</td>
+    <td><%= @task.created_at.strftime('%d.%m.%Y') %></td>
+  </tr>
+</table>
+
+<h3 class="mb-0">Beschreibung:</h3>
+<p class="col-blue bold"><%= @task.title %></p>
+<p class="description"><%= @task.description %></p>
+
+<h3 class="col-blue">Zeitraum für die Ausführung:
+  <%= @task.created_at.strftime('%d.%m.%Y') %> -
+  <% if @task.due_date %>
+    <%= @task.due_date.strftime('%d.%m.%Y') %>
+  <% end %>
+</h3>
+<p class="col-blue">Termine sind, soweit es sich um vermietete Wohnungen handelt, direkt mit den Mietern abzustimmen.</p>
+<p class="col-blue">Bei Leerstandwohnungen erfolgt eine Schlüsselübergabe.</p>
+<p class="col-blue">Auf allen Rechnungen ist die Auftragsnummer/Strasse/Ort und Wohnung aufzuführen.</p>
+
+<div class="signature col-blue">
+  <p>Mit freundlichen Grüßen</p>
+
+  <p><%= @task.user.full_name %></p>
+
+  <h3 class="mb-0"><%= @task.house.company %></h3>
+  <p class="mb-0 mt-0">Kittelbachstrasse 10</p>
+  <p class="mt-0">40489 Düsseldorf</p>
+  <p class="mb-0">Tel. <%= @task.user.phone_number %></p>
+  <p class="mb-0 mt-0">Fax: 0211 522884-19</p>
+  <p class="mt-0"><%= @task.user.email %></p>
+</div>

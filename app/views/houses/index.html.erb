@@ -1,0 +1,42 @@
+<header>
+  <h1>Objekte <%= link_to '+', new_house_path %></h1>
+</header>
+
+<div class="houses">
+  <% @houses.each do |house| %>
+    <div class="house" id="house-<%= house.id %>" onclick="showFlats()">
+      <h2><%= house.object_number %>. <%= house.formatted_address %></h2>
+      <p><%= house.company %> - <%= house.user.full_name %></p>
+      <div class="flats hidden">
+        <% house.flats.each do |flat| %>
+          <div class="flat">
+            <h3><%= flat.location %> - <%= flat.current_tenant ? "#{flat.current_tenant.name}" : (link_to 'Mieter hinzufügen', new_tenant_path(flat: flat.id), class: 'new-link') %></h3>
+            <%= link_to 'X', flat, method: :delete, data: { confirm: 'Diese Wohnung wirklich löschen?' }, :remote => true, class: 'delete-link' %>
+          </div>
+        <% end %>
+        <a href="/houses/<%= house.id %>/flats/new" class="new-flat-link">
+          <span class="new-flat">+</span>
+        </a>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  allFlats = document.querySelectorAll('.flats');
+
+  if (document.URL.match(/house=(\d*)/)) {
+    houseId = document.URL.match(/house=(\d*)/)[1]
+    house = document.getElementById(`house-${houseId}`);
+    house.scrollIntoView({behavior: 'smooth'});
+    house.querySelector('.flats').classList.remove('hidden');
+  }
+
+  function showFlats() {
+    allFlats.forEach(flat => {
+      flat.classList.add('hidden')
+    })
+    flats = event.target.querySelector('.flats') || event.target.parentNode.querySelector('.flats');
+    flats.classList.remove('hidden')
+  }
+</script>
