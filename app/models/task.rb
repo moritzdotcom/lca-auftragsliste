@@ -6,7 +6,7 @@ class Task < ApplicationRecord
 
   validates :status, inclusion: 0..3
   validates_presence_of :house_id, message: 'Objekt muss angegeben werden'
-  validates_presence_of :user_id, message: 'Auftrag braucht einen verantwortlichen'
+  validates_presence_of :user_id, message: 'Auftrag braucht einen Verantwortlichen'
   validates_presence_of :title, message: 'Beschreibung muss angegeben werden'
 
   before_validation :set_default_values
