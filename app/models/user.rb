@@ -4,8 +4,14 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  validates :first_name, presence: true
-  validates :last_name, presence: true
+  has_many :tasks
+
+  validates_presence_of :first_name, message: 'Vorname muss angegeben werden'
+  validates_presence_of :last_name, message: 'Nachname muss angegeben werden'
+  validates_presence_of :email, message: 'Email muss angegeben werden'
+  validates_presence_of :password, message: 'Passwort muss angegeben werden'
+  validates_presence_of :password_confirmation, message: 'Passwort muss angegeben werden'
+
 
   def abbreviated_name
     "#{first_name.first.upcase}#{last_name.first.upcase}"

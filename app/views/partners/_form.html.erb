@@ -1,9 +1,9 @@
 <%= simple_form_for(partner, remote: true, html: {class: 'partner-card'}) do |f| %>
   <input type="hidden" name="partner[task_id]" value="<%= task.id %>">
   <div class="form-content">
-    <%= f.input :name, label: 'Name:', input_html: {onchange: "disable_button(#{partner.id})"} %>
-    <%= f.input :email, label: 'Email:', input_html: {onchange: "disable_button(#{partner.id})"} %>
-    <%= f.input :phone_number, label: 'Tel.', input_html: {onchange: "disable_button(#{partner.id})"} %>
+    <%= f.input :name, label: 'Name:', input_html: {oninput: "disableButton(#{partner.id})"} %>
+    <%= f.input :email, label: 'Email:', input_html: {oninput: "disableButton(#{partner.id})"} %>
+    <%= f.input :phone_number, label: 'Tel.', input_html: {oninput: "disableButton(#{partner.id})"} %>
   </div>
-  <%= f.button :submit, 'Update' %>
+  <%= f.button :submit, 'Update', disabled: true, id: "partner-button-#{partner.id}" %>
 <% end %>

@@ -25,5 +25,11 @@
     &.active {
       color: green;
     }
+
+    &.sign-out-link {
+      &:hover {
+        color: red;
+      }
+    }
   }
 }

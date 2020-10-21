@@ -28,7 +28,7 @@ class Task < ApplicationRecord
   end
 
   def partner_names
-    partners.map { |partner| partner.name }.join(' ')
+    partners.map { |partner| partner.name }.join(' & ')
   end
 
   def humanized_status

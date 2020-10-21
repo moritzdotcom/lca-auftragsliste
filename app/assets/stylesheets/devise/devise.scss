@@ -1,0 +1,58 @@
+.devise-links {
+  margin: 2rem auto;
+  padding-top: 2rem;
+  border-top: 1px solid #CCC;
+
+  a {
+    text-decoration: none;
+    background: #CCC;
+    color: black;
+    border-radius: 10px;
+    margin: 0 auto;
+    display: block;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    box-shadow: 1px 1px 7px #CCC;
+
+    &:hover {
+      background: #BBB;
+      box-shadow: 1px 1px 3px #BBB;
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .devise-links {
+    width: 90vw;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .devise-links {
+    width: 80vw;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .devise-links {
+    width: 70vw;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .devise-links {
+    width: 60vw;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .devise-links {
+    width: 50vw;
+  }
+}

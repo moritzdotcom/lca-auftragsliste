@@ -1,5 +1,5 @@
 <header>
-  <h1>Neuer Mieter für <%= @tenant.flat.house.address %> <%= @tenant.flat.location %></h1>
+  <h1>Neuer Mieter für <%= @tenant.flat.house.address %> - <%= @tenant.flat.location %></h1>
 </header>
 
 <%= simple_form_for @tenant, defaults: { wrapper_html: {class: 'input-field'} } do |f| %>

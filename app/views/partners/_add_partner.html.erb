@@ -1,0 +1,18 @@
+<div class="partner-card add-partner no-form" onclick="showPartnerForm()">
+  <div class="plus-icon">+</div>
+  <%= simple_form_for(Partner.new, remote: true, html: {class: 'new-partner-form'}) do |f| %>
+    <input type="hidden" name="partner[task_id]" value="<%= task.id %>">
+    <div class="form-content">
+      <div class="input string optional partner_name">
+        <label class="string optional" for="partner_name">Name:</label>
+        <input list="partner_name_autocomplete" id="partner_name" name="partner[name]" />
+        <datalist id="partner_name_autocomplete">
+          <% Partner.all.each do |partner| %>
+            <option><%= partner.name %></option>
+          <% end %>
+        </datalist>
+      </div>
+    </div>
+    <%= f.button :submit, 'Speichern' %>
+  <% end %>
+</div>

@@ -1,0 +1,40 @@
+<div class="limiter">
+  <div class="container-table100">
+    <div class="wrap-table100">
+      <div class="table100">
+        <table>
+          <thead>
+            <tr class="table100-head">
+              <th class="column1">Nummer</th>
+              <th class="column2">Datum</th>
+              <th class="column3">Objekt</th>
+              <th class="column4">Adresse</th>
+              <th class="column5">Wohnung</th>
+              <th class="column6">Mieter</th>
+              <th class="column7">Beschreibung</th>
+              <th class="column8">Ausgestellt von</th>
+              <th class="column9">Weitergeleitet an</th>
+              <th class="column10">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% tasks.each_with_index do |task, i| %>
+              <tr>
+                <td class="column1"><%= link_to task.prefix_number, task %></td>
+                <td class="column2"><%= link_to task.created_at.strftime('%d/%m/%Y'), task %></td>
+                <td class="column3"><%= link_to task.house.object_number, task %></td>
+                <td class="column4"><%= link_to task.house.address, task %></td>
+                <td class="column5"><%= link_to task.flat.location, task %></td>
+                <td class="column6"><%= link_to task.tenant.name, task %></td>
+                <td class="column7"><%= link_to task.title, task %></td>
+                <td class="column8"><%= link_to task.user.abbreviated_name, task %></td>
+                <td class="column9"><%= link_to task.partner_names, task %></td>
+                <td class="column10"><%= link_to task.humanized_status, task %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

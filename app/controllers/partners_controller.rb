@@ -13,12 +13,22 @@ class PartnersController < ApplicationController
   end
 
   def create
-    @partner = Partner.new(partner_params.except(:task_id))
+    @partner = Partner.find_by(name: partner_params[:name]) || Partner.new(partner_params[:name])
 
     if @partner.save
-      redirect_to @partner, notice: 'Partner erfolgreich erstellt'
+      if partner_params[:task_id]
+        @task = Task.find(partner_params[:task_id])
+        @task.update(partner_array: @task.partner_array + ";&#{@partner.id}")
+        redirect_to @task, notice: 'Partner erfolgreich hinzugefügt'
+      else
+        redirect_to @partner, notice: 'Partner erfolgreich erstellt'
+      end
     else
-      render :new
+      if partner_params[:task_id]
+        redirect_to Task.find(partner_params[:task_id]), alert: @partner.errors.full_messages.join(' & ')
+      else
+        redirect_to @partner, alert: @partner.errors.full_messages.join(' & ')
+      end
     end
   end
 

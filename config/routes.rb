@@ -11,4 +11,6 @@ Rails.application.routes.draw do
   end
 
   resources :flats, only: [:edit, :update, :destroy]
+
+  get '/dashboard', to: 'pages#dashboard', as: 'dashboard'
 end

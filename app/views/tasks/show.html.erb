@@ -29,12 +29,13 @@
 
   <div class="partners">
     <% @task.partners.each do |partner| %>
-      <% if partner.email && partner.phone_number %>
+      <% if partner.up_to_date %>
         <%= render 'partners/card', partner: partner %>
       <% else %>
         <%= render 'partners/form', partner: partner, task: @task %>
       <% end %>
     <% end %>
+    <%= render 'partners/add_partner', task: @task %>
   </div>
 </section>
 
@@ -47,6 +48,16 @@
   })
 
   function disableButton(id) {
-    console.log(id);
+    button = document.getElementById(`partner-button-${id}`)
+    button.disabled = false;
+  }
+
+  function showPartnerForm() {
+    plusIcon = document.querySelector('.plus-icon');
+    partnerForm = document.getElementById('new_partner');
+    partnerCard = document.querySelector('.add-partner');
+    partnerCard.classList.remove('no-form')
+    plusIcon.remove();
+    partnerForm.style.display = 'block'
   }
 </script>

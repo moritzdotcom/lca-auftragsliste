@@ -72,15 +72,7 @@ class TasksController < ApplicationController
 
     if parameters[:partner_array].length.positive?
       partners = parameters[:partner_array].split(';&')
-      partners.map! do |partner|
-        db_partner = partner.to_i.to_s == partner ? Partner.find(partner) : nil
-        if db_partner
-          db_partner.id
-        else
-          new_partner = Partner.create(name: partner)
-          new_partner.id
-        end
-      end
+      partners.map! { |partner| partner.to_i.to_s == partner && Partner.find(partner) ? Partner.find(partner).id : Partner.create(name: partner).id }
 
       parameters[:partner_array] = partners.join(';&')
     end

@@ -31,7 +31,7 @@
     <input type="date" value="<%= Date.tomorrow %>" name="task[due_date]" id="task_due_date">
   </div>
   <% if user_signed_in? %>
-    <%= f.input :user_id, label: 'Ausgestellt von', collection: User.all.map { |user| ([user.abbreviated_name, user.id]) }, selected: current_user %>
+    <%= f.input :user_id, label: 'Ausgestellt von', collection: User.all.map { |user| ([user.abbreviated_name, user.id]) }, selected: current_user.id %>
   <% else %>
     <%= f.input :user_id, label: 'Ausgestellt von', collection: User.all.map { |user| ([user.abbreviated_name, user.id]) } %>
   <% end %>

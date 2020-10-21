@@ -1,0 +1,20 @@
+<header>
+  <h1>Hallo <%= @user.full_name %>!</h1>
+  <div class="quick-actions">
+    <%= link_to 'Abmelden', destroy_user_session_path, method: :delete, class: 'sign-out-link' %>
+  </div>
+</header>
+
+<% if @tasks && @tasks.count.positive? %>
+  <section>
+    <h3>Deine Aufträge</h3>
+    <%= render 'tasks/tasks_table', tasks: @tasks %>
+  </section>
+<% end %>
+
+<% if @tasks_for_user && @tasks_for_user.count.positive? %>
+  <section>
+    <h3>Zu erledigen</h3>
+    <%= render 'tasks/tasks_table', tasks: @tasks_for_user %>
+  </section>
+<% end %>

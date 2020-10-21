@@ -1,0 +1,28 @@
+de:
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              blank: Email muss angegeben werden
+              taken: Email ist schon registriert
+            password:
+              blank: Passwort muss angegeben werden
+              too_short: Passwort ist zu kurz
+            password_confirmation:
+              confirmation: Passwort muss übereinstimmen
+  devise:
+    failure:
+      user:
+        invalid: Benutzer existiert nicht
+    sessions:
+      user:
+        signed_in: Benutzer angemeldet
+        signed_out: Erfolgreich abgemeldet
+        already_signed_out: Erfolgreich abgemeldet
+    registrations:
+      user:
+        destroyed: Auf wiedersehen! Dein Account wurde gelöscht
+        signed_up: Wilkommen! Registrierung erfolgreich
+        updated: Dein Account wurde gespeichert
