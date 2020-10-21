@@ -2,7 +2,35 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   def index
-    @tasks = Task.all.order(task_number: :desc)
+
+    if params[:order]
+      option = params[:desc] == 'true' ? :desc : :asc
+
+      case params[:order]
+      when 'task_number'
+        @tasks = Task.order(task_number: option)
+      when 'created_at'
+        @tasks = Task.order(created_at: option)
+      when 'object_number'
+        @tasks = Task.joins(:house).order(object_number: option)
+      when 'address'
+        @tasks = Task.joins(:house).order(address: option)
+      when 'flat'
+        @tasks = Task.joins(:flat).order(location: option)
+      when 'tenant'
+        @tasks = Task.joins(:tenant).order(name: option)
+      when 'title'
+        @tasks = Task.order(title: option)
+      when 'user'
+        @tasks = Task.joins(:user).order(first_name: option)
+      when 'partner'
+        @tasks = Task.order(partner_array: option)
+      when 'status'
+        @tasks = Task.order(status: option)
+      end
+    else
+      @tasks = Task.order(task_number: :desc)
+    end
   end
 
   def show

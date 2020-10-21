@@ -6,6 +6,34 @@ class PartnersController < ApplicationController
   end
 
   def show
+    if params[:order]
+      option = params[:desc] == 'true' ? :desc : :asc
+
+      case params[:order]
+      when 'task_number'
+        @tasks = @partner.tasks.order(task_number: option)
+      when 'created_at'
+        @tasks = @partner.tasks.order(created_at: option)
+      when 'object_number'
+        @tasks = @partner.tasks.joins(:house).order(object_number: option)
+      when 'address'
+        @tasks = @partner.tasks.joins(:house).order(address: option)
+      when 'flat'
+        @tasks = @partner.tasks.joins(:flat).order(location: option)
+      when 'tenant'
+        @tasks = @partner.tasks.joins(:tenant).order(name: option)
+      when 'title'
+        @tasks = @partner.tasks.order(title: option)
+      when 'user'
+        @tasks = @partner.tasks.joins(:user).order(first_name: option)
+      when 'partner'
+        @tasks = @partner.tasks.order(partner_array: option)
+      when 'status'
+        @tasks = @partner.tasks.order(status: option)
+      end
+    else
+      @tasks = @partner.tasks.sort_by(&:task_number)
+    end
   end
 
   def new

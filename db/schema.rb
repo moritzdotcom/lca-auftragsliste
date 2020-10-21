@@ -48,7 +48,6 @@ ActiveRecord::Schema.define(version: 2020_10_12_090221) do
     t.bigint "house_id", null: false
     t.bigint "flat_id", null: false
     t.bigint "tenant_id", null: false
-    t.string "location"
     t.string "partner_array"
     t.bigint "user_id", null: false
     t.string "title"

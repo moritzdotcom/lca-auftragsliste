@@ -1,153 +1,192 @@
-.limiter {
-  width: 95%;
-  margin: 0 auto;
-}
-
-.container-table100 {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.wrap-table100 {
-  width: 100%;
-}
-
-table {
-  border-spacing: 1;
-  border-collapse: collapse;
-  background: white;
+.task-table {
+  width: 98%;
+  margin: 1rem auto;
   border-radius: 10px;
   overflow: hidden;
-  width: 100%;
-  margin: 0 auto;
-  position: relative;
 
-  thead {
+  .table-header {
+    display: grid;
+    grid-auto-columns: min-content;
+    background: white;
+    padding: 1rem 0;
+    box-shadow: 0 5px 5px #CCC;
+    font-weight: bold;
 
-    tr {
-      height: 50px;
-      background: #36304a;
-      text-align: left;
-    }
-  }
+    .table-column {
 
-  tbody {
+      a {
+        color: black;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-    tr {
-      height: 50px;
-      font-size: 1rem;
-      color: #777777;
-      font-weight: unset;
-    }
+        .sort-icon {
+          padding-left: 5px;
+          display: inline-flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          font-size: 0.5rem;
 
-    tr:last-child {
-      border: 0;
-    }
-
-    tr:nth-child(even) {
-      background-color: #f5f5f5;
-    }
-
-    tr:hover {
-      color: #000;
-      background-color: #f5f5f5;
-      cursor: pointer;
-    }
-
-    a {
-      color: unset;
-      text-decoration: none;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      height: 50px;
-    }
-  }
-}
-
-table * {
-  position: relative;
-}
-
-.table100-head th{
-  font-size: 1.2rem;
-  color: #fff;
-  line-height: 1.2;
-  font-weight: unset;
-}
-
-@media screen and (max-width: 992px) {
-  table {
-    display: block;
-
-    thead {
-      display: none;
-    }
-
-    tbody {
-      tr {
-        height: auto;
-        padding: 5px 0;
-
-        td {
-          padding-left: 33% !important;
-          margin-bottom: 5px;
-
-          &:last-child {
-            margin-bottom: 0;
+          span {
+            color: #CCC;
           }
 
-          &:before {
-            font-size: 14px;
-            line-height: 1.2;
-            position: absolute;
-            width: 30%;
-            left: 1rem;
-            top: 0;
+          &.asc {
+            span {
+              &:nth-child(1) {
+                color: black;
+              }
+            }
+          }
+
+          &.desc {
+            span {
+              &:nth-child(2) {
+                color: black;
+              }
+
+              &:nth-child(1) {
+                color: #CCC;
+              }
+            }
           }
         }
-
       }
     }
   }
-  table > *, table tr, table td, table th {
-    display: block;
+
+  .table-content {
+    max-height: 80vh;
+    overflow: scroll;
+
+    .table-row {
+      display: grid;
+      grid-auto-columns: min-content;
+      padding: 1rem 0;
+      background: #F3F3F3;
+      border-top: 1px solid #CCC;
+      align-items: center;
+
+      &:nth-child(even) {
+        background: white;
+      }
+    }
   }
-  table tbody tr td:nth-child(1):before {
-    content: "Nummer:";
-  }
-  table tbody tr td:nth-child(2):before {
-    content: "Datum:";
-  }
-  table tbody tr td:nth-child(3):before {
-    content: "Objekt:";
-  }
-  table tbody tr td:nth-child(4):before {
-    content: "Adresse:";
-  }
-  table tbody tr td:nth-child(5):before {
-    content: "Wohnung:";
-  }
-  table tbody tr td:nth-child(6):before {
-    content: "Mieter:";
-  }
-  table tbody tr td:nth-child(7):before {
-    content: "Beschreibung:";
-  }
-  table tbody tr td:nth-child(8):before {
-    content: "Ausgestellt von:";
-  }
-  table tbody tr td:nth-child(9):before {
-    content: "Weitergeleitet an:";
-  }
-  table tbody tr td:nth-child(10):before {
-    content: "Status:";
+}
+
+
+@media only screen and (max-width: 600px) {
+  .table-header, .table-row {
+    grid-template-columns: 2fr 3fr 4fr;
   }
 
-  tbody tr {
-    font-size: 14px;
+  .show-xs {
+    display: block;
+  }
+
+  .show-sm {
+    display: none;
+  }
+
+  .show-md {
+    display: none;
+  }
+
+  .show-xl {
+    display: none;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .table-header, .table-row {
+    grid-template-columns: 2fr 3fr 2fr 5fr 2fr;
+  }
+
+  .show-xs {
+    display: block;
+  }
+
+  .show-sm {
+    display: block;
+  }
+
+  .show-md {
+    display: none;
+  }
+
+  .show-xl {
+    display: none;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .table-header, .table-row {
+    grid-template-columns: 2fr 3fr 2fr 5fr 2fr;
+  }
+
+  .show-xs {
+    display: block;
+  }
+
+  .show-sm {
+    display: block;
+  }
+
+  .show-md {
+    display: none;
+  }
+
+  .show-xl {
+    display: none;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .table-header, .table-row {
+    grid-template-columns: 2fr 3fr 4fr 3fr 8fr 6fr 2fr;
+  }
+
+  .show-xs {
+    display: block;
+  }
+
+  .show-sm {
+    display: block;
+  }
+
+  .show-md {
+    display: block;
+  }
+
+  .show-xl {
+    display: none;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .table-header, .table-row {
+    grid-template-columns: 3fr 3fr 2fr 6fr 4fr 5fr 14fr 4fr 8fr 4fr;
+  }
+
+  .show-xs {
+    display: block;
+  }
+
+  .show-sm {
+    display: block;
+  }
+
+  .show-md {
+    display: block;
+  }
+
+  .show-xl {
+    display: block;
   }
 }

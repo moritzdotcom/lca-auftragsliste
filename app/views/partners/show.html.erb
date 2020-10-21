@@ -10,8 +10,8 @@
 
 <h3>Aufträge</h3>
 
-<% if @partner.tasks.count.positive? %>
-  <%= render 'tasks/tasks_table', tasks: @partner.tasks %>
+<% if @tasks.count.positive? %>
+  <%= render 'tasks/tasks_table', tasks: @tasks %>
 <% end %>
 
 <script>
