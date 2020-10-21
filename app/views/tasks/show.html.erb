@@ -12,7 +12,7 @@
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
     <input type="hidden" name="_method" value="put">
     <div class="input">
-      <input type="date" value="<%= @task.due_date.strftime('%Y-%m-%d') %>" name="task[due_date]" id="task_due_date">
+      <input type="date" value="<%= @task.due_date.strftime('%Y-%m-%d') if @task.due_date %>" name="task[due_date]" id="task_due_date">
     </div>
   </form>
 
