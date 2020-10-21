@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root to: 'tasks#index'
   resources :tasks do
     put '/update_status', to: 'tasks#update_status'
+    put '/update_due_date', to: 'tasks#update_due_date'
   end
   resources :tenants
   resources :partners

@@ -31,6 +31,17 @@ class TasksController < ApplicationController
     else
       @tasks = Task.order(task_number: :desc)
     end
+
+    if params[:query]
+      case params[:query]
+      when 'status_open'
+        @tasks = @tasks.where(status: 0)
+      when 'due_date'
+        @tasks = @tasks.where('due_date >= ?', Date.today)
+      when 'over_due'
+        @tasks = @tasks.where('due_date < ?', Date.today)
+      end
+    end
   end
 
   def show
@@ -132,7 +143,14 @@ class TasksController < ApplicationController
     @task = Task.find(params[:task_id])
     status_params = params.require(:task).permit(:status)
     @task.update(status_params)
-    redirect_to @task
+    redirect_to @task, notice: 'Status gespeichert'
+  end
+
+  def update_due_date
+    @task = Task.find(params[:task_id])
+    due_date_params = params.require(:task).permit(:due_date)
+    @task.update(due_date_params)
+    redirect_to @task, notice: 'Datum gespeichert'
   end
 
   def destroy

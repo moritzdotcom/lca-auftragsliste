@@ -2,7 +2,9 @@
   width: 98%;
   margin: 1rem auto;
   border-radius: 10px;
+  border: 1px solid #CCC;
   overflow: hidden;
+  box-shadow: 5px 5px 10px #CCC;
 
   .table-header {
     display: grid;
@@ -11,6 +13,7 @@
     padding: 1rem 0;
     box-shadow: 0 5px 5px #CCC;
     font-weight: bold;
+    position: sticky;
 
     .table-column {
 
@@ -60,17 +63,36 @@
   .table-content {
     max-height: 80vh;
     overflow: scroll;
+    scroll-snap-type: block;
 
     .table-row {
+      scroll-snap-align: start;
       display: grid;
       grid-auto-columns: min-content;
       padding: 1rem 0;
       background: #F3F3F3;
       border-top: 1px solid #CCC;
       align-items: center;
+      cursor: pointer;
 
-      &:nth-child(even) {
-        background: white;
+      .table-column {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+    }
+
+    .table-row-expand {
+      max-height: 1000px;
+      overflow: hidden;
+      transition: max-height, 0.3s ease;
+      border-bottom: 1px solid #CCC;
+      border-radius: 0 0 10px 10px;
+
+      &.hidden {
+        max-height: 0;
+        border: none;
       }
     }
   }

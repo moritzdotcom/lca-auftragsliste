@@ -1,31 +1,49 @@
 <div class="task-table">
   <div class="table-header">
-    <div class="table-column show-xs text-center"><%= link_to "Nummer <div class='sort-icon #{'asc' if params[:order] == 'task_number'} #{'desc' if (params[:order] == 'task_number' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(order: :task_number, desc: (params[:order] == 'task_number' && params[:desc] != 'true') ) %></div>
-    <div class="table-column show-md text-center"><%= link_to "Datum <div class='sort-icon #{'asc' if params[:order] == 'created_at'} #{'desc' if (params[:order] == 'created_at' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(order: :created_at, desc: (params[:order] == 'created_at' && params[:desc] != 'true') ) %></div>
-    <div class="table-column show-xl text-center"><%= link_to "Objekt <div class='sort-icon #{'asc' if params[:order] == 'object_number'} #{'desc' if (params[:order] == 'object_number' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(order: :object_number, desc: (params[:order] == 'object_number' && params[:desc] != 'true') ) %></div>
-    <div class="table-column show-xs"><%= link_to "Adresse <div class='sort-icon #{'asc' if params[:order] == 'address'} #{'desc' if (params[:order] == 'address' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(order: :address, desc: (params[:order] == 'address' && params[:desc] != 'true') ) %></div>
-    <div class="table-column show-sm"><%= link_to "Wohnung <div class='sort-icon #{'asc' if params[:order] == 'flat'} #{'desc' if (params[:order] == 'flat' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(order: :flat, desc: (params[:order] == 'flat' && params[:desc] != 'true') ) %></div>
-    <div class="table-column show-xl"><%= link_to "Mieter <div class='sort-icon #{'asc' if params[:order] == 'tenant'} #{'desc' if (params[:order] == 'tenant' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(order: :tenant, desc: (params[:order] == 'tenant' && params[:desc] != 'true') ) %></div>
-    <div class="table-column show-xs"><%= link_to "Beschreibung <div class='sort-icon #{'asc' if params[:order] == 'title'} #{'desc' if (params[:order] == 'title' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(order: :title, desc: (params[:order] == 'title' && params[:desc] != 'true') ) %></div>
-    <div class="table-column show-xl text-center"><%= link_to "Ausgestellt <div class='sort-icon #{'asc' if params[:order] == 'user'} #{'desc' if (params[:order] == 'user' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(order: :user, desc: (params[:order] == 'user' && params[:desc] != 'true') ) %></div>
-    <div class="table-column show-md"><%= link_to "Weitergeleitet an <div class='sort-icon #{'asc' if params[:order] == 'partner'} #{'desc' if (params[:order] == 'partner' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(order: :partner, desc: (params[:order] == 'partner' && params[:desc] != 'true') ) %></div>
-    <div class="table-column show-sm text-center"><%= link_to "Status <div class='sort-icon #{'asc' if params[:order] == 'status'} #{'desc' if (params[:order] == 'status' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(order: :status, desc: (params[:order] == 'status' && params[:desc] != 'true') ) %></div>
+    <div class="table-column show-xs text-center"><%= link_to "Nummer <div class='sort-icon #{'asc' if params[:order] == 'task_number'} #{'desc' if (params[:order] == 'task_number' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(params.permit!.merge({order: :task_number, desc: (params[:order] == 'task_number' && params[:desc] != 'true') })) %></div>
+    <div class="table-column show-md text-center"><%= link_to "Datum <div class='sort-icon #{'asc' if params[:order] == 'created_at'} #{'desc' if (params[:order] == 'created_at' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(params.permit!.merge({order: :created_at, desc: (params[:order] == 'created_at' && params[:desc] != 'true') })) %></div>
+    <div class="table-column show-xl text-center"><%= link_to "Objekt <div class='sort-icon #{'asc' if params[:order] == 'object_number'} #{'desc' if (params[:order] == 'object_number' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(params.permit!.merge({order: :object_number, desc: (params[:order] == 'object_number' && params[:desc] != 'true') })) %></div>
+    <div class="table-column show-xs"><%= link_to "Adresse <div class='sort-icon #{'asc' if params[:order] == 'address'} #{'desc' if (params[:order] == 'address' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(params.permit!.merge({order: :address, desc: (params[:order] == 'address' && params[:desc] != 'true') })) %></div>
+    <div class="table-column show-sm"><%= link_to "Wohnung <div class='sort-icon #{'asc' if params[:order] == 'flat'} #{'desc' if (params[:order] == 'flat' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(params.permit!.merge({order: :flat, desc: (params[:order] == 'flat' && params[:desc] != 'true') })) %></div>
+    <div class="table-column show-xl"><%= link_to "Mieter <div class='sort-icon #{'asc' if params[:order] == 'tenant'} #{'desc' if (params[:order] == 'tenant' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(params.permit!.merge({order: :tenant, desc: (params[:order] == 'tenant' && params[:desc] != 'true') })) %></div>
+    <div class="table-column show-xs"><%= link_to "Beschreibung <div class='sort-icon #{'asc' if params[:order] == 'title'} #{'desc' if (params[:order] == 'title' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(params.permit!.merge({order: :title, desc: (params[:order] == 'title' && params[:desc] != 'true') })) %></div>
+    <div class="table-column show-xl text-center"><%= link_to "Ausgestellt <div class='sort-icon #{'asc' if params[:order] == 'user'} #{'desc' if (params[:order] == 'user' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(params.permit!.merge({order: :user, desc: (params[:order] == 'user' && params[:desc] != 'true') })) %></div>
+    <div class="table-column show-md"><%= link_to "Weitergeleitet an <div class='sort-icon #{'asc' if params[:order] == 'partner'} #{'desc' if (params[:order] == 'partner' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(params.permit!.merge({order: :partner, desc: (params[:order] == 'partner' && params[:desc] != 'true') })) %></div>
+    <div class="table-column show-sm text-center"><%= link_to "Status <div class='sort-icon #{'asc' if params[:order] == 'status'} #{'desc' if (params[:order] == 'status' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(params.permit!.merge({order: :status, desc: (params[:order] == 'status' && params[:desc] != 'true') })) %></div>
   </div>
 
   <div class="table-content">
     <% tasks.each_with_index do |task, i| %>
-      <div class="table-row">
-        <div class="table-column show-xs text-center"><%= link_to task.prefix_number, task %></div>
-        <div class="table-column show-md text-center"><%= link_to task.created_at.strftime('%d/%m/%Y'), task %></div>
-        <div class="table-column show-xl text-center"><%= link_to task.house.object_number, task %></div>
-        <div class="table-column show-xs"><%= link_to task.house.address, task %></div>
-        <div class="table-column show-sm"><%= link_to task.flat.location, task %></div>
-        <div class="table-column show-xl"><%= link_to task.tenant.name, task %></div>
-        <div class="table-column show-xs"><%= link_to task.title, task %></div>
-        <div class="table-column show-xl text-center"><%= link_to task.user.abbreviated_name, task %></div>
-        <div class="table-column show-md"><%= link_to task.partner_names, task %></div>
-        <div class="table-column show-sm text-center"><%= link_to task.humanized_status, task %></div>
+      <div class="table-row" onclick="toggleTableContent(<%= task.id %>)">
+        <div class="table-column show-xs text-center"><%= task.prefix_number %></div>
+        <div class="table-column show-md text-center"><%= task.created_at.strftime('%d/%m/%Y') %></div>
+        <div class="table-column show-xl text-center"><%= task.house.object_number %></div>
+        <div class="table-column show-xs"><%= task.house.address %></div>
+        <div class="table-column show-sm"><%= task.flat.location %></div>
+        <div class="table-column show-xl"><%= task.tenant.name %></div>
+        <div class="table-column show-xs"><%= task.title %></div>
+        <div class="table-column show-xl text-center"><%= task.user.abbreviated_name %></div>
+        <div class="table-column show-md"><%= task.partner_names %></div>
+        <div class="table-column show-sm text-center"><%= task.humanized_status %></div>
+      </div>
+      <div class="table-row-expand hidden text-center" id="table-content-<%= task.id %>">
+        <h3>Auftrag Nr. <%= task.prefix_number %></h3>
+        <p>Ausgestellt am: <%= task.created_at.strftime('%d/%m/%Y') %> | Zu erledigen bis: <%= task.due_date ? task.due_date.strftime('%d/%m/%Y') : 'Offen' %></p>
+        <p><%= task.house.formatted_address %></p>
+        <p><%= task.flat.location %> | <%= task.tenant.name %></p>
+        <p><%= task.title %></p>
+        <p><%= task.description %></p>
+        <p>Für: <%= task.partner_names %></p>
+        <div class="table-links">
+          <%= link_to 'Anzeigen', task %>
+        </div>
       </div>
     <% end %>
   </div>
 </div>
+
+<script>
+  function toggleTableContent(id) {
+    document.getElementById(`table-content-${id}`).classList.toggle('hidden');
+  }
+</script>

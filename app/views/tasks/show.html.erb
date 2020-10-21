@@ -7,10 +7,14 @@
     <%= link_to 'Email schicken', @task %>
   </div>
 
-  <% if @task.due_date %>
-    <h3>Zu erledigen bis:</h3>
-    <h4 style="color: <%= 'red' if @task.due_date < Date.today %>"><%= @task.due_date.strftime('%d.%m.%Y') %></h4>
-  <% end %>
+  <form class="due-date-form" id="due-date-form" action="/tasks/<%= @task.id %>/update_due_date" accept-charset="UTF-8" data-remote="true" method="post">
+    <h3 class="form-title">Zu erledigen bis:</h3>
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input type="hidden" name="_method" value="put">
+    <div class="input">
+      <input type="date" value="<%= @task.due_date.strftime('%Y-%m-%d') %>" name="task[due_date]" id="task_due_date">
+    </div>
+  </form>
 
   <form class="status-form" id="status-form" action="/tasks/<%= @task.id %>/update_status" accept-charset="UTF-8" data-remote="true" method="post">
     <h3 class="form-title">Status</h3>
@@ -51,6 +55,13 @@
 
   statusSelector.addEventListener('input', () => {
     statusForm.submit();
+  })
+
+  dueDateForm = document.getElementById('due-date-form');
+  dueDateSelector = document.getElementById('task_due_date');
+
+  dueDateSelector.addEventListener('blur', () => {
+    dueDateForm.submit();
   })
 
   function disableButton(id) {

@@ -2,17 +2,22 @@
   <h1><%= @partner.name %></h1>
 
   <%= simple_form_for @partner, html: {remote: true} do |f| %>
-    <%= f.input :email, as: :email, label: 'Email' %>
-    <%= f.input :phone_number, label: 'Tel.' %>
+    <h3 class="form-header">Email</h3>
+    <%= f.input :email, as: :email, label: false %>
+
+    <h3 class="form-header">Telefon</h3>
+    <%= f.input :phone_number, label: false %>
     <%= f.button :submit, 'Aktualisieren', disabled: true, id: 'submit-button' %>
   <% end %>
 </header>
 
-<h3>Aufträge</h3>
+<section>
+  <h3>Aufträge</h3>
 
-<% if @tasks.count.positive? %>
-  <%= render 'tasks/tasks_table', tasks: @tasks %>
-<% end %>
+  <% if @tasks.count.positive? %>
+    <%= render 'tasks/tasks_table', tasks: @tasks %>
+  <% end %>
+</section>
 
 <script>
   submitButton = document.getElementById('submit-button');

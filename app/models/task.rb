@@ -8,11 +8,12 @@ class Task < ApplicationRecord
   validates_presence_of :house_id, message: 'Objekt muss angegeben werden'
   validates_presence_of :user_id, message: 'Auftrag braucht einen Verantwortlichen'
   validates_presence_of :title, message: 'Beschreibung muss angegeben werden'
+  validates_uniqueness_of :task_number, scope: :year, message: 'Auftragsnummer ist schon vergeben'
 
   before_validation :set_default_values
 
   def self.next_number
-    Task.maximum(:task_number).to_i + 1
+    Task.where(year: Date.today.year).maximum(:task_number).to_i + 1
   end
 
   def self.status_options
@@ -40,5 +41,7 @@ class Task < ApplicationRecord
   def set_default_values
     self.status ||= 0
     self.task_number ||= Task.next_number
+    self.created_at ||= DateTime.now
+    self.year ||= self.created_at.year
   end
 end
