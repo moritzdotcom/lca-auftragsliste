@@ -1,6 +1,7 @@
 class Flat < ApplicationRecord
   belongs_to :house
-  has_many :tenants
+  has_many :tenants, dependent: :destroy
+  has_many :tasks, dependent: :nullify
 
   validates :location, presence: true
 

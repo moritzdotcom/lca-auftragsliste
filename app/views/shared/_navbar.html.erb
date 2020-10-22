@@ -7,6 +7,6 @@
   <% if user_signed_in? %>
     <%= link_to 'Dashboard', dashboard_path, class: "nav-link #{'active' if controller.controller_name == 'pages' && controller.action_name == 'dashboard' }" %>
   <% else %>
-    <%= link_to 'Anmelden', new_user_session_path, class: 'nav-link sign-in-link' %>
+    <%= link_to 'Anmelden', new_user_session_path, class: "nav-link #{'active' if controller.controller_name == 'sessions' }" %>
   <% end %>
 </div>

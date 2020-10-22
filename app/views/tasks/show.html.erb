@@ -2,40 +2,42 @@
   <h1>Auftrag <%= @task.prefix_number %></h1>
   <h3>Ausgestellt am <%= @task.created_at.strftime('%d.%m.%Y') %> von <%= @task.user.full_name %></h3>
   <div class="quick-actions">
-    <%= link_to 'PDF Intern', task_path(@task, format: 'pdf', internal: true) %>
-    <%= link_to 'PDF Extern', task_path(@task, format: 'pdf') %>
+    <%= link_to 'PDF Intern', task_path(@task, format: 'pdf', internal: true), onclick: 'showLoadingModal()' %>
+    <%= link_to 'PDF Extern', task_path(@task, format: 'pdf'), onclick: 'showLoadingModal()' %>
     <%= link_to 'Email schicken', @task %>
   </div>
 
-  <form class="due-date-form" id="due-date-form" action="/tasks/<%= @task.id %>/update_due_date" accept-charset="UTF-8" data-remote="true" method="post">
-    <h3 class="form-title">Zu erledigen bis:</h3>
-    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-    <input type="hidden" name="_method" value="put">
-    <div class="input">
-      <input type="date" value="<%= @task.due_date.strftime('%Y-%m-%d') if @task.due_date %>" name="task[due_date]" id="task_due_date">
-    </div>
-  </form>
+  <div class="header-forms">
+    <form class="due-date-form" id="due-date-form" action="/tasks/<%= @task.id %>/update_due_date" accept-charset="UTF-8" data-remote="true" method="post">
+      <h3 class="form-title">Zu erledigen bis:</h3>
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <input type="hidden" name="_method" value="put">
+      <div class="input">
+        <input type="date" value="<%= @task.due_date.strftime('%Y-%m-%d') if @task.due_date %>" name="task[due_date]" id="task_due_date">
+      </div>
+    </form>
 
-  <form class="status-form" id="status-form" action="/tasks/<%= @task.id %>/update_status" accept-charset="UTF-8" data-remote="true" method="post">
-    <h3 class="form-title">Status</h3>
-    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-    <input type="hidden" name="_method" value="put">
-    <select class="select optional" name="task[status]" id="task_status">
-      <% Task.status_options.each_with_index do |status, i| %>
-        <option value="<%= i %>" <%= 'selected' if @task.status == i %>><%= status %></option>
-      <% end %>
-    </select>
-  </form>
+    <form class="status-form" id="status-form" action="/tasks/<%= @task.id %>/update_status" accept-charset="UTF-8" data-remote="true" method="post">
+      <h3 class="form-title">Status</h3>
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <input type="hidden" name="_method" value="put">
+      <select class="select optional" name="task[status]" id="task_status">
+        <% Task.status_options.each_with_index do |status, i| %>
+          <option value="<%= i %>" <%= 'selected' if @task.status == i %>><%= status %></option>
+        <% end %>
+      </select>
+    </form>
+  </div>
 </header>
 
 <section>
-  <h3>Beschreibung</h3>
+  <h2>Beschreibung</h2>
   <p><%= @task.title %></p>
   <p><%= @task.description %></p>
 </section>
 
 <section>
-  <h3>Weitergeleitet an</h3>
+  <h2>Weitergeleitet an</h2>
 
   <div class="partners">
     <% @task.partners.each do |partner| %>

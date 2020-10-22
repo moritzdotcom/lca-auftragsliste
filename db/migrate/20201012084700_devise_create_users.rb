@@ -36,6 +36,9 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
       t.string :last_name
       t.string :phone_number
       t.string :mobile_phone
+      t.integer :table_settings
+      t.string :navbar_color_settings
+      t.boolean :show_mobile_on_pdf
 
       t.timestamps null: false
     end

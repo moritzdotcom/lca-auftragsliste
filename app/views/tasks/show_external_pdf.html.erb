@@ -95,6 +95,7 @@
   <p class="mb-0 mt-0">Kittelbachstrasse 10</p>
   <p class="mt-0">40489 Düsseldorf</p>
   <p class="mb-0">Tel. <%= @task.user.phone_number %></p>
+  <p class="mb-0"><%= "Mobil #{@task.user.show_mobile_on_pdf ? (@task.user.mobile_phone || '-') : '-'}" %></p>
   <p class="mb-0 mt-0">Fax: 0211 522884-19</p>
   <p class="mt-0"><%= @task.user.email %></p>
 </div>

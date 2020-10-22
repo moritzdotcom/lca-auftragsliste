@@ -1,9 +1,23 @@
 <header>
   <h1>Partner</h1>
+
+  <form action="/partners">
+    <div class="input">
+      <input list="partner_array" name="search" autocomplete="off"/>🔍
+    </div>
+
+    <datalist id="partner_array">
+      <% Partner.all.each do |partner| %>
+        <option data-value="<%= partner.id %>"><%= partner.name %></option>
+      <% end %>
+    </datalist>
+  </form>
 </header>
 
-<div class="partners">
-  <% @partners.each do |partner| %>
-    <%= link_to (render 'partners/card', partner: partner), partner %>
-  <% end %>
-</div>
+<section>
+  <div class="partners">
+    <% @partners.each do |partner| %>
+      <%= link_to (render 'partners/card', partner: partner), partner %>
+    <% end %>
+  </div>
+</section>

@@ -39,7 +39,7 @@
     color: black;
 
     &:valid {
-      color: #AAFFAA;
+      color: #00A300;
     }
 
     &:invalid {
@@ -69,7 +69,7 @@
         cursor: pointer;
 
         &:hover {
-          background: #AAFFAA;
+          background: #00A300;
         }
       }
     }

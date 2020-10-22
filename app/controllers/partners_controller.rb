@@ -2,7 +2,12 @@ class PartnersController < ApplicationController
   before_action :set_partner, only: [:show, :edit, :update]
 
   def index
-    @partners = Partner.all.order(:name)
+    if params[:search]
+      wildcard_search = "%#{params[:search]}%"
+      @partners = Partner.where("name LIKE ? OR email LIKE ?", wildcard_search, wildcard_search).order(:name)
+    else
+      @partners = Partner.order(:name)
+    end
   end
 
   def show

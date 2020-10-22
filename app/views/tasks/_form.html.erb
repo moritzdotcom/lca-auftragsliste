@@ -11,7 +11,7 @@
   <%= f.input :flat_id, as: :hidden, wrapper_html: {class: ''} %>
   <div class="input-field input">
     <label for="task_flat_location">Wohnung</label>
-    <input list="flat_location_autocomplete" id="task_flat_location" name="task[flat_location]" />
+    <input list="flat_location_autocomplete" id="task_flat_location" name="task[flat_location]" autocomplete="off"/>
 
     <datalist id="flat_location_autocomplete">
     </datalist>
@@ -39,7 +39,7 @@
   <%= f.input :partner_array, as: :hidden, wrapper_html: {class: ''} %>
   <div class="input-field input">
     <label for="task_partner_names">Weitergeleitet an</label>
-    <input list="partner_array" id="task_partner_names" name="task[partner_array_names]" />
+    <input list="partner_array" id="task_partner_names" name="task[partner_array_names]" autocomplete="off"/>
     <div class="button add-partner">&plus;</div>
 
     <datalist id="partner_array">
@@ -157,9 +157,6 @@
       partnerInput.value = ''
       partnerInput.focus();
       partnerInput.parentNode.classList.remove('has-value');
-
-
-
     }
   })
 

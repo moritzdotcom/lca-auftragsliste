@@ -9,7 +9,22 @@ class PagesController < ApplicationController
     end
   end
 
+  def edit_settings
+  end
+
+  def update_settings
+    if @user.update(settings_params)
+      redirect_to edit_settings_path, notice: 'Einstellungen gespeichert'
+    else
+      render :edit_settings, alert: 'Einstellungen konnten nicht gespeichert werden'
+    end
+  end
+
   private
+
+  def settings_params
+    params.permit(:table_settings, :navbar_color_settings, :show_mobile_on_pdf)
+  end
 
   def authenticate_user
     if user_signed_in?

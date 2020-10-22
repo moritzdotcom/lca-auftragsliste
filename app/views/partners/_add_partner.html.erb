@@ -5,7 +5,7 @@
     <div class="form-content">
       <div class="input string optional partner_name">
         <label class="string optional" for="partner_name">Name:</label>
-        <input list="partner_name_autocomplete" id="partner_name" name="partner[name]" />
+        <input list="partner_name_autocomplete" id="partner_name" name="partner[name]" autocomplete="off"/>
         <datalist id="partner_name_autocomplete">
           <% Partner.all.each do |partner| %>
             <option><%= partner.name %></option>

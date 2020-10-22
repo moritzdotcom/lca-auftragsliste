@@ -1,0 +1,67 @@
+<header>
+  <h1>Einstellungen</h1>
+</header>
+
+<section>
+  <div class="settings-forms">
+    <form action="/settings" accept-charset="UTF-8" data-remote="true" method="post">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <h3 class="form-title">Aufträge pro Zeile</h3>
+      <div class="input-field">
+        <input type="number" value="<%= current_user.table_settings %>" name="table_settings">
+      </div>
+      <input type="submit" class="btn" value="Speichern">
+    </form>
+
+    <form action="/settings" accept-charset="UTF-8" data-remote="true" method="post">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <h3 class="form-title">Navbar Farbe</h3>
+      <div class="input color-input">
+        <input type="color" value="#222233" id="navbar-color-selector" name="navbar_color_settings">
+      </div>
+      <input type="submit" class="btn" value="Speichern">
+    </form>
+
+    <form action="/settings" id="show-mobile-on-pdf-form" accept-charset="UTF-8" data-remote="true" method="post">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <div class="input">
+        <label for="show-mobile-on-pdf">Meine Handynummer in Aufträgen anzeigen</label>
+        <% if false %>
+          <input type="checkbox" checked id="show-mobile-on-pdf" name="show_mobile_on_pdf">
+        <% else %>
+          <input type="checkbox" id="show-mobile-on-pdf" name="show_mobile_on_pdf">
+        <% end %>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script>
+  function textColor(hex) {
+    color = hex.substring(1, 7);
+    red = parseInt(color.substring(0, 2), 16); // hexToR
+    green = parseInt(color.substring(2, 4), 16); // hexToG
+    blue = parseInt(color.substring(4, 6), 16); // hexToB
+
+    if ((red*0.299 + green*0.587 + blue*0.114) > 186) {
+      return '#000'
+    }
+    else {
+      return '#FFF'
+    }
+  }
+
+  navbarColorSelector = document.getElementById('navbar-color-selector');
+  navbar = document.querySelector('.navbar');
+
+  navbarColorSelector.addEventListener('input', () => {
+    navbar.style.background = navbarColorSelector.value;
+    navbar.style.color = textColor(navbarColorSelector.value);
+  })
+
+  mobileOnPdfForm = document.getElementById('show-mobile-on-pdf-form');
+  mobileOnPdfCheckbox = document.getElementById('show-mobile-on-pdf');
+  mobileOnPdfCheckbox.addEventListener('input', () => {
+    mobileOnPdfForm.submit();
+  })
+</script>

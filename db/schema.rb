@@ -46,8 +46,8 @@ ActiveRecord::Schema.define(version: 2020_10_12_090221) do
   create_table "tasks", force: :cascade do |t|
     t.integer "task_number"
     t.bigint "house_id", null: false
-    t.bigint "flat_id", null: false
-    t.bigint "tenant_id", null: false
+    t.bigint "flat_id"
+    t.bigint "tenant_id"
     t.string "partner_array"
     t.bigint "user_id", null: false
     t.string "title"
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 2020_10_12_090221) do
     t.string "last_name"
     t.string "phone_number"
     t.string "mobile_phone"
+    t.integer "table_settings"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_users_on_email", unique: true

@@ -1,7 +1,9 @@
 <header>
   <h1>Hallo <%= @user.full_name %>!</h1>
   <div class="quick-actions">
-    <%= link_to 'Abmelden', destroy_user_session_path, method: :delete, class: 'sign-out-link' %>
+    <%= link_to 'Profil bearbeiten', edit_user_registration_path %>
+    <%= link_to 'Einstellungen', edit_settings_path %>
+    <%= link_to 'Abmelden', destroy_user_session_path, method: :delete %>
   </div>
 </header>
 

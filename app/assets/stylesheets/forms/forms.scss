@@ -27,7 +27,7 @@
     color: black;
 
     &:valid {
-      color: #AAFFAA;
+      color: #00A300;
     }
 
     &:invalid {
@@ -54,7 +54,7 @@
     }
 
     &:valid {
-      color: #AAFFAA;
+      color: #00A300;
     }
 
     &:invalid {
@@ -72,7 +72,7 @@
     outline: none;
 
     &:valid {
-      color: #AAFFAA;
+      color: #00A300;
     }
 
     &:invalid {
@@ -86,7 +86,7 @@
     display: block;
     height: 4px;
     width: 100%;
-    background: #AAFFAA;
+    background: #00A300;
     transform: scaleX(0);
     transform-origin: 0%;
     transition: transform 500ms ease;
@@ -105,13 +105,25 @@
     }
   }
 
-  .error {
-    color: red;
+  .error, .hint {
     position: absolute;
     top: 3rem;
     left: 0;
     font-style: italic;
     font-size: 1rem;
+  }
+
+  .error {
+    color: red;
+    background: inherit;
+  }
+
+  .hint ~ .error {
+    top: 4.5rem;
+  }
+
+  .hint {
+    color: #A3A3A3;
   }
 }
 
@@ -122,6 +134,7 @@
   position: relative;
 
   label {
+    font-size: 1.2rem;
     display: block;
     color: #A3A3A3;
   }
@@ -132,7 +145,7 @@
     font-size: 1.5rem;
     background: none;
     border: none;
-    color: #AAFFAA;
+    color: #00A300;
     outline: none;
   }
 
@@ -142,7 +155,7 @@
     display: block;
     height: 4px;
     width: 100%;
-    background: #AAFFAA;
+    background: #00A300;
     transform: scaleX(0);
     transform-origin: 0%;
     transition: transform 500ms ease;
@@ -160,7 +173,7 @@ form {
   .btn {
     margin: 3rem auto;
     display: block;
-    background: #AAFFAA;
+    background: #00A300;
     border: none;
     color: white;
     padding: 10px 20px;
@@ -229,7 +242,7 @@ form {
     margin-right: 1rem;
 
     &.in-database {
-      background: #AAFFAA;
+      background: #00A300;
     }
 
     span {
@@ -242,7 +255,7 @@ form {
 
 .button {
   color: white;
-  background: #AAFFAA;
+  background: #00A300;
   border-radius: 10px;
   padding: 0px 15px 4px 15px;
   cursor: pointer;

@@ -1,5 +1,9 @@
 <header>
   <h1>Objekte <%= link_to '+', new_house_path %></h1>
+
+  <div class="quick-actions">
+    <%= link_to 'Zuständigkeiten', edit_houses_path %>
+  </div>
 </header>
 
 <div class="houses">
@@ -11,7 +15,7 @@
         <% house.flats.each do |flat| %>
           <div class="flat">
             <h3><%= flat.location %> - <%= flat.current_tenant ? "#{flat.current_tenant.name}" : (link_to 'Mieter hinzufügen', new_tenant_path(flat: flat.id), class: 'new-link') %></h3>
-            <%= link_to 'X', flat, method: :delete, data: { confirm: 'Diese Wohnung wirklich löschen?' }, :remote => true, class: 'delete-link' %>
+            <%= link_to 'X', flat, method: :delete, data: { confirm: "Diese Wohnung wirklich löschen? #{flat.tenants.count.positive? ? "Alle Mieter der Wohnung (#{flat.tenants.count}) werden ebenfalls gelöscht!" : ''}" }, :remote => true, class: 'delete-link' %>
           </div>
         <% end %>
         <a href="/houses/<%= house.id %>/flats/new" class="new-flat-link">

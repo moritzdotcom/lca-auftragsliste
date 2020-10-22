@@ -10,6 +10,7 @@
   </head>
 
   <body>
+    <div id="loading-modal"><div class="loader"></div></div>
     <%= render 'shared/navbar' %>
 
     <% if notice %>
@@ -35,6 +36,10 @@
     if (alert) {
       setTimeout(function() { alert.style.opacity = 0; }, 8000);
       setTimeout(function() { alert.style.display = 'none'; }, 9000);
+    }
+
+    function showLoadingModal() {
+      document.getElementById('loading-modal').classList.add('show');
     }
   </script>
 

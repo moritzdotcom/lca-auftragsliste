@@ -27,8 +27,9 @@ class FlatsController < ApplicationController
   end
 
   def destroy
+    @house = @flat.house
     @flat.destroy
-    redirect_to houses_path, notice: 'Wohnung gelöscht'
+    redirect_to houses_path(house: @house.id), alert: 'Wohnung gelöscht'
   end
 
   private

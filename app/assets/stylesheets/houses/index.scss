@@ -15,8 +15,10 @@
       overflow: scroll;
       transition: max-height, 0.3s ease;
       cursor: default;
+      scroll-snap-type: block;
 
       .flat {
+        scroll-snap-align: start;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -28,7 +30,7 @@
           text-decoration: none;
 
           &:hover {
-            color: #AAFFAA;
+            color: #00A300;
           }
         }
 
@@ -53,7 +55,7 @@
         .new-flat {
           color: white;
           font-weight: bold;
-          background: #AAFFAA;
+          background: #00A300;
           border-radius: 50%;
           padding: 0px 10px 4px 10px;
           font-size: 2rem;

@@ -1,35 +1,38 @@
 class TasksController < ApplicationController
+  include Pagy::Backend
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   def index
+    pagy_options = {items: user_signed_in? ? (current_user.table_settings || 20) : 20, size: [1,2,2,1]}
 
     if params[:order]
+      params[:page] = 1
       option = params[:desc] == 'true' ? :desc : :asc
 
       case params[:order]
       when 'task_number'
-        @tasks = Task.order(task_number: option)
+        @pagy, @tasks = pagy(Task.order(task_number: option), pagy_options)
       when 'created_at'
-        @tasks = Task.order(created_at: option)
+        @pagy, @tasks = pagy(Task.order(created_at: option), pagy_options)
       when 'object_number'
-        @tasks = Task.joins(:house).order(object_number: option)
+        @pagy, @tasks = pagy(Task.joins(:house).order(object_number: option), pagy_options)
       when 'address'
-        @tasks = Task.joins(:house).order(address: option)
+        @pagy, @tasks = pagy(Task.joins(:house).order(address: option), pagy_options)
       when 'flat'
-        @tasks = Task.joins(:flat).order(location: option)
+        @pagy, @tasks = pagy(Task.joins(:flat).order(location: option), pagy_options)
       when 'tenant'
-        @tasks = Task.joins(:tenant).order(name: option)
+        @pagy, @tasks = pagy(Task.joins(:tenant).order(name: option), pagy_options)
       when 'title'
-        @tasks = Task.order(title: option)
+        @pagy, @tasks = pagy(Task.order(title: option), pagy_options)
       when 'user'
-        @tasks = Task.joins(:user).order(first_name: option)
+        @pagy, @tasks = pagy(Task.joins(:user).order(first_name: option), pagy_options)
       when 'partner'
-        @tasks = Task.order(partner_array: option)
+        @pagy, @tasks = pagy(Task.order(partner_array: option), pagy_options)
       when 'status'
-        @tasks = Task.order(status: option)
+        @pagy, @tasks = pagy(Task.order(status: option), pagy_options)
       end
     else
-      @tasks = Task.order(task_number: :desc)
+      @pagy, @tasks = pagy(Task.order(task_number: :desc), pagy_options)
     end
 
     if params[:query]

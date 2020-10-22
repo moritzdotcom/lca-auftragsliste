@@ -1,4 +1,10 @@
 <div class="task-table">
+  <% if @pagy.pages > 1 %>
+    <div class="table-pagination">
+      <%== pagy_nav(@pagy) %>
+    </div>
+  <% end %>
+
   <div class="table-header">
     <div class="table-column show-xs text-center"><%= link_to "Nummer <div class='sort-icon #{'asc' if params[:order] == 'task_number'} #{'desc' if (params[:order] == 'task_number' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(params.permit!.merge({order: :task_number, desc: (params[:order] == 'task_number' && params[:desc] != 'true') })) %></div>
     <div class="table-column show-md text-center"><%= link_to "Datum <div class='sort-icon #{'asc' if params[:order] == 'created_at'} #{'desc' if (params[:order] == 'created_at' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(params.permit!.merge({order: :created_at, desc: (params[:order] == 'created_at' && params[:desc] != 'true') })) %></div>
@@ -14,23 +20,23 @@
 
   <div class="table-content">
     <% tasks.each_with_index do |task, i| %>
-      <div class="table-row" onclick="toggleTableContent(<%= task.id %>)">
+      <div class="table-row" onclick="toggleTableContent(<%= task.id %>)" style="background: <%= i%2 == 0 ? 'white' : '#F0F0F0' %>">
         <div class="table-column show-xs text-center"><%= task.prefix_number %></div>
         <div class="table-column show-md text-center"><%= task.created_at.strftime('%d/%m/%Y') %></div>
         <div class="table-column show-xl text-center"><%= task.house.object_number %></div>
         <div class="table-column show-xs"><%= task.house.address %></div>
-        <div class="table-column show-sm"><%= task.flat.location %></div>
-        <div class="table-column show-xl"><%= task.tenant.name %></div>
+        <div class="table-column show-sm"><%= task.flat.try(:location) || '-' %></div>
+        <div class="table-column show-xl"><%= task.tenant.try(:name) || '-' %></div>
         <div class="table-column show-xs"><%= task.title %></div>
         <div class="table-column show-xl text-center"><%= task.user.abbreviated_name %></div>
         <div class="table-column show-md"><%= task.partner_names %></div>
         <div class="table-column show-sm text-center"><%= task.humanized_status %></div>
       </div>
-      <div class="table-row-expand hidden text-center" id="table-content-<%= task.id %>">
+      <div class="table-row-expand hidden text-center" id="table-content-<%= task.id %>" style="background: <%= i%2 == 0 ? 'white' : '#F0F0F0' %>">
         <h3>Auftrag Nr. <%= task.prefix_number %></h3>
-        <p>Ausgestellt am: <%= task.created_at.strftime('%d/%m/%Y') %> | Zu erledigen bis: <%= task.due_date ? task.due_date.strftime('%d/%m/%Y') : 'Offen' %></p>
+        <p>Ausgestellt am: <%= task.created_at.strftime('%d/%m/%Y') %> | Fällig am: <%= task.due_date ? task.due_date.strftime('%d/%m/%Y') : 'Offen' %></p>
         <p><%= task.house.formatted_address %></p>
-        <p><%= task.flat.location %> | <%= task.tenant.name %></p>
+        <p><%= task.flat.try(:location) || '-' %> | <%= task.tenant.try(:name) || '-' %></p>
         <p><%= task.title %></p>
         <p><%= task.description %></p>
         <p>Für: <%= task.partner_names %></p>

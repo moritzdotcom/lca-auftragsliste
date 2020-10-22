@@ -13,5 +13,8 @@ Rails.application.routes.draw do
 
   resources :flats, only: [:edit, :update, :destroy]
 
+  get '/houses/edit', to: 'houses#edit_all', as: 'edit_houses'
   get '/dashboard', to: 'pages#dashboard', as: 'dashboard'
+  get '/settings', to: 'pages#edit_settings', as: 'edit_settings'
+  post '/settings', to: 'pages#update_settings'
 end

@@ -18,8 +18,8 @@ de:
         invalid: Benutzer existiert nicht
     sessions:
       user:
-        signed_in: Benutzer angemeldet
-        signed_out: Erfolgreich abgemeldet
+        signed_in: Wilkommen zurück!
+        signed_out: Bis bald!
         already_signed_out: Erfolgreich abgemeldet
     registrations:
       user:

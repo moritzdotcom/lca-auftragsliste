@@ -29,6 +29,7 @@ gem 'jbuilder', '~> 2.7'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'devise'
 gem 'simple_form'
+gem 'pagy', '~> 3.5'
 
 gem 'wkhtmltopdf-binary-edge', '~> 0.12.5.1'
 gem 'wicked_pdf'

@@ -1,4 +1,4 @@
-<%- if controller_name != 'sessions' %>
+<%- if controller_name != 'sessions' && controller.action_name != 'edit' %>
   <%= link_to "Anmelden", new_session_path(resource_name) %><br />
 <% end %>
 
