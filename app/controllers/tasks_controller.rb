@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
   include Pagy::Backend
   before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :authorise_user, except: [:index, :show]
 
   def index
     pagy_options = {items: user_signed_in? ? (current_user.table_settings || 20) : 20, size: [1,2,2,1]}
@@ -165,15 +166,24 @@ class TasksController < ApplicationController
   end
 
   private
-    def set_task
-      @task = Task.find(params[:id])
+
+  def set_task
+    @task = Task.find(params[:id])
+  end
+
+  def task_params
+    parameters = params.require(:task).permit(:task_number, :house_id, :flat_id, :flat_location, :tenant_id, :tenant_name, :location, :partner_array, :user_id, :title, :description, :due_date, :created_at)
+    parameters[:created_at] = parameters[:created_at].to_datetime
+    parameters[:due_date] = parameters[:due_date].to_datetime
+
+    return parameters
+  end
+
+  def authorise_user
+    if user_signed_in?
+      return if current_user.admin || current_user.can_create_tasks
     end
 
-    def task_params
-      parameters = params.require(:task).permit(:task_number, :house_id, :flat_id, :flat_location, :tenant_id, :tenant_name, :location, :partner_array, :user_id, :title, :description, :due_date, :created_at)
-      parameters[:created_at] = parameters[:created_at].to_datetime
-      parameters[:due_date] = parameters[:due_date].to_datetime
-
-      return parameters
-    end
+    redirect_to root_path
+  end
 end

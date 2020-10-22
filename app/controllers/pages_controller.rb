@@ -23,7 +23,7 @@ class PagesController < ApplicationController
   private
 
   def settings_params
-    params.permit(:table_settings, :navbar_color_settings, :show_mobile_on_pdf)
+    params.permit(:table_settings, :navbar_color_settings, :navbar_bg_settings, :show_mobile_on_pdf)
   end
 
   def authenticate_user

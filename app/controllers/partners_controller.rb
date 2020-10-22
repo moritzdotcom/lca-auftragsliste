@@ -1,5 +1,6 @@
 class PartnersController < ApplicationController
   before_action :set_partner, only: [:show, :edit, :update]
+  before_action :authorise_user, except: [:index, :show]
 
   def index
     if params[:search]
@@ -92,5 +93,13 @@ class PartnersController < ApplicationController
 
   def partner_params
     params.require(:partner).permit(:name, :email, :phone_number, :task_id)
+  end
+
+  def authorise_user
+    if user_signed_in?
+      return if current_user.admin || current_user.can_manage_partners
+    end
+
+    redirect_to root_path
   end
 end

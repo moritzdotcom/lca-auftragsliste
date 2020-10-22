@@ -2,7 +2,23 @@
   <h1>Einstellungen</h1>
 </header>
 
+<% if current_user.admin %>
+  <section>
+    <h3>Zugriffsrechte</h3>
+    <div class="settings-forms">
+      <form action="/settings" id="show-mobile-on-pdf-form" accept-charset="UTF-8" data-remote="true" method="post">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <h3 class="form-title">Diese Benutzer können Aufträge erstellen:</h3>
+        <div class="input">
+          <input type="checkbox" id="show-mobile-on-pdf" name="show_mobile_on_pdf">
+        </div>
+      </form>
+    </div>
+  </section>
+<% end %>
+
 <section>
+  <h3>Design</h3>
   <div class="settings-forms">
     <form action="/settings" accept-charset="UTF-8" data-remote="true" method="post">
       <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
@@ -16,23 +32,26 @@
     <form action="/settings" accept-charset="UTF-8" data-remote="true" method="post">
       <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
       <h3 class="form-title">Navbar Farbe</h3>
+      <input type="hidden" value="#FFF" name="navbar_color_settings" id="navbar-text-selector">
       <div class="input color-input">
-        <input type="color" value="#222233" id="navbar-color-selector" name="navbar_color_settings">
+        <input type="color" value="#222233" id="navbar-color-selector" name="navbar_bg_settings">
       </div>
       <input type="submit" class="btn" value="Speichern">
     </form>
 
-    <form action="/settings" id="show-mobile-on-pdf-form" accept-charset="UTF-8" data-remote="true" method="post">
-      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-      <div class="input">
-        <label for="show-mobile-on-pdf">Meine Handynummer in Aufträgen anzeigen</label>
-        <% if false %>
-          <input type="checkbox" checked id="show-mobile-on-pdf" name="show_mobile_on_pdf">
-        <% else %>
-          <input type="checkbox" id="show-mobile-on-pdf" name="show_mobile_on_pdf">
-        <% end %>
-      </div>
-    </form>
+    <% if current_user.mobile_phone && current_user.mobile_phone.length.positive? %>
+      <form action="/settings" id="show-mobile-on-pdf-form" accept-charset="UTF-8" data-remote="true" method="post">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <div class="input">
+          <label for="show-mobile-on-pdf">Meine Handynummer in Aufträgen anzeigen</label>
+          <% if false %>
+            <input type="checkbox" checked id="show-mobile-on-pdf" name="show_mobile_on_pdf">
+          <% else %>
+            <input type="checkbox" id="show-mobile-on-pdf" name="show_mobile_on_pdf">
+          <% end %>
+        </div>
+      </form>
+    <% end %>
   </div>
 </section>
 
@@ -51,12 +70,16 @@
     }
   }
 
+  navbarTextSelector = document.getElementById('navbar-text-selector');
   navbarColorSelector = document.getElementById('navbar-color-selector');
   navbar = document.querySelector('.navbar');
 
   navbarColorSelector.addEventListener('input', () => {
-    navbar.style.background = navbarColorSelector.value;
-    navbar.style.color = textColor(navbarColorSelector.value);
+    bgColor = navbarColorSelector.value;
+    fontColor = textColor(bgColor);
+    navbarTextSelector.value = fontColor;
+    navbar.style.background = bgColor;
+    navbar.style.color = fontColor;
   })
 
   mobileOnPdfForm = document.getElementById('show-mobile-on-pdf-form');
