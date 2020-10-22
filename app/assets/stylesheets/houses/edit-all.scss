@@ -1,0 +1,44 @@
+.house-table {
+  width: 98%;
+  margin: 1rem auto;
+  border-radius: 10px;
+  border: 1px solid #CCC;
+  overflow: hidden;
+  box-shadow: 5px 5px 10px #CCC;
+
+
+  .table-header {
+    display: grid;
+    grid-template-columns: 1fr 4fr 4fr 2fr;
+    grid-auto-columns: min-content;
+    background: white;
+    padding: 1rem 0;
+    box-shadow: 0 5px 5px #CCC;
+    font-weight: bold;
+    position: sticky;
+  }
+
+  .table-content {
+    max-height: 80vh;
+    overflow: scroll;
+    scroll-snap-type: block;
+
+    .table-row {
+      scroll-snap-align: start;
+      display: grid;
+      grid-template-columns: 1fr 4fr 4fr 2fr;
+      grid-auto-columns: min-content;
+      padding: 1rem 0;
+      background: #F3F3F3;
+      align-items: center;
+
+      .table-column {
+        padding-right: 1rem;
+      }
+
+      input {
+        width: 100%;
+      }
+    }
+  }
+}

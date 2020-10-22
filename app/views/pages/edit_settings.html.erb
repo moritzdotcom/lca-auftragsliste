@@ -36,6 +36,7 @@
       <div class="input color-input">
         <input type="color" value="#222233" id="navbar-color-selector" name="navbar_bg_settings">
       </div>
+      <input type="button" class="btn" id="reset-navbar-settings" value="Zurücksetzen">
       <input type="submit" class="btn" value="Speichern">
     </form>
 
@@ -72,6 +73,7 @@
 
   navbarTextSelector = document.getElementById('navbar-text-selector');
   navbarColorSelector = document.getElementById('navbar-color-selector');
+  navbarResetButton = document.getElementById('reset-navbar-settings');
   navbar = document.querySelector('.navbar');
 
   navbarColorSelector.addEventListener('input', () => {
@@ -80,6 +82,13 @@
     navbarTextSelector.value = fontColor;
     navbar.style.background = bgColor;
     navbar.style.color = fontColor;
+  })
+
+  navbarResetButton.addEventListener('click', () => {
+    navbarColorSelector.value = '#223333';
+    navbarTextSelector.value = '#FFF';
+    navbar.style.background = '#223333';
+    navbar.style.color = '#FFF';
   })
 
   mobileOnPdfForm = document.getElementById('show-mobile-on-pdf-form');

@@ -83,6 +83,13 @@ ActiveRecord::Schema.define(version: 2020_10_12_090221) do
     t.string "phone_number"
     t.string "mobile_phone"
     t.integer "table_settings"
+    t.string "navbar_bg_settings"
+    t.string "navbar_color_settings"
+    t.boolean "show_mobile_on_pdf"
+    t.boolean "admin"
+    t.boolean "can_create_tasks"
+    t.boolean "can_manage_houses"
+    t.boolean "can_manage_partners"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_users_on_email", unique: true

@@ -2,7 +2,9 @@
   <h1>Objekte <%= link_to '+', new_house_path %></h1>
 
   <div class="quick-actions">
-    <%= link_to 'Zuständigkeiten', edit_houses_path %>
+    <% if user_signed_in? && (current_user.admin || current_user.can_manage_houses) %>
+      <%= link_to 'Zuständigkeiten', edit_houses_path %>
+    <% end %>
   </div>
 </header>
 
