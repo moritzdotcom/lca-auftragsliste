@@ -20,7 +20,7 @@ class FlatsController < ApplicationController
     @flat = Flat.new(flat_params)
 
     if @flat.save
-      redirect_to houses_path(house: @flat.house.id), notice: 'Wohnung wurder erstellt'
+      redirect_to houses_path(house: @flat.house.id), notice: 'Wohnung wurde erstellt'
     else
       render :new
     end

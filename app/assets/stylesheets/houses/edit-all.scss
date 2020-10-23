@@ -9,7 +9,7 @@
 
   .table-header {
     display: grid;
-    grid-template-columns: 1fr 4fr 4fr 2fr;
+    grid-template-columns: 1fr 2fr 2fr 2fr;
     grid-auto-columns: min-content;
     background: white;
     padding: 1rem 0;
@@ -26,7 +26,7 @@
     .table-row {
       scroll-snap-align: start;
       display: grid;
-      grid-template-columns: 1fr 4fr 4fr 2fr;
+      grid-template-columns: 1fr 2fr 2fr 2fr;
       grid-auto-columns: min-content;
       padding: 1rem 0;
       background: #F3F3F3;

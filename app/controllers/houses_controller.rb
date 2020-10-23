@@ -14,7 +14,7 @@ class HousesController < ApplicationController
 
   def update
     if @house.update(house_params)
-      redirect_to edit_houses_path, notice: 'Änderungen wurden gespeichert'
+      redirect_to edit_houses_path(anchor: "house-#{@house.id}"), notice: 'Änderungen wurden gespeichert'
     else
       render :edit_all
     end
@@ -28,6 +28,10 @@ class HousesController < ApplicationController
     end
 
     redirect_to root_path
+  end
+
+  def house_params
+    params.require(:house).permit(:company, :user_id)
   end
 
   def set_house

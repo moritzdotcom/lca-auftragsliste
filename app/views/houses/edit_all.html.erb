@@ -2,41 +2,56 @@
   <h1>Objekte bearbeiten</h1>
 </header>
 
-<div class="house-table">
-  <div class="table-header">
-    <div class="table-column text-center">Objekt</div>
-    <div class="table-column">Adresse</div>
-    <div class="table-column">Gesellschaft</div>
-    <div class="table-column">Zuständig</div>
-  </div>
+<section>
+  <div class="house-table">
+    <div class="table-header">
+      <div class="table-column text-center">Objekt</div>
+      <div class="table-column">Adresse</div>
+      <div class="table-column">Gesellschaft</div>
+      <div class="table-column">Zuständig</div>
+    </div>
 
-  <div class="table-content">
-    <% @houses.each_with_index do |house, i| %>
-      <form class="table-row-form" action="/houses/<%= house.id %>/update" accept-charset="UTF-8" data-remote="true" method="post">
-        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-        <div class="table-row" style="background: <%= i%2 == 0 ? 'white' : '#F0F0F0' %>">
-          <div class="table-column text-center"><%= house.object_number %></div>
-          <div class="table-column"><%= house.address %></div>
-          <div class="table-column">
-            <input type="text" value="<%= house.company %>" name="house[company]">
-          </div>
-          <div class="table-column">
-            <select class="select" name="house[user_id]">
-              <% User.all.each do |user| %>
-                <% if user == house.user %>
-                  <option selected value="<%= user.id %>"><%= user.full_name %></option>
-                <% else %>
-                  <option value="<%= user.id %>"><%= user.full_name %></option>
+    <div class="table-content">
+      <% @houses.each_with_index do |house, i| %>
+        <form class="table-row-form" action="/houses/<%= house.id %>" accept-charset="UTF-8" data-remote="true" method="post">
+          <input type="hidden" name="_method" value="patch">
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <div class="table-row" style="background: <%= i%2 == 0 ? 'white' : '#F0F0F0' %>">
+            <div class="table-column text-center"><%= house.object_number %></div>
+            <div class="table-column"><%= house.address %></div>
+            <div class="table-column">
+              <input class="company-input" type="text" value="<%= house.company %>" name="house[company]">
+            </div>
+            <div class="table-column" id="house-<%= house.id %>">
+              <select class="select" name="house[user_id]">
+                <% User.all.each do |user| %>
+                  <% if user == house.user %>
+                    <option selected value="<%= user.id %>"><%= user.full_name %></option>
+                  <% else %>
+                    <option value="<%= user.id %>"><%= user.full_name %></option>
+                  <% end %>
                 <% end %>
-              <% end %>
-            </select>
+              </select>
+            </div>
           </div>
-        </div>
-      </form>
-    <% end %>
+        </form>
+      <% end %>
+    </div>
   </div>
-</div>
+</section>
 
 <script>
+  houseForms = document.querySelectorAll('.table-row-form');
+  houseForms.forEach(form => {
+    companyInput = form.querySelector('.company-input');
+    userInput = form.querySelector('.select');
 
+    companyInput.addEventListener('blur', () => {
+      form.submit()
+    })
+
+    userInput.addEventListener('change', () => {
+      form.submit()
+    })
+  })
 </script>
