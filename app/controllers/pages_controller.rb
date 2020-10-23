@@ -1,72 +1,8 @@
 class PagesController < ApplicationController
-  include Pagy::Backend
   before_action :authenticate_user
+  before_action :set_user_tasks, only: [:dashboard]
 
   def dashboard
-    pagy_options = {items: user_signed_in? ? (current_user.table_settings || 20) : 20, size: [1,2,2,1]}
-
-    @partner = Partner.find_by(email: @user.email)
-    if @partner
-      if params[:order]
-        params[:page] = 1
-        option = params[:desc] == 'true' ? :desc : :asc
-
-        case params[:order]
-        when 'task_number'
-          @pagy, @tasks_for_user = pagy(@partner.tasks.order(task_number: option), pagy_options)
-        when 'created_at'
-          @pagy, @tasks_for_user = pagy(@partner.tasks.order(created_at: option), pagy_options)
-        when 'object_number'
-          @pagy, @tasks_for_user = pagy(@partner.tasks.joins(:house).order(object_number: option), pagy_options)
-        when 'address'
-          @pagy, @tasks_for_user = pagy(@partner.tasks.joins(:house).order(address: option), pagy_options)
-        when 'flat'
-          @pagy, @tasks_for_user = pagy(@partner.tasks.joins(:flat).order(location: option), pagy_options)
-        when 'tenant'
-          @pagy, @tasks_for_user = pagy(@partner.tasks.joins(:tenant).order(name: option), pagy_options)
-        when 'title'
-          @pagy, @tasks_for_user = pagy(@partner.tasks.order(title: option), pagy_options)
-        when 'user'
-          @pagy, @tasks_for_user = pagy(@partner.tasks.joins(:user).order(first_name: option), pagy_options)
-        when 'partner'
-          @pagy, @tasks_for_user = pagy(@partner.tasks.order(partner_array: option), pagy_options)
-        when 'status'
-          @pagy, @tasks_for_user = pagy(@partner.tasks.order(status: option), pagy_options)
-        end
-      else
-        @pagy, @tasks_for_user = pagy(@partner.tasks.order(:task_number), pagy_options)
-      end
-    end
-
-    if params[:order]
-      params[:page] = 1
-      option = params[:desc] == 'true' ? :desc : :asc
-
-      case params[:order]
-      when 'task_number'
-        @pagy, @tasks = pagy(@user.tasks.order(task_number: option), pagy_options)
-      when 'created_at'
-        @pagy, @tasks = pagy(@user.tasks.order(created_at: option), pagy_options)
-      when 'object_number'
-        @pagy, @tasks = pagy(@user.tasks.joins(:house).order(object_number: option), pagy_options)
-      when 'address'
-        @pagy, @tasks = pagy(@user.tasks.joins(:house).order(address: option), pagy_options)
-      when 'flat'
-        @pagy, @tasks = pagy(@user.tasks.joins(:flat).order(location: option), pagy_options)
-      when 'tenant'
-        @pagy, @tasks = pagy(@user.tasks.joins(:tenant).order(name: option), pagy_options)
-      when 'title'
-        @pagy, @tasks = pagy(@user.tasks.order(title: option), pagy_options)
-      when 'user'
-        @pagy, @tasks = pagy(@user.tasks.joins(:user).order(first_name: option), pagy_options)
-      when 'partner'
-        @pagy, @tasks = pagy(@user.tasks.order(partner_array: option), pagy_options)
-      when 'status'
-        @pagy, @tasks = pagy(@user.tasks.order(status: option), pagy_options)
-      end
-    else
-      @pagy, @tasks = pagy(@user.tasks.order(:task_number), pagy_options)
-    end
   end
 
   def edit_settings
@@ -92,5 +28,14 @@ class PagesController < ApplicationController
     else
       redirect_to root_path
     end
+  end
+
+  def set_user_tasks
+    @partner = Partner.find_by(email: @user.email)
+    tasks = @user.tasks
+    if @partner
+      tasks = tasks.or(@partner.tasks)
+    end
+    @pagy, @tasks = filter_tasks(tasks)
   end
 end

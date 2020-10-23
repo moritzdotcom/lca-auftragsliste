@@ -1,50 +1,11 @@
 class TasksController < ApplicationController
-  include Pagy::Backend
   before_action :set_task, only: [:show, :edit, :update, :destroy]
   before_action :authorise_user, except: [:index, :show]
+  before_action only: [:index] do
+    @pagy, @tasks = filter_tasks(Task.all)
+  end
 
   def index
-    pagy_options = {items: user_signed_in? ? (current_user.table_settings || 20) : 20, size: [1,2,2,1]}
-
-    if params[:order]
-      option = params[:desc] == 'true' ? :desc : :asc
-
-      case params[:order]
-      when 'task_number'
-        @pagy, @tasks = pagy(Task.order(task_number: option), pagy_options)
-      when 'created_at'
-        @pagy, @tasks = pagy(Task.order(created_at: option), pagy_options)
-      when 'object_number'
-        @pagy, @tasks = pagy(Task.joins(:house).order(object_number: option), pagy_options)
-      when 'address'
-        @pagy, @tasks = pagy(Task.joins(:house).order(address: option), pagy_options)
-      when 'flat'
-        @pagy, @tasks = pagy(Task.joins(:flat).order(location: option), pagy_options)
-      when 'tenant'
-        @pagy, @tasks = pagy(Task.joins(:tenant).order(name: option), pagy_options)
-      when 'title'
-        @pagy, @tasks = pagy(Task.order(title: option), pagy_options)
-      when 'user'
-        @pagy, @tasks = pagy(Task.joins(:user).order(first_name: option), pagy_options)
-      when 'partner'
-        @pagy, @tasks = pagy(Task.order(partner_array: option), pagy_options)
-      when 'status'
-        @pagy, @tasks = pagy(Task.order(status: option), pagy_options)
-      end
-    else
-      @pagy, @tasks = pagy(Task.order(task_number: :desc), pagy_options)
-    end
-
-    if params[:query]
-      case params[:query]
-      when 'status_open'
-        @pagy, @tasks = pagy(@tasks.where(status: 0), pagy_options)
-      when 'due_date'
-        @pagy, @tasks = pagy(@tasks.where('due_date >= ?', Date.today), pagy_options)
-      when 'over_due'
-        @pagy, @tasks = pagy(@tasks.where('due_date < ?', Date.today), pagy_options)
-      end
-    end
   end
 
   def show

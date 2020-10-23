@@ -1,7 +1,9 @@
 class PartnersController < ApplicationController
-  include Pagy::Backend
   before_action :set_partner, only: [:show, :edit, :update]
   before_action :authorise_user, except: [:index, :show]
+  before_action only: [:show] do
+    @pagy, @tasks = filter_tasks(@partner.tasks)
+  end
 
   def index
     if params[:search]
@@ -13,37 +15,6 @@ class PartnersController < ApplicationController
   end
 
   def show
-    pagy_options = {items: user_signed_in? ? (current_user.table_settings || 20) : 20, size: [1,2,2,1]}
-
-    if params[:order]
-      params[:page] = 1
-      option = params[:desc] == 'true' ? :desc : :asc
-
-      case params[:order]
-      when 'task_number'
-        @pagy, @tasks = pagy(@partner.tasks.order(task_number: option), pagy_options)
-      when 'created_at'
-        @pagy, @tasks = pagy(@partner.tasks.order(created_at: option), pagy_options)
-      when 'object_number'
-        @pagy, @tasks = pagy(@partner.tasks.joins(:house).order(object_number: option), pagy_options)
-      when 'address'
-        @pagy, @tasks = pagy(@partner.tasks.joins(:house).order(address: option), pagy_options)
-      when 'flat'
-        @pagy, @tasks = pagy(@partner.tasks.joins(:flat).order(location: option), pagy_options)
-      when 'tenant'
-        @pagy, @tasks = pagy(@partner.tasks.joins(:tenant).order(name: option), pagy_options)
-      when 'title'
-        @pagy, @tasks = pagy(@partner.tasks.order(title: option), pagy_options)
-      when 'user'
-        @pagy, @tasks = pagy(@partner.tasks.joins(:user).order(first_name: option), pagy_options)
-      when 'partner'
-        @pagy, @tasks = pagy(@partner.tasks.order(partner_array: option), pagy_options)
-      when 'status'
-        @pagy, @tasks = pagy(@partner.tasks.order(status: option), pagy_options)
-      end
-    else
-      @pagy, @tasks = pagy(@partner.tasks.order(:task_number), pagy_options)
-    end
   end
 
   def new
