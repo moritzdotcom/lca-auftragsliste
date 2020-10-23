@@ -6,11 +6,10 @@
   <section>
     <h3>Zugriffsrechte</h3>
     <div class="settings-forms">
-      <form action="/settings" id="show-mobile-on-pdf-form" accept-charset="UTF-8" data-remote="true" method="post">
+      <form action="/settings" accept-charset="UTF-8" data-remote="true" method="post">
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
         <h3 class="form-title">Diese Benutzer können Aufträge erstellen:</h3>
         <div class="input">
-          <input type="checkbox" id="show-mobile-on-pdf" name="show_mobile_on_pdf">
         </div>
       </form>
     </div>
@@ -45,7 +44,7 @@
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
         <div class="input">
           <label for="show-mobile-on-pdf">Meine Handynummer in Aufträgen anzeigen</label>
-          <% if false %>
+          <% if current_user.show_mobile_on_pdf %>
             <input type="checkbox" checked id="show-mobile-on-pdf" name="show_mobile_on_pdf">
           <% else %>
             <input type="checkbox" id="show-mobile-on-pdf" name="show_mobile_on_pdf">
