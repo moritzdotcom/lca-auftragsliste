@@ -7,7 +7,6 @@ class TasksController < ApplicationController
     pagy_options = {items: user_signed_in? ? (current_user.table_settings || 20) : 20, size: [1,2,2,1]}
 
     if params[:order]
-      params[:page] = 1
       option = params[:desc] == 'true' ? :desc : :asc
 
       case params[:order]
@@ -39,11 +38,11 @@ class TasksController < ApplicationController
     if params[:query]
       case params[:query]
       when 'status_open'
-        @tasks = @tasks.where(status: 0)
+        @pagy, @tasks = pagy(@tasks.where(status: 0), pagy_options)
       when 'due_date'
-        @tasks = @tasks.where('due_date >= ?', Date.today)
+        @pagy, @tasks = pagy(@tasks.where('due_date >= ?', Date.today), pagy_options)
       when 'over_due'
-        @tasks = @tasks.where('due_date < ?', Date.today)
+        @pagy, @tasks = pagy(@tasks.where('due_date < ?', Date.today), pagy_options)
       end
     end
   end

@@ -6,7 +6,7 @@
     <input type="date" value="<%= Date.today %>" name="task[created_at]" id="task_created_at">
   </div>
 
-  <%= f.input :house_id, label: 'Objekt', collection: House.all.map { |house| ([house.address, house.id]) }, error: 'Objekt muss angegeben werden' %>
+  <%= f.input :house_id, label: 'Objekt', collection: House.order(:object_number).map { |house| ([house.address, house.id]) }, error: 'Objekt muss angegeben werden' %>
 
   <%= f.input :flat_id, as: :hidden, wrapper_html: {class: ''} %>
   <div class="input-field input">

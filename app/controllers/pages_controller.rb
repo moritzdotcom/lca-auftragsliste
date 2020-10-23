@@ -73,7 +73,6 @@ class PagesController < ApplicationController
   end
 
   def update_settings
-    raise
     if @user.update(settings_params)
       redirect_to edit_settings_path, notice: 'Einstellungen gespeichert'
     else
