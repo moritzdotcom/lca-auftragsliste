@@ -1,0 +1,14 @@
+.multiple-selection {
+  padding: 0 2rem;
+  margin: 0 auto;
+  width: fit-content;
+  max-height: 50vh;
+  overflow-y: scroll;
+  box-shadow: 5px 5px 10px #CCC;
+  border-radius: 10px;
+
+  .input-group {
+    padding: 0.5rem 0;
+    text-align: left;
+  }
+}

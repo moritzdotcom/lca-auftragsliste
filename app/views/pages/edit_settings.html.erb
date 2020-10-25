@@ -2,58 +2,85 @@
   <h1>Einstellungen</h1>
 </header>
 
-<% if current_user.admin %>
-  <section>
-    <h3>Zugriffsrechte</h3>
-    <div class="settings-forms">
-      <form action="/settings" accept-charset="UTF-8" data-remote="true" method="post">
-        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-        <h3 class="form-title">Diese Benutzer können Aufträge erstellen:</h3>
-        <div class="input">
-        </div>
-      </form>
-    </div>
-  </section>
-<% end %>
-
-<section>
-  <h3>Design</h3>
-  <div class="settings-forms">
-    <form action="/settings" accept-charset="UTF-8" data-remote="true" method="post">
-      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-      <h3 class="form-title">Aufträge pro Zeile</h3>
-      <div class="input-field">
-        <input type="number" value="<%= current_user.table_settings %>" name="table_settings">
-      </div>
-      <input type="submit" class="btn" value="Speichern">
-    </form>
-
-    <form action="/settings" accept-charset="UTF-8" data-remote="true" method="post">
-      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-      <h3 class="form-title">Navbar Farbe</h3>
-      <input type="hidden" value="#FFF" name="navbar_color_settings" id="navbar-text-selector">
-      <div class="input color-input">
-        <input type="color" value="#222233" id="navbar-color-selector" name="navbar_bg_settings">
-      </div>
-      <input type="button" class="btn" id="reset-navbar-settings" value="Zurücksetzen">
-      <input type="submit" class="btn" value="Speichern">
-    </form>
-
-    <% if current_user.mobile_phone && current_user.mobile_phone.length.positive? %>
-      <form action="/settings" id="show-mobile-on-pdf-form" accept-charset="UTF-8" data-remote="true" method="post">
-        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-        <div class="input">
-          <label for="show-mobile-on-pdf">Meine Handynummer in Aufträgen anzeigen</label>
-          <% if current_user.show_mobile_on_pdf %>
-            <input type="checkbox" checked id="show-mobile-on-pdf" name="show_mobile_on_pdf">
-          <% else %>
-            <input type="checkbox" id="show-mobile-on-pdf" name="show_mobile_on_pdf">
+<form class="settings-form" action="/settings" accept-charset="UTF-8" data-remote="true" method="post">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <% if current_user.admin %>
+    <section>
+      <h2>Zugriffsrechte</h2>
+      <div class="input">
+        <h3>Diese Benutzer können Aufträge erstellen</h3>
+        <div class="multiple-selection">
+          <% User.order(:first_name).each do |user| %>
+            <% if user.admin %>
+              <div class="input-group"><input type="checkbox" name="users_can_create_tasks_<%= user.id %>" checked disabled id="checkbox-user-task-<%= user.id %>" value="<%= user.id %>"><label for="checkbox-user-task-<%= user.id %>"><%= user.full_name %></label></div>
+            <% elsif user.can_create_tasks %>
+              <div class="input-group"><input type="checkbox" name="users_can_create_tasks_<%= user.id %>" checked id="checkbox-user-task-<%= user.id %>" value="<%= user.id %>"><label for="checkbox-user-task-<%= user.id %>"><%= user.full_name %></label></div>
+            <% else %>
+              <div class="input-group"><input type="checkbox" name="users_can_create_tasks_<%= user.id %>" id="checkbox-user-task-<%= user.id %>" value="<%= user.id %>"><label for="checkbox-user-task-<%= user.id %>"><%= user.full_name %></label></div>
+            <% end %>
           <% end %>
         </div>
-      </form>
+      </div>
+
+      <div class="input">
+        <h3>Diese Benutzer können Objekte bearbeiten</h3>
+        <div class="multiple-selection">
+          <% User.order(:first_name).each do |user| %>
+            <% if user.admin %>
+              <div class="input-group"><input type="checkbox" name="users_can_manage_houses_<%= user.id %>" checked disabled id="checkbox-user-house-<%= user.id %>" value="<%= user.id %>"><label for="checkbox-user-house-<%= user.id %>"><%= user.full_name %></label></div>
+            <% elsif user.can_manage_houses %>
+              <div class="input-group"><input type="checkbox" name="users_can_manage_houses_<%= user.id %>" checked id="checkbox-user-house-<%= user.id %>" value="<%= user.id %>"><label for="checkbox-user-house-<%= user.id %>"><%= user.full_name %></label></div>
+            <% else %>
+              <div class="input-group"><input type="checkbox" name="users_can_manage_houses_<%= user.id %>" id="checkbox-user-house-<%= user.id %>" value="<%= user.id %>"><label for="checkbox-user-house-<%= user.id %>"><%= user.full_name %></label></div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="input">
+        <h3>Diese Benutzer können Partner bearbeiten</h3>
+        <div class="multiple-selection">
+          <% User.order(:first_name).each do |user| %>
+            <% if user.admin %>
+              <div class="input-group"><input type="checkbox" name="users_can_manage_partners_<%= user.id %>" checked disabled id="checkbox-user-partner-<%= user.id %>" value="<%= user.id %>"><label for="checkbox-user-partner-<%= user.id %>"><%= user.full_name %></label></div>
+            <% elsif user.can_manage_partners %>
+              <div class="input-group"><input type="checkbox" name="users_can_manage_partners_<%= user.id %>" checked id="checkbox-user-partner-<%= user.id %>" value="<%= user.id %>"><label for="checkbox-user-partner-<%= user.id %>"><%= user.full_name %></label></div>
+            <% else %>
+              <div class="input-group"><input type="checkbox" name="users_can_manage_partners_<%= user.id %>" id="checkbox-user-partner-<%= user.id %>" value="<%= user.id %>"><label for="checkbox-user-partner-<%= user.id %>"><%= user.full_name %></label></div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </section>
+  <% end %>
+
+  <section>
+    <h2>Design</h2>
+    <h3 class="form-title">Aufträge pro Zeile</h3>
+    <div class="input-field">
+      <input type="number" value="<%= current_user.table_settings %>" name="table_settings">
+    </div>
+
+    <h3 class="form-title">Navbar Farbe</h3>
+    <input type="hidden" value="#FFF" name="navbar_color_settings" id="navbar-text-selector">
+    <div class="input color-input">
+      <input type="color" value="#222233" id="navbar-color-selector" name="navbar_bg_settings">
+    </div>
+    <input type="button" class="btn" id="reset-navbar-settings" value="Zurücksetzen">
+
+    <% if current_user.mobile_phone && current_user.mobile_phone.length.positive? %>
+      <div class="input">
+        <label for="show-mobile-on-pdf">Meine Handynummer in Aufträgen anzeigen</label>
+        <% if current_user.show_mobile_on_pdf %>
+          <input type="checkbox" checked id="show-mobile-on-pdf" name="show_mobile_on_pdf">
+        <% else %>
+          <input type="checkbox" id="show-mobile-on-pdf" name="show_mobile_on_pdf">
+        <% end %>
+      </div>
     <% end %>
-  </div>
-</section>
+  </section>
+  <input type="submit" class="btn" vlaue="Speichern">
+</form>
 
 <script>
   function textColor(hex) {
@@ -88,11 +115,5 @@
     navbarTextSelector.value = '#FFF';
     navbar.style.background = '#223333';
     navbar.style.color = '#FFF';
-  })
-
-  mobileOnPdfForm = document.getElementById('show-mobile-on-pdf-form');
-  mobileOnPdfCheckbox = document.getElementById('show-mobile-on-pdf');
-  mobileOnPdfCheckbox.addEventListener('input', () => {
-    mobileOnPdfForm.submit();
   })
 </script>

@@ -9,6 +9,14 @@ class PagesController < ApplicationController
   end
 
   def update_settings
+    if @user.admin
+      User.all.each do |user|
+        params["users_can_create_tasks_#{user.id}"] ? user.update(can_create_tasks: true) : user.update(can_create_tasks: false)
+        params["users_can_manage_houses_#{user.id}"] ? user.update(can_manage_houses: true) : user.update(can_manage_houses: false)
+        params["users_can_manage_partners_#{user.id}"] ? user.update(can_manage_partners: true) : user.update(can_manage_partners: false)
+      end
+    end
+
     if @user.update(settings_params)
       redirect_to edit_settings_path, notice: 'Einstellungen gespeichert'
     else
