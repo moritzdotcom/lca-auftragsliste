@@ -1,8 +1,11 @@
 <header>
-  <h1>Mieter erstellen</h1>
+  <h1><%= @house_id ? 'Mieter bearbeiten' : 'Mieter erstellen' %></h1>
 </header>
 
 <%= simple_form_for @tenant, defaults: { wrapper_html: {class: 'input-field'} } do |f| %>
+  <% if @house_id %>
+    <input type="hidden" value="<%= @house_id %>" name="house_id">
+  <% end %>
   <%= f.input :name, label: 'Name', error: 'Name muss angegeben werden' %>
   <%= f.input :phone_number, label: 'Telefonnummer' %>
 

@@ -9,7 +9,7 @@
 
 <section>
   <h2>Offene Aufträge pro Haus</h2>
-  <%= column_chart Task.where('status != ?', 2).joins(:house).group(:address).order(:address).count, download: true %>
+  <%= column_chart Task.where('status != ?', 2).joins(:house).group(:address).order(:address).count.sort_by {|_key, value| value}.reverse.to_h, download: true %>
 </section>
 
 <section>

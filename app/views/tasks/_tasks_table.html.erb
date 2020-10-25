@@ -1,5 +1,4 @@
 <div class="task-table">
-  <% @pagy ||= pagy %>
   <% if @pagy.pages > 1 %>
     <div class="table-pagination">
       <%== pagy_nav(@pagy) %>
@@ -15,7 +14,7 @@
     <div class="table-column show-xl"><%= link_to "Mieter <div class='sort-icon #{'asc' if params[:order] == 'tenant'} #{'desc' if (params[:order] == 'tenant' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(params.permit!.merge({order: :tenant, desc: (params[:order] == 'tenant' && params[:desc] != 'true') })) %></div>
     <div class="table-column show-xs"><%= link_to "Beschreibung <div class='sort-icon #{'asc' if params[:order] == 'title'} #{'desc' if (params[:order] == 'title' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(params.permit!.merge({order: :title, desc: (params[:order] == 'title' && params[:desc] != 'true') })) %></div>
     <div class="table-column show-xl text-center"><%= link_to "Ausgestellt <div class='sort-icon #{'asc' if params[:order] == 'user'} #{'desc' if (params[:order] == 'user' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(params.permit!.merge({order: :user, desc: (params[:order] == 'user' && params[:desc] != 'true') })) %></div>
-    <div class="table-column show-md"><%= link_to "Weitergeleitet an <div class='sort-icon #{'asc' if params[:order] == 'partner'} #{'desc' if (params[:order] == 'partner' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(params.permit!.merge({order: :partner, desc: (params[:order] == 'partner' && params[:desc] != 'true') })) %></div>
+    <div class="table-column show-md"><%= link_to "Weitergeleitet an <div class='sort-icon #{'asc' if params[:order] == 'partner_names'} #{'desc' if (params[:order] == 'partner_names' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(params.permit!.merge({order: :partner_names, desc: (params[:order] == 'partner_names' && params[:desc] != 'true') })) %></div>
     <div class="table-column show-sm text-center"><%= link_to "Status <div class='sort-icon #{'asc' if params[:order] == 'status'} #{'desc' if (params[:order] == 'status' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(params.permit!.merge({order: :status, desc: (params[:order] == 'status' && params[:desc] != 'true') })) %></div>
   </div>
 

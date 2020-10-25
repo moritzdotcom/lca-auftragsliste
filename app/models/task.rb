@@ -25,11 +25,7 @@ class Task < ApplicationRecord
   end
 
   def partners
-    self.partner_array ? self.partner_array.split(';&').map { |partner_id| Partner.find(partner_id) } : []
-  end
-
-  def partner_names
-    partners.map { |partner| partner.name }.join(' & ')
+    self.partner_array ?  Partner.where(id: self.partner_array.split(';&')) : []
   end
 
   def humanized_status
@@ -39,6 +35,7 @@ class Task < ApplicationRecord
   private
 
   def set_default_values
+    self.partner_names ||= partners.map { |partner| partner.name }.sort.join(' & ')
     self.status ||= 0
     self.task_number ||= Task.next_number
     self.created_at ||= DateTime.now

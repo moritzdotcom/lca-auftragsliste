@@ -6,6 +6,7 @@ class CreateTasks < ActiveRecord::Migration[6.0]
       t.references :flat, foreign_key: true
       t.references :tenant, foreign_key: true
       t.string :partner_array
+      t.string :partner_names
       t.references :user, null: false, foreign_key: true
       t.string :title
       t.text :description

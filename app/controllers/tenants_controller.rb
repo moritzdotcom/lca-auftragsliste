@@ -16,12 +16,15 @@ class TenantsController < ApplicationController
   end
 
   def edit
+    @house_id = params[:house_id] || nil
   end
 
   def update
     @tenant.update(tenant_params)
 
-    if @tenant.save
+    if @tenant.save && params[:house_id]
+      redirect_to houses_path(house: @tenant.flat.house.id), notice: 'Mieter wurde gespeichert'
+    elsif @tenant.save
       redirect_to tasks_path, notice: 'Mieter wurde gespeichert'
     else
       render :edit

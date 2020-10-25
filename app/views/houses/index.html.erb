@@ -16,7 +16,7 @@
       <div class="flats hidden">
         <% house.flats.each do |flat| %>
           <div class="flat">
-            <h3><%= flat.location %> - <%= flat.current_tenant ? "#{flat.current_tenant.name}" : (link_to 'Mieter hinzufügen', new_tenant_path(flat: flat.id), class: 'new-link') %></h3>
+            <h3><%= flat.location %> - <%= flat.current_tenant ? (link_to "#{flat.current_tenant.name}", edit_tenant_path(flat.current_tenant, house_id: house.id), class: 'edit-link') : (link_to 'Mieter hinzufügen', new_tenant_path(flat: flat.id), class: 'new-link') %></h3>
             <%= link_to 'X', flat, method: :delete, data: { confirm: "Diese Wohnung wirklich löschen? #{flat.tenants.count.positive? ? "Alle Mieter der Wohnung (#{flat.tenants.count}) werden ebenfalls gelöscht!" : ''}" }, :remote => true, class: 'delete-link' %>
           </div>
         <% end %>
