@@ -47,6 +47,23 @@ header {
     }
   }
 
+  .card {
+    background: white;
+    min-width: 300px;
+    margin: 1rem auto;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 1px 1px 5px #CCC;
+
+    h3 {
+      margin: 0 0 1rem 0;
+    }
+
+    h4 {
+      margin: 0;
+    }
+  }
+
   form {
     background: white;
     width: fit-content;

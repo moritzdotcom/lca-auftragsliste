@@ -16,6 +16,7 @@
     <div class="table-column show-xl text-center"><%= link_to "Ausgestellt <div class='sort-icon #{'asc' if params[:order] == 'user'} #{'desc' if (params[:order] == 'user' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(params.permit!.merge({order: :user, desc: (params[:order] == 'user' && params[:desc] != 'true') })) %></div>
     <div class="table-column show-md"><%= link_to "Weitergeleitet an <div class='sort-icon #{'asc' if params[:order] == 'partner_names'} #{'desc' if (params[:order] == 'partner_names' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(params.permit!.merge({order: :partner_names, desc: (params[:order] == 'partner_names' && params[:desc] != 'true') })) %></div>
     <div class="table-column show-sm text-center"><%= link_to "Status <div class='sort-icon #{'asc' if params[:order] == 'status'} #{'desc' if (params[:order] == 'status' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(params.permit!.merge({order: :status, desc: (params[:order] == 'status' && params[:desc] != 'true') })) %></div>
+    <div class="table-column show-md text-center"><%= link_to "Prio <div class='sort-icon #{'asc' if params[:order] == 'priority'} #{'desc' if (params[:order] == 'priority' && params[:desc] == 'true')}'><span>▲</span><span>▼</span></div>".html_safe, url_for(params.permit!.merge({order: :priority, desc: (params[:order] == 'priority' && params[:desc] != 'true') })) %></div>
   </div>
 
   <div class="table-content">
@@ -31,6 +32,7 @@
         <div class="table-column show-xl text-center"><%= task.user.abbreviated_name %></div>
         <div class="table-column show-md"><%= task.partner_names %></div>
         <div class="table-column show-sm text-center"><%= task.humanized_status %></div>
+        <div class="table-column show-md text-center"><%= task.humanized_priority %></div>
       </div>
       <div class="table-row-expand hidden text-center" id="table-content-<%= task.id %>" style="background: <%= i%2 == 0 ? 'white' : '#F0F0F0' %>">
         <h3>Auftrag Nr. <%= task.prefix_number %></h3>

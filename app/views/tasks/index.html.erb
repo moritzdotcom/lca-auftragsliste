@@ -1,6 +1,12 @@
 <header>
   <h1>Aufträge <%= link_to '+', new_task_path %></h1>
 
+  <form action="/tasks">
+    <div class="input">
+      <input type="text" name="search"/>🔍
+    </div>
+  </form>
+
   <div class="quick-actions">
     <%= link_to 'Offen', url_for(params.permit!.merge({query: params[:query] == 'status_open' ? nil : :status_open })), class: "#{'active' if params[:query] == 'status_open'}" %>
     <%= link_to 'Bald fällig', url_for(params.permit!.merge({query: params[:query] == 'due_date' ? nil : :due_date })), class: "#{'active' if params[:query] == 'due_date'}" %>

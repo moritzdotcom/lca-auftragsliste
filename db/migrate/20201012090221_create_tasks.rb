@@ -12,6 +12,7 @@ class CreateTasks < ActiveRecord::Migration[6.0]
       t.text :description
       t.datetime :due_date
       t.integer :status
+      t.integer :priority
       t.integer :year
 
       t.timestamps

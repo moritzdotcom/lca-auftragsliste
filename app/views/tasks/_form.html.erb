@@ -30,6 +30,9 @@
     <label for="task_due_date">Zu erledigen bis</label>
     <input type="date" value="<%= Date.tomorrow %>" name="task[due_date]" id="task_due_date">
   </div>
+
+  <%= f.input :priority, label: 'Priorität', collection: Task.priority_collection %>
+
   <% if user_signed_in? %>
     <%= f.input :user_id, label: 'Ausgestellt von', collection: User.all.map { |user| ([user.abbreviated_name, user.id]) }, selected: current_user.id %>
   <% else %>

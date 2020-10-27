@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
       option = params[:desc] == 'true' ? :desc : :asc
 
       case params[:order]
-      when 'task_number', 'created_at', 'title', 'status', 'partner_names'
+      when 'task_number', 'created_at', 'title', 'status', 'partner_names', 'priority'
         @tasks = tasks.order(params[:order] => option)
       when 'object_number', 'address'
         @tasks = tasks.joins(:house).order(params[:order] => option)

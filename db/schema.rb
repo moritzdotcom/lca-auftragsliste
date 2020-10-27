@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 2020_10_12_090221) do
     t.text "description"
     t.datetime "due_date"
     t.integer "status"
+    t.integer "priority"
     t.integer "year"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

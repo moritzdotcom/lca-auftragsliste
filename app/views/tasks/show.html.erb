@@ -8,25 +8,53 @@
   </div>
 
   <div class="header-forms">
-    <form class="due-date-form" id="due-date-form" action="/tasks/<%= @task.id %>/update_due_date" accept-charset="UTF-8" data-remote="true" method="post">
-      <h3 class="form-title">Zu erledigen bis:</h3>
-      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-      <input type="hidden" name="_method" value="put">
-      <div class="input">
-        <input type="date" value="<%= @task.due_date.strftime('%Y-%m-%d') if @task.due_date %>" name="task[due_date]" id="task_due_date">
-      </div>
-    </form>
+    <% if user_signed_in? && (current_user.admin || current_user == @task.user) %>
+      <form class="due-date-form" id="due-date-form" action="/tasks/<%= @task.id %>/update_due_date" accept-charset="UTF-8" data-remote="true" method="post">
+        <h3 class="form-title">Fällig am</h3>
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <input type="hidden" name="_method" value="put">
+        <div class="input">
+          <input type="date" value="<%= @task.due_date.strftime('%Y-%m-%d') if @task.due_date %>" name="task[due_date]" id="task_due_date">
+        </div>
+      </form>
 
-    <form class="status-form" id="status-form" action="/tasks/<%= @task.id %>/update_status" accept-charset="UTF-8" data-remote="true" method="post">
-      <h3 class="form-title">Status</h3>
-      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-      <input type="hidden" name="_method" value="put">
-      <select class="select optional" name="task[status]" id="task_status">
-        <% Task.status_options.each_with_index do |status, i| %>
-          <option value="<%= i %>" <%= 'selected' if @task.status == i %>><%= status %></option>
-        <% end %>
-      </select>
-    </form>
+      <form class="status-form" id="status-form" action="/tasks/<%= @task.id %>/update_status" accept-charset="UTF-8" data-remote="true" method="post">
+        <h3 class="form-title">Status</h3>
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <input type="hidden" name="_method" value="put">
+        <select class="select optional" name="task[status]" id="task_status">
+          <% Task.status_options.each_with_index do |status, i| %>
+            <option value="<%= i %>" <%= 'selected' if @task.status == i %>><%= status %></option>
+          <% end %>
+        </select>
+      </form>
+
+      <form class="priority-form" id="priority-form" action="/tasks/<%= @task.id %>/update_priority" accept-charset="UTF-8" data-remote="true" method="post">
+        <h3 class="form-title">Priorität</h3>
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <input type="hidden" name="_method" value="put">
+        <select class="select optional" name="task[priority]" id="task_priority">
+          <% Task.priority_collection.each do |prio| %>
+            <option value="<%= prio.last %>" <%= 'selected' if @task.priority == prio.last %>><%= prio.first %></option>
+          <% end %>
+        </select>
+      </form>
+    <% else %>
+      <div class="card">
+        <h3>Fällig am</h3>
+        <h4><%= @task.due_date ? @task.due_date.strftime('%d.%m.%Y') : '-' %></h4>
+      </div>
+
+      <div class="card">
+        <h3>Status</h3>
+        <h4><%= @task.humanized_status %></h4>
+      </div>
+
+      <div class="card">
+        <h3>Priorität</h3>
+        <h4><%= @task.humanized_priority %></h4>
+      </div>
+    <% end %>
   </div>
 </header>
 
@@ -43,11 +71,16 @@
     <% @task.partners.each do |partner| %>
       <% if partner.up_to_date %>
         <%= render 'partners/card', partner: partner %>
-      <% else %>
+      <% elsif user_signed_in? && (current_user.admin || current_user.can_manage_partners) %>
         <%= render 'partners/form', partner: partner, task: @task %>
+      <% else %>
+        <%= render 'partners/card', partner: partner %>
       <% end %>
     <% end %>
-    <%= render 'partners/add_partner', task: @task %>
+
+    <% if user_signed_in? && (current_user.admin || current_user.can_manage_partners || current_user == @task.user) %>
+      <%= render 'partners/add_partner', task: @task %>
+    <% end %>
   </div>
 </section>
 
@@ -57,6 +90,13 @@
 
   statusSelector.addEventListener('input', () => {
     statusForm.submit();
+  })
+
+  priorityForm = document.getElementById('priority-form');
+  prioritySelector = document.getElementById('task_priority');
+
+  prioritySelector.addEventListener('input', () => {
+    priorityForm.submit();
   })
 
   dueDateForm = document.getElementById('due-date-form');

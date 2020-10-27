@@ -1,8 +1,16 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :set_task_update, only: [:update_status, :update_priority, :update_due_date]
   before_action :authorise_user, except: [:index, :show]
   before_action only: [:index] do
-    @pagy, @tasks = filter_tasks(Task.all)
+    if params[:search]
+      wildcard_search = "%#{params[:search].downcase}%"
+      tasks = Task.where("LOWER(title) LIKE ? OR LOWER(description) LIKE ? OR LOWER(partner_names) LIKE ?", wildcard_search, wildcard_search, wildcard_search)
+    else
+      tasks = Task.all
+    end
+
+    @pagy, @tasks = filter_tasks(tasks)
   end
 
   def index
@@ -104,14 +112,18 @@ class TasksController < ApplicationController
   end
 
   def update_status
-    @task = Task.find(params[:task_id])
     status_params = params.require(:task).permit(:status)
     @task.update(status_params)
     redirect_to @task, notice: 'Status gespeichert'
   end
 
+  def update_priority
+    priority_params = params.require(:task).permit(:priority)
+    @task.update(priority_params)
+    redirect_to @task, notice: 'Priorität gespeichert'
+  end
+
   def update_due_date
-    @task = Task.find(params[:task_id])
     due_date_params = params.require(:task).permit(:due_date)
     @task.update(due_date_params)
     redirect_to @task, notice: 'Datum gespeichert'
@@ -131,8 +143,12 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
   end
 
+  def set_task_update
+    @task = Task.find(params[:task_id])
+  end
+
   def task_params
-    parameters = params.require(:task).permit(:task_number, :house_id, :flat_id, :flat_location, :tenant_id, :tenant_name, :location, :partner_array, :user_id, :title, :description, :due_date, :created_at)
+    parameters = params.require(:task).permit(:task_number, :house_id, :flat_id, :flat_location, :tenant_id, :tenant_name, :location, :partner_array, :user_id, :title, :description, :due_date, :created_at, :priority)
     parameters[:created_at] = parameters[:created_at].to_datetime
     parameters[:due_date] = parameters[:due_date].to_datetime
 
@@ -141,6 +157,7 @@ class TasksController < ApplicationController
 
   def authorise_user
     if user_signed_in?
+      redirect_to @task, alert: 'Du kannst den Auftrag nicht bearbeiten' if @task && (@task.user != current_user && !current_user.admin)
       return if current_user.admin || current_user.can_create_tasks
     end
 

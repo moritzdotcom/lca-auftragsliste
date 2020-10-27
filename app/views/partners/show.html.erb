@@ -1,13 +1,20 @@
 <header>
   <h1><%= @partner.name %></h1>
 
-  <%= simple_form_for @partner, html: {remote: true} do |f| %>
-    <h3 class="form-header">Email</h3>
-    <%= f.input :email, as: :email, label: false %>
+  <% if user_signed_in? && (current_user.admin || current_user.can_manage_partners)%>
+    <%= simple_form_for @partner, html: {remote: true} do |f| %>
+      <h3 class="form-header">Email</h3>
+      <%= f.input :email, as: :email, label: false %>
 
-    <h3 class="form-header">Telefon</h3>
-    <%= f.input :phone_number, label: false %>
-    <%= f.button :submit, 'Aktualisieren', disabled: true, id: 'submit-button' %>
+      <h3 class="form-header">Telefon</h3>
+      <%= f.input :phone_number, label: false %>
+      <%= f.button :submit, 'Aktualisieren', disabled: true, id: 'submit-button' %>
+    <% end %>
+  <% else %>
+    <h3>Email</h3>
+    <h4><%= @partner.email %></h4>
+    <h3>Telefon</h3>
+    <h4><%= @partner.phone_number %></h4>
   <% end %>
 </header>
 

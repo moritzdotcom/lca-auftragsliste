@@ -7,8 +7,8 @@ class PartnersController < ApplicationController
 
   def index
     if params[:search]
-      wildcard_search = "%#{params[:search]}%"
-      @partners = Partner.where("name LIKE ? OR email LIKE ?", wildcard_search, wildcard_search).order(:name)
+      wildcard_search = "%#{params[:search].downcase}%"
+      @partners = Partner.where("LOWER(name) LIKE ? OR LOWER(email) LIKE ?", wildcard_search, wildcard_search).order(:name)
     else
       @partners = Partner.order(:name)
     end
@@ -72,6 +72,7 @@ class PartnersController < ApplicationController
 
   def authorise_user
     if user_signed_in?
+      return if action_name == 'create' && partner_params[:task_id] && Task.find(partner_params[:task_id]) && Task.find(partner_params[:task_id]).user == current_user
       return if current_user.admin || current_user.can_manage_partners
     end
 
