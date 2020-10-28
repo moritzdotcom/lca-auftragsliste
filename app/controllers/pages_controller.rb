@@ -18,6 +18,7 @@ class PagesController < ApplicationController
     end
 
     if @user.update(settings_params)
+      @user.update(show_mobile_on_pdf: false) unless settings_params[:show_mobile_on_pdf]
       redirect_to edit_settings_path, notice: 'Einstellungen gespeichert'
     else
       render :edit_settings, alert: 'Einstellungen konnten nicht gespeichert werden'
