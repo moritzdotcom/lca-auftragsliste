@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     put '/update_status', to: 'tasks#update_status'
     put '/update_priority', to: 'tasks#update_priority'
     put '/update_due_date', to: 'tasks#update_due_date'
+    get '/new_email', to: 'tasks#new_email'
   end
   resources :tenants
   resources :partners

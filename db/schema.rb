@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 2020_10_12_090221) do
     t.integer "status"
     t.integer "priority"
     t.integer "year"
+    t.boolean "mail_sent"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["flat_id"], name: "index_tasks_on_flat_id"

@@ -45,6 +45,22 @@ class Task < ApplicationRecord
     self.partner_array ? Partner.where(id: self.partner_array.split(';&')) : []
   end
 
+  def generate_pdf!(internal_or_external)
+    export_dir = 'public/tasks_pdf'
+    Dir.mkdir(export_dir) unless Dir.exist?(export_dir)
+
+    filename = "#{export_dir}/#{self.id}_#{self.updated_at}.pdf"
+
+    unless File.file?(filename)
+      pdf_body = ApplicationController.render("tasks/show_#{internal_or_external}_pdf.html.erb", format: :pdf, layout: 'pdf', assigns: { task: self })
+      pdf = WickedPdf.new.pdf_from_string(pdf_body)
+
+      File.open(filename, 'wb') do |file|
+        file << pdf
+      end
+    end
+  end
+
   private
 
   def set_default_values

@@ -4,7 +4,11 @@
   <div class="quick-actions">
     <%= link_to 'PDF Intern', task_path(@task, format: 'pdf', internal: true), onclick: 'showLoadingModal()' %>
     <%= link_to 'PDF Extern', task_path(@task, format: 'pdf'), onclick: 'showLoadingModal()' %>
-    <%= link_to 'Email schicken', @task %>
+    <% if @task.mail_sent %>
+      <a class="disabled">Email verschickt ✔︎</a>
+    <% else %>
+      <%= link_to 'Email schicken', task_new_email_path(@task), onclick: 'showLoadingModal()' %>
+    <% end %>
   </div>
 
   <div class="header-forms">

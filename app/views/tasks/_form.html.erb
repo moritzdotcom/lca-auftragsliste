@@ -140,8 +140,8 @@
     event.target.parentNode.remove()
   }
 
-  addPartnerButton.addEventListener('click', () => {
-    if (partnerInput.value && !hiddenPartnerInput.value.split(';&').includes(partnerInput.value)) {
+  function addPartner() {
+    if (partnerInput.value && !hiddenPartnerInput.value.split(';&').includes(String(partnerInput.value))) {
       partnerId = null;
       options = partnerAutocomplete.querySelectorAll('option');
 
@@ -150,6 +150,10 @@
           partnerId = option.dataset.value;
         }
       })
+
+      if (hiddenPartnerInput.value.split(';&').includes(String(partnerId))) {
+        return
+      }
 
       if (partnerId) {
         partnerNames.innerHTML += `<div title="Partner ist angelegt" class="partner-name in-database">${partnerInput.value} <span data-delete="${partnerId}" onclick="deletePartner()">&#10005;</span></div>`
@@ -164,6 +168,10 @@
       partnerInput.parentNode.classList.remove('has-value');
       submitButton.disabled = false;
     }
+  }
+
+  addPartnerButton.addEventListener('click', () => {
+    addPartner()
   })
 
   // disable submit button while partner name is being typed in
@@ -173,8 +181,9 @@
   })
 
   partnerInput.addEventListener('blur', () => {
-    if (!partnerInput.value) {
-      submitButton.disabled = false;
+    if (partnerInput.value) {
+      addPartner()
     }
+    submitButton.disabled = false;
   })
 </script>

@@ -14,6 +14,7 @@ class CreateTasks < ActiveRecord::Migration[6.0]
       t.integer :status
       t.integer :priority
       t.integer :year
+      t.boolean :mail_sent
 
       t.timestamps
     end

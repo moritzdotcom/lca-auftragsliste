@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <style>
+      body {
+        background: #F3F3F3;
+        font-family: sans-serif;
+      }
+
+      .col-blue {
+        color: rgb(38, 73, 123);
+      }
+
+      .col-red {
+        color: rgb(255, 78, 73);
+      }
+
+      .bold {
+        font-weight: bolder;
+      }
+
+      .signature {
+        margin-top: 50px;
+      }
+
+      .mb-0 {
+        margin-bottom: 5px;
+      }
+
+      .mt-0 {
+        margin-top: 5px;
+      }
+
+      .description {
+        height: 100px;
+      }
+    </style>
+
+    <% if @partners.count.positive? %>
+      <p class="bold">Hallo zusammen,</p>
+    <% else %>
+      <p class="bold">Hallo,</p>
+    <% end %>
+    <p>Anbei erhalten Sie den Auftrag mit der Nummer <span class="col-blue"><%= @task.prefix_number %></span></p>
+    <% if @task.due_date %>
+      <p>Bitte erledigen Sie diesen bis zum <span class="col-red"><%= @task.due_date.strftime('%d.%m.%Y') %></span></p>
+    <% end %>
+
+
+    <p>Mit freundlichen Grüßen</p>
+
+    <p><%= @user.full_name %></p>
+
+    <h3 class="mb-0"><%= @task.house.company %></h3>
+    <p class="mb-0 mt-0">Kittelbachstrasse 10</p>
+    <p class="mt-0">40489 Düsseldorf</p>
+    <p class="mb-0">Tel. <%= @user.phone_number %></p>
+    <% if @user.show_mobile_on_pdf && @user.mobile_phone %>
+      <p class="mb-0 mt-0">Mobil: <%= @user.mobile_phone %></p>
+    <% end %>
+    <p class="mb-0 mt-0">Fax: 0211 522884-19</p>
+    <p class="mt-0"><%= @user.email %></p>
+  </body>
+</html>

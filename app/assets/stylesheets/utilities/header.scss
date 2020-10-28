@@ -34,6 +34,13 @@ header {
       &.active {
         background-position: left;
       }
+
+      &.disabled {
+        cursor: not-allowed;
+        opacity: 0.8;
+        background-size: 0;
+        background: #CCC;
+      }
     }
   }
 

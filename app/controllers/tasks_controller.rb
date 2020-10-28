@@ -1,7 +1,7 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
-  before_action :set_task_update, only: [:update_status, :update_priority, :update_due_date]
-  before_action :authorise_user, except: [:index, :show]
+  before_action :set_task_update, only: [:update_status, :update_priority, :update_due_date, :new_email]
+  before_action :authorise_user, except: [:index, :show, :new_email]
   before_action only: [:index] do
     if params[:search]
       wildcard_search = "%#{params[:search].downcase}%"
@@ -127,6 +127,18 @@ class TasksController < ApplicationController
     due_date_params = params.require(:task).permit(:due_date)
     @task.update(due_date_params)
     redirect_to @task, notice: 'Datum gespeichert'
+  end
+
+  def new_email
+    if @task.mail_sent
+      redirect_to @task, alert: 'Email wurde bereits versendet'
+    else
+      TaskMailer.task_email(@task).deliver
+      last_update = @task.updated_at
+      @task.update(mail_sent: true)
+      @task.update(updated_at: last_update)
+      redirect_to @task, notice: 'Email wurde versendet'
+    end
   end
 
   def destroy

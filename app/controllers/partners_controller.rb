@@ -27,7 +27,7 @@ class PartnersController < ApplicationController
     if @partner.save
       if partner_params[:task_id]
         @task = Task.find(partner_params[:task_id])
-        @task.update(partner_array: @task.partner_array + ";&#{@partner.id}")
+        @task.update(partner_array: @task.partner_array + ";&#{@partner.id}", mail_sent: false)
         redirect_to @task, notice: 'Partner erfolgreich hinzugefügt'
       else
         redirect_to @partner, notice: 'Partner erfolgreich erstellt'
