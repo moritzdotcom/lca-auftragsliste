@@ -195,7 +195,6 @@ tasks.each do |task|
   task[:flat] = Flat.find_by(house: task[:house], location: task[:flat]) || Flat.create(house: task[:house], location: task[:flat])
   task[:tenant] = Tenant.find_by(name: task[:tenant], flat: task[:flat]) || Tenant.create(name: task[:tenant], flat: task[:flat])
   task[:user] = User.find_by(last_name: task[:user])
-  task[:company] = task[:house].company
 
   partner_array = []
   task[:partners].each do |partner|

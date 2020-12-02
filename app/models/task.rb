@@ -3,7 +3,6 @@ class Task < ApplicationRecord
   belongs_to :flat, optional: true
   belongs_to :tenant, optional: true
   belongs_to :user
-  belongs_to :company
 
   validates :status, inclusion: 0..3
   validates :priority, inclusion: 0..2
@@ -71,5 +70,6 @@ class Task < ApplicationRecord
     self.task_number ||= Task.next_number
     self.created_at ||= DateTime.now
     self.year ||= self.created_at.year
+    self.company = self.house.company
   end
 end
