@@ -1,6 +1,10 @@
 class PagesController < ApplicationController
-  before_action :authenticate_user
+  skip_before_action :set_companies, only: [:landing]
+  before_action :authenticate_user, except: [:landing]
   before_action :set_user_tasks, only: [:dashboard]
+
+  def landing
+  end
 
   def dashboard
   end

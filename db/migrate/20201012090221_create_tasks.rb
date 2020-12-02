@@ -15,6 +15,7 @@ class CreateTasks < ActiveRecord::Migration[6.0]
       t.integer :priority
       t.integer :year
       t.boolean :mail_sent
+      t.references :company, null: false, foreign_key: true
 
       t.timestamps
     end

@@ -1,14 +1,17 @@
 Rails.application.routes.draw do
+  root to: 'pages#landing'
+
   devise_for :users
-  root to: 'tasks#index'
+
+  resources :tenants
+  resources :partners
+
   resources :tasks do
     put '/update_status', to: 'tasks#update_status'
     put '/update_priority', to: 'tasks#update_priority'
     put '/update_due_date', to: 'tasks#update_due_date'
     get '/new_email', to: 'tasks#new_email'
   end
-  resources :tenants
-  resources :partners
 
   get '/houses/edit', to: 'houses#edit_all', as: 'edit_houses'
 

@@ -3,6 +3,7 @@ class Task < ApplicationRecord
   belongs_to :flat, optional: true
   belongs_to :tenant, optional: true
   belongs_to :user
+  belongs_to :company
 
   validates :status, inclusion: 0..3
   validates :priority, inclusion: 0..2

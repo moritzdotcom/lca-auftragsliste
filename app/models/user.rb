@@ -5,6 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :tasks
+  has_many :company_users
+  has_many :companies, through: :company_users
 
   validates_presence_of :first_name, message: 'Vorname muss angegeben werden'
   validates_presence_of :last_name, message: 'Nachname muss angegeben werden'

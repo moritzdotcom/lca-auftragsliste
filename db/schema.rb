@@ -15,6 +15,21 @@ ActiveRecord::Schema.define(version: 2020_10_12_090221) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "companies", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "company_users", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "company_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_company_users_on_company_id"
+    t.index ["user_id"], name: "index_company_users_on_user_id"
+  end
+
   create_table "flats", force: :cascade do |t|
     t.string "location"
     t.bigint "house_id", null: false
@@ -27,11 +42,12 @@ ActiveRecord::Schema.define(version: 2020_10_12_090221) do
     t.string "address"
     t.string "postal_code"
     t.string "city"
-    t.string "company"
+    t.bigint "company_id", null: false
     t.integer "object_number"
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_houses_on_company_id"
     t.index ["user_id"], name: "index_houses_on_user_id"
   end
 
@@ -39,8 +55,10 @@ ActiveRecord::Schema.define(version: 2020_10_12_090221) do
     t.string "name"
     t.string "email"
     t.string "phone_number"
+    t.bigint "company_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_partners_on_company_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -58,8 +76,10 @@ ActiveRecord::Schema.define(version: 2020_10_12_090221) do
     t.integer "priority"
     t.integer "year"
     t.boolean "mail_sent"
+    t.bigint "company_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_tasks_on_company_id"
     t.index ["flat_id"], name: "index_tasks_on_flat_id"
     t.index ["house_id"], name: "index_tasks_on_house_id"
     t.index ["tenant_id"], name: "index_tasks_on_tenant_id"
@@ -99,8 +119,13 @@ ActiveRecord::Schema.define(version: 2020_10_12_090221) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "company_users", "companies"
+  add_foreign_key "company_users", "users"
   add_foreign_key "flats", "houses"
+  add_foreign_key "houses", "companies"
   add_foreign_key "houses", "users"
+  add_foreign_key "partners", "companies"
+  add_foreign_key "tasks", "companies"
   add_foreign_key "tasks", "flats"
   add_foreign_key "tasks", "houses"
   add_foreign_key "tasks", "tenants"

@@ -4,6 +4,7 @@ class CreatePartners < ActiveRecord::Migration[6.0]
       t.string :name
       t.string :email
       t.string :phone_number
+      t.references :company, null: false, foreign_key: true
 
       t.timestamps
     end

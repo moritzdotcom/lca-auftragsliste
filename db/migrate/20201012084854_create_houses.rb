@@ -4,7 +4,7 @@ class CreateHouses < ActiveRecord::Migration[6.0]
       t.string :address
       t.string :postal_code
       t.string :city
-      t.string :company
+      t.references :company, null: false, foreign_key: true
       t.integer :object_number
       t.references :user, null: false, foreign_key: true
 

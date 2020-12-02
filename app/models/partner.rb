@@ -1,4 +1,5 @@
 class Partner < ApplicationRecord
+  belongs_to :company
   validates_uniqueness_of :phone_number, allow_nil: true, allow_blank: true, message: 'Nummer ist bereits vergeben'
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_nil: true, allow_blank: true
   validates_uniqueness_of :email, allow_nil: true, allow_blank: true, message: 'Email ist bereits vergeben'
