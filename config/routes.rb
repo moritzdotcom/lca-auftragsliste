@@ -24,4 +24,5 @@ Rails.application.routes.draw do
   get '/dashboard', to: 'pages#dashboard', as: 'dashboard'
   get '/settings', to: 'pages#edit_settings', as: 'edit_settings'
   post '/settings', to: 'pages#update_settings'
+  get '/mail_log', to: 'pages#mail_log'
 end

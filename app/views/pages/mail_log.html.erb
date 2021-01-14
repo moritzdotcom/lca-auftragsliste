@@ -1,0 +1,140 @@
+<div class="fixed top-0 left-0 h-screen w-screen px-3 pt-16 pb-16">
+  <h1 class="text-4xl text-center">Gesendete Mails</h1>
+
+  <div id="mail-container" class="h-full w-full border-gray-500 border bg-white flex rounded-md shadow-xl">
+    <div id="left-col" class="h-full divide-gray-500 divide-y border-r border-gray-500 overflow-scroll" style="min-width: 20%;">
+      <% last_mail_date = DateTime.now %>
+      <% @mails.each_with_index do |mail, i| %>
+
+        <% if mail.date.strftime('%d%m%Y') != last_mail_date.strftime('%d%m%Y') %>
+          <% if last_mail_date.month != mail.date.month %>
+            <div class="w-full bg-gray-500 px-3">
+              <p class="truncate"><%= mail.date.year == last_mail_date.year ? mail.date.strftime('%B') : mail.date.strftime('%B %Y') %></p>
+            </div>
+          <% elsif mail.date.month == DateTime.now.month %>
+            <div class="w-full bg-gray-500 px-3">
+              <p class="truncate">Dieser Monat</p>
+            </div>
+          <% end %>
+        <% elsif mail.sent_today? && i == 0 %>
+          <div class="w-full bg-gray-500 px-3">
+            <p class="truncate">Heute</p>
+          </div>
+        <% end %>
+
+        <div class="relative px-2 py-3 mail-preview" data-recipient="<%= mail.recipient %>" data-subject="<%= mail.subject %>" data-attachment="<%= mail.attachment_filenames.blank? ? '-' : mail.attachment_filenames %>" data-mail-body="<%= mail.styled_body %>" data-mail-date="<%= mail.sent_today? ? mail.date.strftime('Heute um %H:%M') : mail.date.strftime('%d.%m.%Y um %H:%M') %>" data-smtp-response="<%= mail.smtp_response %>">
+          <div class="flex justify-between">
+            <h3 class="text-xl font-bold mr-6 truncate text-<%= mail.sent_successful? ? 'green' : 'red' %>-600"><%= mail.recipient %></h3>
+            <% unless mail.attachment_filenames.blank? %>
+              <p class="text-xl">📎</p>
+            <% end %>
+          </div>
+          <div class="flex justify-between">
+            <p class="mr-6 truncate"><%= mail.subject %></p>
+            <p><%= mail.sent_today? ? mail.date.strftime('%H:%M') : mail.date.strftime('%d.%m.%y') %></p>
+          </div>
+          <p><%== mail.body_html.match(/<body>(.*\n.*)/)[1] %></p>
+        </div>
+        <% last_mail_date = mail.date %>
+      <% end %>
+    </div>
+
+    <div id="resize" class="h-full w-2 cursor-ew-resize"></div>
+
+    <div id="right-col" class="h-full" id="mail-view" style="width: 80%">
+      <div id="mail-header" class="h-1/4 w-full border-b border-gray-500 p-3 relative">
+        <h3 class="font-bold text-3xl truncate"><span id="subject">Betreff</span></p>
+        <h3 class="font-lighter my-2 truncate">An: <span id="recipient"></span></h3>
+        <p class="font-lighter my-2 truncate">Anhang: <span id="attachment"></span></p>
+
+        <div class="flex justify-between my-2">
+          <p class="mr-6 truncate">SMTP Response: <span id="smtp-response"></span></p>
+          <p class="truncate"><span id="mail-date"></span></p>
+        </div>
+
+      </div>
+      <div id="mail-body" class="p-3 overflow-scroll"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  mailPreviews = document.querySelectorAll('.mail-preview');
+
+  recipient = document.getElementById('recipient');
+  subject = document.getElementById('subject');
+  attachment = document.getElementById('attachment');
+  mailDate = document.getElementById('mail-date');
+  smtpResponse = document.getElementById('smtp-response');
+  mailBody = document.getElementById('mail-body');
+
+  selectedMail = null;
+
+  function openMail(mail) {
+    if (selectedMail) {
+      selectedMail.classList.remove('bg-gray-300');
+    }
+
+    mail.classList.add('bg-gray-300');
+    selectedMail = mail;
+
+    recipient.innerText = mail.dataset.recipient
+    subject.innerText = mail.dataset.subject
+    attachment.innerText = mail.dataset.attachment
+    mailDate.innerText = mail.dataset.mailDate
+    smtpResponse.innerText = mail.dataset.smtpResponse
+    mailBody.innerHTML = mail.dataset.mailBody
+  }
+
+  mailPreviews.forEach(mail => {
+    mail.addEventListener('click', () => openMail(mail))
+  })
+
+  resizeEl = document.getElementById('resize');
+  mailContainer = document.getElementById('mail-container');
+  leftCol = document.getElementById('left-col');
+  rightCol = document.getElementById('right-col');
+  bodyClassList = document.body.classList
+
+  function resize(e) {
+    dx = m_pos - e.x;
+    m_pos = e.x;
+
+    totalWidth = parseInt(getComputedStyle(mailContainer, '').width);
+    leftWidth = (parseInt(getComputedStyle(leftCol, '').width) - dx);
+    rightWidth = (parseInt(getComputedStyle(rightCol, '').width) + dx);
+
+    // console.log(m_pos, leftCol.offsetLeft + leftWidth);
+    console.log(m_pos, resizeEl.offsetLeft, e.x, dx);
+
+    if (leftWidth <= (totalWidth * parseInt(getComputedStyle(leftCol, '').minWidth)) / 100) {
+      bodyClassList.add('cursor-e-resize');
+      bodyClassList.remove('cursor-ew-resize');
+    } else {
+      bodyClassList.remove('cursor-e-resize');
+      bodyClassList.add('cursor-ew-resize');
+    }
+
+    if (m_pos > (resizeEl.offsetLeft - dx - 20)) {
+      rightCol.style.width = rightWidth + "px";
+      leftCol.style.width = leftWidth + "px";
+    }
+  }
+
+  window.addEventListener('resize', () => {
+    rightCol.style.width = '80%'
+  })
+
+  resizeEl.addEventListener("mousedown", function(e) {
+    mailContainer.classList.add('select-none');
+    bodyClassList.add('cursor-ew-resize');
+    m_pos = e.x;
+    document.addEventListener("mousemove", resize, false);
+  }, false);
+  document.addEventListener("mouseup", function() {
+      mailContainer.classList.remove('select-none');
+      bodyClassList.remove('cursor-ew-resize');
+      bodyClassList.remove('cursor-e-resize');
+      document.removeEventListener("mousemove", resize, false);
+  }, false);
+</script>

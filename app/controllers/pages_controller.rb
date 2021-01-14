@@ -29,6 +29,12 @@ class PagesController < ApplicationController
     end
   end
 
+  def mail_log
+    redirect_to root_path unless current_user.admin
+
+    @mails = MailLog.order(date: :desc)
+  end
+
   private
 
   def settings_params
