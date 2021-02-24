@@ -41,6 +41,8 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'pry'
   gem "letter_opener"
+  gem 'ed25519'
+  gem 'bcrypt_pbkdf'
   gem "capistrano", "~> 3.14", require: false
 end
 

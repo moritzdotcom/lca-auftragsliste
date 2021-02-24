@@ -2,7 +2,7 @@
 lock "~> 3.15.0"
 
 set :application, "lca-auftragsliste"
-set :repo_url, "git@example.com:moritzdotcom/lca-auftragsliste.git"
+set :repo_url, "git@github.com:moritzdotcom/lca-auftragsliste.git"
 
 # set :rbenv_type, :user # or :system, or :fullstaq (for Fullstaq Ruby), depends on your rbenv setup
 # set :rbenv_ruby, '2.7.0'
