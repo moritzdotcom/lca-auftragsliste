@@ -12,7 +12,7 @@
   <% @houses.each do |house| %>
     <div class="house" id="house-<%= house.id %>" onclick="showFlats()">
       <h2><%= house.object_number %>. <%= house.formatted_address %></h2>
-      <p><%= house.company %> - <%= house.user.full_name %></p>
+      <p><%= house.company.name %> - <%= house.user.full_name %></p>
       <div class="flats hidden">
         <% house.flats.each do |flat| %>
           <div class="flat">
