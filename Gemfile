@@ -44,6 +44,8 @@ group :development, :test do
   gem 'ed25519'
   gem 'bcrypt_pbkdf'
   gem "capistrano", "~> 3.14", require: false
+  gem "capistrano-rails"
+  gem "capistrano-passenger"
 end
 
 group :development do
