@@ -81,5 +81,3 @@ test:
 production:
   <<: *default
   database: lca_auftragsliste_production
-  username: lca_auftragsliste
-  password: <%= ENV['LCA_AUFTRAGSLISTE_DATABASE_PASSWORD'] %>
