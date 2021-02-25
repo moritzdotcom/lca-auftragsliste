@@ -23,7 +23,7 @@ append :linked_files, 'config/master.key'
 # Only keep the last 5 releases to save disk space
 set :keep_releases, 5
 
-set :rails_env, 'production'
+set :rails_env, :production
 set :passenger_restart_with_touch, true
 set :ssh_options, forward_agent: true
 set :git_shallow_clone, 1
