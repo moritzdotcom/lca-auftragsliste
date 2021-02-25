@@ -59,7 +59,9 @@ users = [
   { first_name: "Hermann", last_name: "Scheulen", email: "h.scheulen@loechner-immo.de", phone_number: '0211 522 884-13', mobile_phone: '0151 151 551 02', password: 'hallohs', password_confirmation: 'hallohs' },
   { first_name: "Christiane", last_name: "Schlenke", email: "c.schlenke@athome-immo.de", phone_number: '0211 522 884-21', password: 'hallocs', password_confirmation: 'hallocs' },
   { first_name: "Karen", last_name: "Wensing", email: "k.wensing@athome-immo.de", phone_number: '0211 522 884-22', password: 'hallokw', password_confirmation: 'hallokw' },
-  { first_name: "Moritz", last_name: "Löchner", email: "moritz.loechner@loechner-immo.de", phone_number: '0211 522 884-10', password: 'halloml', password_confirmation: 'halloml', admin: true }
+  { first_name: "Moritz", last_name: "Löchner", email: "moritz.loechner@loechner-immo.de", phone_number: '0211 522 884-10', password: 'halloml', password_confirmation: 'halloml', admin: true },
+  { first_name: 'Tim', last_name: 'Hentschel', email: 'timhentschel38@gmail.com', password: 'halloth', password_confirmation: 'halloth'},
+  { first_name: 'Stephan', last_name: 'Schnitzler', email: 'hausmeister.schnitzler@gmail.com', password: 'hallost', password_confirmation: 'hallost'}
 ]
 
 users.each do |user|

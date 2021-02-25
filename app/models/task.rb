@@ -5,7 +5,7 @@ class Task < ApplicationRecord
   belongs_to :user
   belongs_to :company
 
-  validates :status, inclusion: 0..3
+  validates :status, inclusion: 0..4
   validates :priority, inclusion: 0..2
   validates_presence_of :house_id, message: 'Objekt muss angegeben werden'
   validates_presence_of :user_id, message: 'Auftrag braucht einen Verantwortlichen'
@@ -19,7 +19,7 @@ class Task < ApplicationRecord
   end
 
   def self.status_options
-    ['Offen', 'Wird erledigt', 'Erledigt', 'Problem']
+    ['Offen', 'Wird erledigt', 'Erledigt', 'Problem', 'Storniert']
   end
 
   def humanized_status
