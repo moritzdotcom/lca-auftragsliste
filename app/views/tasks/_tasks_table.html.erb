@@ -21,7 +21,7 @@
 
   <div class="table-content">
     <% tasks.each_with_index do |task, i| %>
-      <div class="table-row" onclick="toggleTableContent(<%= task.id %>)" style="background: <%= i%2 == 0 ? 'white' : '#F0F0F0' %>">
+      <div class="table-row" onclick="toggleTableContent(<%= task.id %>)" style="background: <%= task.status == 4 ? '#EE585A' : (i%2 == 0 ? 'white' : '#F0F0F0') %>">
         <div class="table-column show-xs text-center"><%= task.prefix_number %></div>
         <div class="table-column show-md text-center"><%= task.created_at.strftime('%d/%m/%Y') %></div>
         <div class="table-column show-xl text-center"><%= task.house.object_number %></div>

@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
 
       case params[:order]
       when 'task_number'
-        @tasks = tasks.order(params[:order] => option, year: :desc)
+        @tasks = tasks.order(year: :desc, params[:order] => option)
       when 'created_at', 'title', 'status', 'partner_names', 'priority'
         @tasks = tasks.order(params[:order] => option)
       when 'object_number', 'address'
