@@ -20,7 +20,15 @@
             <div class="table-column text-center"><%= house.object_number %></div>
             <div class="table-column"><%= house.address %></div>
             <div class="table-column">
-              <input class="company-input" type="text" value="<%= house.company %>" name="house[company]">
+              <select class="select" name="house[company_id]">
+                <% current_user.companies.each do |company| %>
+                  <% if company == house.company %>
+                    <option selected value="<%= company.id %>"><%= company.name %></option>
+                  <% else %>
+                    <option value="<%= company.id %>"><%= company.name %></option>
+                  <% end %>
+                <% end %>
+              </select>
             </div>
             <div class="table-column" id="house-<%= house.id %>">
               <select class="select" name="house[user_id]">
