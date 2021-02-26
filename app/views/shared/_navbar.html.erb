@@ -1,14 +1,15 @@
 <div class="navbar" style="background: <%= user_signed_in? && current_user.navbar_bg_settings || '' %>; color: <%= user_signed_in? && current_user.navbar_color_settings || '' %>">
+  <% if user_signed_in? %>
+    <% if current_user.admin || current_user.can_create_tasks %>
+      <%= link_to 'Neuer Auftrag', new_task_path, class: "nav-link #{'active' if controller.controller_name == 'tasks' && controller.action_name == 'new' }"  %>
+    <% end %>
+  <% end %>
+
   <%= link_to 'Aufträge', tasks_path, class: "nav-link #{'active' if controller.controller_name == 'tasks' && controller.action_name != 'new' }"  %>
   <%= link_to 'Objekte', houses_path, class: "nav-link #{'active' if controller.controller_name == 'houses' }"  %>
   <%= link_to 'Partner', partners_path, class: "nav-link #{'active' if controller.controller_name == 'partners' }"  %>
 
   <% if user_signed_in? %>
-
-    <% if current_user.admin || current_user.can_create_tasks %>
-      <%= link_to 'Neu', new_task_path, class: "nav-link #{'active' if controller.controller_name == 'tasks' && controller.action_name == 'new' }"  %>
-    <% end %>
-
     <%= link_to 'Dashboard', dashboard_path, class: "nav-link #{'active' if controller.controller_name == 'pages' && controller.action_name == 'dashboard' }" %>
   <% else %>
     <%= link_to 'Anmelden', new_user_session_path, class: "nav-link #{'active' if controller.controller_name == 'sessions' }" %>
