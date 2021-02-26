@@ -20,7 +20,7 @@
             <div class="table-column text-center"><%= house.object_number %></div>
             <div class="table-column"><%= house.address %></div>
             <div class="table-column">
-              <select class="select" name="house[company_id]">
+              <select class="select company-input" name="house[company_id]">
                 <% current_user.companies.each do |company| %>
                   <% if company == house.company %>
                     <option selected value="<%= company.id %>"><%= company.name %></option>
@@ -31,7 +31,7 @@
               </select>
             </div>
             <div class="table-column" id="house-<%= house.id %>">
-              <select class="select" name="house[user_id]">
+              <select class="select user-input" name="house[user_id]">
                 <% User.all.each do |user| %>
                   <% if user == house.user %>
                     <option selected value="<%= user.id %>"><%= user.full_name %></option>
@@ -52,9 +52,9 @@
   houseForms = document.querySelectorAll('.table-row-form');
   houseForms.forEach(form => {
     companyInput = form.querySelector('.company-input');
-    userInput = form.querySelector('.select');
+    userInput = form.querySelector('.user-input');
 
-    companyInput.addEventListener('blur', () => {
+    companyInput.addEventListener('change', () => {
       form.submit()
     })
 

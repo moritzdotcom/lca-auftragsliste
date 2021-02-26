@@ -63,6 +63,25 @@
 </header>
 
 <section>
+  <div class="flex-container center-evenly flex-wrap">
+    <div>
+      <h2>Objekt</h2>
+      <p><%= @task.house.address %></p>
+    </div>
+
+    <div>
+      <h2>Wohnung</h2>
+      <p><%= @task.flat.location %></p>
+    </div>
+
+    <div>
+      <h2>Mieter</h2>
+      <p><%= @task.tenant.name %></p>
+    </div>
+  </div>
+</section>
+
+<section>
   <h2>Beschreibung der Tätigkeit</h2>
   <% if user_signed_in? && (current_user.admin || current_user == @task.user) %>
     <form class="title-form" id="title-form" action="/tasks/<%= @task.id %>/update_title" accept-charset="UTF-8" data-remote="true" method="post">

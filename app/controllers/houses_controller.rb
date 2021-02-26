@@ -31,7 +31,7 @@ class HousesController < ApplicationController
   end
 
   def house_params
-    params.require(:house).permit(:company, :user_id)
+    params.require(:house).permit(:company_id, :user_id)
   end
 
   def set_house
