@@ -22,6 +22,10 @@ class Task < ApplicationRecord
     ['Offen', 'Wird erledigt', 'Erledigt', 'Problem', 'Storniert']
   end
 
+  def self.color_options
+    ['#ACACFF', '#ACFFFF', '#ACFFAC', '#FFACAC', '#ECECEC']
+  end
+
   def humanized_status
     Task.status_options[status]
   end
@@ -40,6 +44,10 @@ class Task < ApplicationRecord
 
   def prefix_number
     "#{created_at.strftime('%y')}-#{task_number}"
+  end
+
+  def color
+    Task.color_options[status]
   end
 
   def partners

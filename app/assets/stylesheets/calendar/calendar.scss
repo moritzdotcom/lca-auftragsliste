@@ -1,0 +1,71 @@
+.simple-calendar {
+  margin: 10px 20px;
+
+  .calendar-heading {
+    text-align: center;
+    padding: 10px;
+    font-size: 2rem;
+  }
+
+  .table {
+    table-layout: fixed;
+    thead {
+    }
+
+    tbody {
+      background: white;
+
+      .today {
+        background: rgba(78, 230, 134, 0.5);
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      .calendar-event {
+        color: black;
+        padding: 5px 8px;
+        margin: 8px 0;
+        border-radius: 10px;
+      }
+
+      .calendar-event-month {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}
+
+.legend-color {
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid gray;
+  border-radius: 50%;
+  margin: 0 5px 0 20px;
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {
+  .day-calendar {
+    display: block;
+  }
+
+  .month-calendar {
+    display: none;
+  }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+  .day-calendar {
+    display: none;
+  }
+
+  .month-calendar {
+    display: block;
+  }
+}
+

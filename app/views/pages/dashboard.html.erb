@@ -14,7 +14,7 @@
 
 <section>
   <h2>Aufträge nach Status</h2>
-  <%= pie_chart Task.where('created_at > ?', 1.month.ago).group(:status).count.map {|k, v| ["#{Task.status_options[k]}", v] }.to_h, colors: ['#CCC', '#00A300', 'red', 'blue'] %>
+  <%= pie_chart Task.where('created_at > ?', 1.month.ago).group(:status).count.sort.map { |arr| [Task.status_options[arr[0]], arr[1]] }.to_h, colors: Task.color_options %>
 </section>
 
 <% if @tasks && @tasks.count.positive? %>

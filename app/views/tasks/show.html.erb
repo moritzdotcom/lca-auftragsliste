@@ -7,7 +7,7 @@
     <% if @task.mail_sent %>
       <a class="disabled">Email verschickt ✔︎</a>
     <% else %>
-      <%= link_to 'Email schicken', task_new_email_path(@task), onclick: 'showLoadingModal()' %>
+      <!-- <%= link_to 'Email schicken', task_new_email_path(@task), onclick: 'showLoadingModal()' %> -->
     <% end %>
   </div>
 
@@ -71,12 +71,12 @@
 
     <div>
       <h2>Wohnung</h2>
-      <p><%= @task.flat.location %></p>
+      <p><%= @task.flat.try(:location) || '-' %></p>
     </div>
 
     <div>
       <h2>Mieter</h2>
-      <p><%= @task.tenant.name %></p>
+      <p><%= @task.tenant.try(:name) || '-' %></p>
     </div>
   </div>
 </section>

@@ -1,0 +1,38 @@
+<div class="month-calendar">
+  <%= month_calendar attribute: :due_date, events: @tasks do |date, tasks| %>
+    <%= date.day %>
+
+    <% tasks.each do |task| %>
+      <%= link_to task do %>
+        <div class="calendar-event calendar-event-month" style="background: <%= task.color %>;">
+          <%= task.title %>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
+
+<div class="day-calendar">
+  <%= calendar number_of_days: 1, attribute: :due_date, events: @tasks do |date, tasks| %>
+    <%= date.day %>
+
+    <% tasks.each do |task| %>
+      <%= link_to task do %>
+        <div class="calendar-event" style="background: <%= task.color %>;">
+          <%= task.title %>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
+
+<section>
+  <div class="flex-container center">
+    <% Task.color_options.each_with_index do |color, i| %>
+      <div class="legend-color" style="background: <%= color %>;"></div>
+      <p><%= Task.status_options[i] %></p>
+    <% end %>
+  </div>
+</section>
+
+

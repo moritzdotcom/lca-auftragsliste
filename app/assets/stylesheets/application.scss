@@ -1,9 +1,15 @@
-@import "tasks/tasks";
+@import "simple_calendar";
+
+@import "font-awesome-sprockets";
+@import "font-awesome";
+
+@import "calendar/calendar";
 @import "devise/devise";
-@import "pages/pages";
-@import "tooltip/tooltip";
-@import "partners/partners";
 @import "forms/forms";
 @import "houses/houses";
 @import "navbar/navbar";
+@import "pages/pages";
+@import "partners/partners";
+@import "tasks/tasks";
+@import "tooltip/tooltip";
 @import "utilities/utilities";

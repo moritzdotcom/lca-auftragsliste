@@ -15,6 +15,8 @@ Rails.application.routes.draw do
     get '/new_email', to: 'tasks#new_email'
   end
 
+  get '/calendar', to: 'tasks#calendar'
+
   get '/houses/edit', to: 'houses#edit_all', as: 'edit_houses'
 
   resources :houses do

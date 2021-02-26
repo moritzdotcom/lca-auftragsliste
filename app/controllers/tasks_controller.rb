@@ -126,7 +126,7 @@ class TasksController < ApplicationController
   def update_due_date
     due_date_params = params.require(:task).permit(:due_date)
     @task.update(due_date_params)
-    redirect_to @task, notice: 'Datum gespeichert'
+    redirect_to @task, notice: 'Fälligkeit gespeichert'
   end
 
   def update_title
@@ -151,6 +151,10 @@ class TasksController < ApplicationController
       @task.update(updated_at: last_update)
       redirect_to @task, notice: 'Email wurde versendet'
     end
+  end
+
+  def calendar
+    @tasks = Task.all
   end
 
   def destroy

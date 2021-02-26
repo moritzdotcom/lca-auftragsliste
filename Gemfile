@@ -27,14 +27,28 @@ gem 'jbuilder', '~> 2.7'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
+
+# Authentication
 gem 'devise'
+
+# Bootstrap forms
 gem 'simple_form'
+
+# Pagination
 gem 'pagy', '~> 3.5'
 
+# PDF Generation
 gem 'wkhtmltopdf-binary-edge', '~> 0.12.5.1'
 gem 'wicked_pdf'
 
+# Charts
 gem "chartkick"
+
+# Calendar
+gem "simple_calendar", "~> 2.0"
+
+# Icons
+gem 'font-awesome-sass', '~> 5.15.1'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
