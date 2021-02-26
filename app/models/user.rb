@@ -13,7 +13,16 @@ class User < ApplicationRecord
   validates_presence_of :email, message: 'Email muss angegeben werden'
 
   def abbreviated_name
-    "#{first_name.first.upcase}#{last_name.first.upcase}"
+    abbr_name = "#{first_name.first.upcase}#{last_name.first.upcase}"
+
+    if %w(SS AH HH NS HJ KZ SA).include?(abbr_name)
+      first_name.chars[1..].each do |char|
+        abbr_name = "#{first_name.first.upcase}#{char.upcase}"
+        return abbr_name unless %w(SS AH HH NS HJ KZ SA).include?(abbr_name)
+      end
+    end
+
+    return abbr_name
   end
 
   def full_name

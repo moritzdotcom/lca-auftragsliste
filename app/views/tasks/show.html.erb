@@ -63,9 +63,31 @@
 </header>
 
 <section>
-  <h2>Beschreibung</h2>
-  <p><%= @task.title %></p>
-  <p><%= @task.description %></p>
+  <h2>Beschreibung der Tätigkeit</h2>
+  <% if user_signed_in? && (current_user.admin || current_user == @task.user) %>
+    <form class="title-form" id="title-form" action="/tasks/<%= @task.id %>/update_title" accept-charset="UTF-8" data-remote="true" method="post">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <input type="hidden" name="_method" value="put">
+      <div class="input-field">
+        <input type="text" value="<%= @task.title %>" name="task[title]" id="task_title">
+      </div>
+    </form>
+
+    <h2>Weitere Bemerkungen</h2>
+
+    <form class="description-form" id="description-form" action="/tasks/<%= @task.id %>/update_description" accept-charset="UTF-8" data-remote="true" method="post">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <input type="hidden" name="_method" value="put">
+      <div class="input-field">
+        <textarea name="task[description]" id="task_description"><%= @task.description %></textarea>
+      </div>
+    </form>
+  <% else %>
+    <p><%= @task.title %></p>
+
+    <h2>Weitere Bemerkungen</h2>
+    <p><%= @task.description %></p>
+  <% end %>
 </section>
 
 <section>
@@ -108,6 +130,20 @@
 
   dueDateSelector.addEventListener('blur', () => {
     dueDateForm.submit();
+  })
+
+  titleForm = document.getElementById('title-form');
+  titleSelector = document.getElementById('task_title');
+
+  titleSelector.addEventListener('blur', () => {
+    titleForm.submit();
+  })
+
+  descriptionForm = document.getElementById('description-form');
+  descriptionSelector = document.getElementById('task_description');
+
+  descriptionSelector.addEventListener('blur', () => {
+    descriptionForm.submit();
   })
 
   function disableButton(id) {

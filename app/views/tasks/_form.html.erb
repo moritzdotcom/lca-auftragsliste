@@ -57,7 +57,7 @@
 
 <script>
   function fetchFlats(house_id) {
-    return fetch('<%= root_url %>/houses/' + house_id + '/flats.json')
+    return fetch('/houses/' + house_id + '/flats.json')
       .then(response => response.json())
   };
 

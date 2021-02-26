@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
-  before_action :set_task_update, only: [:update_status, :update_priority, :update_due_date, :new_email]
+  before_action :set_task_update, only: [:update_status, :update_priority, :update_due_date, :update_title, :update_description, :new_email]
   before_action :authorise_user, except: [:index, :show, :new_email]
   before_action only: [:index] do
     if params[:search]
@@ -127,6 +127,18 @@ class TasksController < ApplicationController
     due_date_params = params.require(:task).permit(:due_date)
     @task.update(due_date_params)
     redirect_to @task, notice: 'Datum gespeichert'
+  end
+
+  def update_title
+    title_params = params.require(:task).permit(:title)
+    @task.update(title_params)
+    redirect_to @task, notice: 'Beschreibung gespeichert'
+  end
+
+  def update_description
+    description_params = params.require(:task).permit(:description)
+    @task.update(description_params)
+    redirect_to @task, notice: 'Weitere Bemerkungen gespeichert'
   end
 
   def new_email

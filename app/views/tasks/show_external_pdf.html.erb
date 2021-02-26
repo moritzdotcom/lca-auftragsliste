@@ -54,13 +54,13 @@
     <td class="bold">Wohnung:</td>
     <td><%= @task.flat.location %></td>
     <td class="bold">Mieter:</td>
-    <td><%= @task.tenant.name %></td>
+    <td><%= @task.tenant.try(:name) || '-' %></td>
   </tr>
   <tr>
     <td class="bold">Ausgestellt von:</td>
     <td><%= @task.user.abbreviated_name %></td>
     <td class="bold">Telefon Nr.:</td>
-    <td><%= @task.tenant.phone_number %></td>
+    <td><%= @task.tenant.try(:phone_number) || '-' %></td>
   </tr>
   <tr>
     <td class="bold">Weitergeleitet an:</td>
