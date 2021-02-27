@@ -47,15 +47,16 @@
   margin: 0 5px 0 20px;
 }
 
+.day-calendar {
+  display: block;
+}
+
+.month-calendar {
+  display: none;
+}
+
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) {
-  .day-calendar {
-    display: block;
-  }
-
-  .month-calendar {
-    display: none;
-  }
 }
 
 // Medium devices (tablets, 768px and up)
