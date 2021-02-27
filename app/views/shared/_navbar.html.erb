@@ -6,7 +6,7 @@
   <% end %>
 
   <%= link_to 'Aufträge', tasks_path, class: "nav-link #{'active' if controller.controller_name == 'tasks' && !['new', 'calendar'].include?(controller.action_name) }"  %>
-  <%= link_to 'Kalendar', calendar_path, class: "nav-link #{'active' if controller.controller_name == 'tasks' && controller.action_name == 'calendar' }"  %>
+  <%= link_to 'Kalender', calendar_path, class: "nav-link #{'active' if controller.controller_name == 'tasks' && controller.action_name == 'calendar' }"  %>
   <%= link_to 'Objekte', houses_path, class: "nav-link #{'active' if controller.controller_name == 'houses' }"  %>
   <%= link_to 'Partner', partners_path, class: "nav-link #{'active' if controller.controller_name == 'partners' }"  %>
 

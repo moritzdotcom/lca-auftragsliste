@@ -9,7 +9,17 @@
 
   .table {
     table-layout: fixed;
+
+    .calendar-week {
+      width: 50px;
+      font-weight: bold;
+      text-align: center;
+    }
+
     thead {
+      th {
+        text-align: right;
+      }
     }
 
     tbody {
@@ -24,6 +34,7 @@
       }
 
       .calendar-event {
+        text-align: left;
         color: black;
         padding: 5px 8px;
         margin: 8px 0;
@@ -34,6 +45,10 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+
+      td {
+        text-align: right;
       }
     }
   }
