@@ -56,4 +56,37 @@ class ApplicationController < ActionController::Base
 
     pagy(@tasks, pagy_options)
   end
+
+  def meta_tags_for(**opts)
+    title = opts[:title] || 'Task Management made simple'
+    description = opts[:description] || ''
+    keywords = opts[:keywords] || %w(task tasks auftrag aufträge ourtask taskmanagement)
+    url = opts[:url] || request.url
+    image = opts[:image] || ''
+
+    set_meta_tags title: 'Test'
+    set_meta_tags title: title,
+                  site: 'OurTask',
+                  description: description,
+                  keywords: keywords,
+                  icon: [
+                    { href: '/favicon.ico' },
+                    { href: '/icon_96.png', sizes: '32x32 96x96', type: 'image/png' },
+                    { href: '/icon_itouch_precomp_32.png', rel: 'apple-touch-icon-precomposed', sizes: '32x32', type: 'image/png' }
+                  ],
+                  og: {
+                    title: title,
+                    description: description,
+                    type: 'website',
+                    url: url,
+                    image: image
+                  },
+                  twitter: {
+                    card: 'summary',
+                    site: '@ourtask',
+                    title: title,
+                    description: description,
+                    image: image
+                  }
+  end
 end

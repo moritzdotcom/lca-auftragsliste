@@ -14,6 +14,7 @@ class TasksController < ApplicationController
   end
 
   def index
+    meta_tags_for(title: 'Aufträge', description: 'Liste aller Aufträge')
   end
 
   def show
