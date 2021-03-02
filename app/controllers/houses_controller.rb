@@ -31,11 +31,11 @@ class HousesController < ApplicationController
   end
 
   def house_params
-    params.require(:house).permit(:company_id, :user_id)
+    params.require(:house).permit(:owner_id, :user_id)
   end
 
   def set_house
-    @house = House.find(params[:id])
+    @house = House.for_company(@company).find(params[:id])
   end
 
   def set_houses

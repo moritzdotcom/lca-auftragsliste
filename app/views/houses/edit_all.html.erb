@@ -20,12 +20,12 @@
             <div class="table-column text-center"><%= house.object_number %></div>
             <div class="table-column"><%= house.formatted_address %></div>
             <div class="table-column">
-              <select class="select company-input" name="house[company_id]">
-                <% Company.all.each do |company| %>
-                  <% if company == house.company %>
-                    <option selected value="<%= company.id %>"><%= company.name %></option>
+              <select class="select owner-input" name="house[owner_id]">
+                <% @company.owners.each do |owner| %>
+                  <% if owner == house.owner %>
+                    <option selected value="<%= owner.id %>"><%= owner.name %></option>
                   <% else %>
-                    <option value="<%= company.id %>"><%= company.name %></option>
+                    <option value="<%= owner.id %>"><%= owner.name %></option>
                   <% end %>
                 <% end %>
               </select>
@@ -51,10 +51,10 @@
 <script>
   houseForms = document.querySelectorAll('.table-row-form');
   houseForms.forEach(form => {
-    companyInput = form.querySelector('.company-input');
+    ownerInput = form.querySelector('.owner-input');
     userInput = form.querySelector('.user-input');
 
-    companyInput.addEventListener('change', () => {
+    ownerInput.addEventListener('change', () => {
       form.submit()
     })
 

@@ -4,6 +4,7 @@ class Task < ApplicationRecord
   belongs_to :tenant, optional: true
   belongs_to :user
   belongs_to :company
+  has_one :owner, through: :house
 
   validates :status, inclusion: 0..4
   validates :priority, inclusion: 0..2
