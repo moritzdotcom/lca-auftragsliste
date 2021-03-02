@@ -74,7 +74,7 @@
 
 <h3 class="mb-0">Beschreibung:</h3>
 <p class="col-blue bold"><%= @task.title %></p>
-<p class="description"><%= @task.description %></p>
+<p class="description"><%= nl2br(@task.description) %></p>
 
 <h3 class="col-blue">Zeitraum für die Ausführung:
   <%= @task.created_at.strftime('%d.%m.%Y') %> -

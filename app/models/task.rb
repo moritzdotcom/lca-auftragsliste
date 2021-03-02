@@ -14,6 +14,8 @@ class Task < ApplicationRecord
 
   before_validation :set_default_values
 
+  scope :order_by_task_number, -> (asc_or_desc) { order(year: :desc, task_number: asc_or_desc) }
+
   def self.next_number
     Task.where(year: Date.today.year).maximum(:task_number).to_i + 1
   end

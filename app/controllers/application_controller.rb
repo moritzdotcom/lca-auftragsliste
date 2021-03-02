@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
 
       case params[:order]
       when 'task_number'
-        @tasks = tasks.order(year: :desc, params[:order] => option)
+        @tasks = tasks.order_by_task_number(option)
       when 'created_at', 'title', 'status', 'partner_names', 'priority'
         @tasks = tasks.order(params[:order] => option)
       when 'object_number', 'address'
@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
         @tasks = tasks.joins(:user).order(first_name: option)
       end
     else
-      @tasks = tasks.order(task_number: :desc)
+      @tasks = tasks.order_by_task_number(:desc)
     end
 
     if params[:query]
@@ -64,16 +64,10 @@ class ApplicationController < ActionController::Base
     url = opts[:url] || request.url
     image = opts[:image] || ''
 
-    set_meta_tags title: 'Test'
     set_meta_tags title: title,
                   site: 'OurTask',
                   description: description,
                   keywords: keywords,
-                  icon: [
-                    { href: '/favicon.ico' },
-                    { href: '/icon_96.png', sizes: '32x32 96x96', type: 'image/png' },
-                    { href: '/icon_itouch_precomp_32.png', rel: 'apple-touch-icon-precomposed', sizes: '32x32', type: 'image/png' }
-                  ],
                   og: {
                     title: title,
                     description: description,
@@ -90,3 +84,4 @@ class ApplicationController < ActionController::Base
                   }
   end
 end
+

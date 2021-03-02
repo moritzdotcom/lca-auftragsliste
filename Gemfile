@@ -64,6 +64,8 @@ group :development, :test do
   gem "capistrano-rails"
   gem "capistrano-passenger"
   gem "capistrano-bundler"
+
+  gem 'rails_real_favicon'
 end
 
 group :development do
