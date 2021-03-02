@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   include Pagy::Backend
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :set_companies, unless: :devise_controller?
+  before_action :set_company, unless: :devise_controller?
 
   protected
 
@@ -10,9 +10,9 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:account_update, keys: [:first_name, :last_name, :phone_number, :mobile_phone ])
   end
 
-  def set_companies
+  def set_company
     if user_signed_in?
-      @companies = current_user.companies
+      @company = current_user.company
       return
     end
 

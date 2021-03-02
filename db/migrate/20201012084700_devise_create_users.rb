@@ -36,10 +36,15 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
       t.string :last_name
       t.string :phone_number
       t.string :mobile_phone
+
+      t.references :company, null: false, foreign_key: true
+
       t.integer :table_settings
       t.string :navbar_bg_settings
       t.string :navbar_color_settings
       t.boolean :show_mobile_on_pdf
+
+      t.boolean :superadmin
       t.boolean :admin
       t.boolean :can_create_tasks
       t.boolean :can_manage_houses

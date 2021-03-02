@@ -4,9 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  belongs_to :company
   has_many :tasks
-  has_many :company_users
-  has_many :companies, through: :company_users
 
   validates_presence_of :first_name, message: 'Vorname muss angegeben werden'
   validates_presence_of :last_name, message: 'Nachname muss angegeben werden'

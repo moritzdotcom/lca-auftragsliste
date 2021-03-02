@@ -6,7 +6,7 @@
   <div class="house-table">
     <div class="table-header">
       <div class="table-column text-center">Objekt Nummer</div>
-      <div class="table-column">Straße / Nr.</div>
+      <div class="table-column">Adresse</div>
       <div class="table-column">Eigentümer</div>
       <div class="table-column">Zuständig</div>
     </div>
@@ -18,10 +18,10 @@
           <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
           <div class="table-row" style="background: <%= i%2 == 0 ? 'white' : '#F0F0F0' %>">
             <div class="table-column text-center"><%= house.object_number %></div>
-            <div class="table-column"><%= house.address %></div>
+            <div class="table-column"><%= house.formatted_address %></div>
             <div class="table-column">
               <select class="select company-input" name="house[company_id]">
-                <% current_user.companies.each do |company| %>
+                <% Company.all.each do |company| %>
                   <% if company == house.company %>
                     <option selected value="<%= company.id %>"><%= company.name %></option>
                   <% else %>

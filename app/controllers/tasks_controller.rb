@@ -5,9 +5,9 @@ class TasksController < ApplicationController
   before_action only: [:index] do
     if params[:search]
       wildcard_search = "%#{params[:search].downcase}%"
-      tasks = Task.joins(:house).where("LOWER(title) LIKE ? OR LOWER(description) LIKE ? OR LOWER(partner_names) LIKE ? OR LOWER(houses.address) LIKE ?", wildcard_search, wildcard_search, wildcard_search, wildcard_search).order_by_task_number(:desc)
+      tasks = Task.for_company(@company).joins(:house).where("LOWER(title) LIKE ? OR LOWER(description) LIKE ? OR LOWER(partner_names) LIKE ? OR LOWER(houses.address) LIKE ?", wildcard_search, wildcard_search, wildcard_search, wildcard_search).order_by_task_number(:desc)
     else
-      tasks = Task.all
+      tasks = Task.for_company(@company)
     end
 
     @pagy, @tasks = filter_tasks(tasks)

@@ -39,6 +39,6 @@ class HousesController < ApplicationController
   end
 
   def set_houses
-    @houses = House.order(:object_number)
+    @houses = House.for_company(@company).order(:object_number)
   end
 end

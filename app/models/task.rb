@@ -14,6 +14,7 @@ class Task < ApplicationRecord
 
   before_validation :set_default_values
 
+  scope :for_company, -> (company) { where(company: company) }
   scope :order_by_task_number, -> (asc_or_desc) { order(year: :desc, task_number: asc_or_desc) }
 
   def self.next_number
