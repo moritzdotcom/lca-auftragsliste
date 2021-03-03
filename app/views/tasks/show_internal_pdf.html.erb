@@ -36,33 +36,41 @@
 
 <%= wicked_pdf_image_tag 'lca_logo.png', style: 'float: right;' %>
 
-<table class="mbt-100">
+<table>
   <tr>
-    <td class="bold">Objekt Nr.</td>
-    <td><%= @task.house.object_number %></td>
     <td class="bold">Adresse:</td>
     <td><%= @task.house.formatted_address %></td>
+    <td class="bold">Datum:</td>
+    <td><%= @task.created_at.strftime('%d.%m.%Y') %></td>
   </tr>
   <tr>
     <td class="bold">Wohnung:</td>
     <td><%= @task.flat.location %></td>
+    <td class="bold">Objekt Nr.</td>
+    <td><%= @task.house.object_number %></td>
+  </tr>
+  <tr>
     <td class="bold">Mieter:</td>
     <td><%= @task.tenant.try(:name) || '-' %></td>
-  </tr>
-  <tr>
     <td class="bold">Ausgestellt von:</td>
     <td><%= @task.user.abbreviated_name %></td>
+  </tr>
+  <% partners = @task.partners %>
+  <tr>
     <td class="bold">Telefon Nr.:</td>
     <td><%= @task.tenant.try(:phone_number) || '-' %></td>
-  </tr>
-  <tr>
     <td class="bold">Weitergeleitet an:</td>
-    <td><%= @task.partner_names %></td>
-    <td></td>
-    <td></td>
-    <td class="bold">Datum:</td>
-    <td><%= @task.created_at.strftime('%d.%m.%Y') %></td>
+    <td><%= partners.try(:first).try(:name) || '-' %></td>
   </tr>
+  <% partners.each_with_index do |partner, i| %>
+    <% next if i.zero? %>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><%= partner.name %></td>
+    </tr>
+  <% end %>
 </table>
 
 <h3 class="mb-0">Beschreibung:</h3>
