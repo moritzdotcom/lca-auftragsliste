@@ -5,8 +5,10 @@ athome = Company.create(name: 'AtHome Hausverwaltung GmbH')
 csv_options = { col_sep: ',', quote_char: '"', headers: :first_row }
 filepath    = Rails.root.join('db', 'tables_csv', 'partners.csv')
 
-CSV.foreach(filepath, csv_options) do |row|
-  Partner.create!(id: row['id'], name: row['name'], email: row['email'], phone_number: row['phone_number'], company: athome, created_at: row['created_at'], updated_at: row['updated_at'])
+if File.file?(filepath)
+  CSV.foreach(filepath, csv_options) do |row|
+    Partner.create!(id: row['id'], name: row['name'], email: row['email'], phone_number: row['phone_number'], company: athome, created_at: row['created_at'], updated_at: row['updated_at'])
+  end
 end
 
 users = [
@@ -25,24 +27,32 @@ end
 
 filepath = Rails.root.join('db', 'tables_csv', 'houses.csv')
 
-CSV.foreach(filepath, csv_options) do |row|
-  House.create!(id: row['id'], address: row['address'], postal_code: row['postal_code'], city: row['city'], company: athome, object_number: row['object_number'], user_id: row['user_id'], created_at: row['created_at'], updated_at: row['updated_at'])
+if File.file?(filepath)
+  CSV.foreach(filepath, csv_options) do |row|
+    House.create!(id: row['id'], address: row['address'], postal_code: row['postal_code'], city: row['city'], company: athome, object_number: row['object_number'], user_id: row['user_id'], created_at: row['created_at'], updated_at: row['updated_at'])
+  end
 end
 
 filepath = Rails.root.join('db', 'tables_csv', 'flats.csv')
 
-CSV.foreach(filepath, csv_options) do |row|
-  Flat.create!(id: row['id'], location: row['location'], house_id: row['house_id'], created_at: row['created_at'], updated_at: row['updated_at'])
+if File.file?(filepath)
+  CSV.foreach(filepath, csv_options) do |row|
+    Flat.create!(id: row['id'], location: row['location'], house_id: row['house_id'], created_at: row['created_at'], updated_at: row['updated_at'])
+  end
 end
 
 filepath = Rails.root.join('db', 'tables_csv', 'tenants.csv')
 
-CSV.foreach(filepath, csv_options) do |row|
-  Tenant.create!(id: row['id'], name: row['name'], phone_number: row['phone_number'], flat_id: row['flat_id'], created_at: row['created_at'], updated_at: row['updated_at'])
+if File.file?(filepath)
+  CSV.foreach(filepath, csv_options) do |row|
+    Tenant.create!(id: row['id'], name: row['name'], phone_number: row['phone_number'], flat_id: row['flat_id'], created_at: row['created_at'], updated_at: row['updated_at'])
+  end
 end
 
 filepath = Rails.root.join('db', 'tables_csv', 'tasks.csv')
 
-CSV.foreach(filepath, csv_options) do |row|
-  Task.create!(id: row['id'], task_number: row['task_number'], house_id: row['house_id'], flat_id: row['flat_id'], tenant_id: row['tenant_id'], partner_array: row['partner_array'], partner_names: row['partner_names'], user_id: row['user_id'], title: row['title'], description: row['description'], due_date: row['due_date'], status: row['status'], priority: row['priority'], year: row['year'], mail_sent: row['mail_sent'], company: athome, created_at: row['created_at'], updated_at: row['updated_at'])
+if File.file?(filepath)
+  CSV.foreach(filepath, csv_options) do |row|
+    Task.create!(id: row['id'], task_number: row['task_number'], house_id: row['house_id'], flat_id: row['flat_id'], tenant_id: row['tenant_id'], partner_array: row['partner_array'], partner_names: row['partner_names'], user_id: row['user_id'], title: row['title'], description: row['description'], due_date: row['due_date'], status: row['status'], priority: row['priority'], year: row['year'], mail_sent: row['mail_sent'], company: athome, created_at: row['created_at'], updated_at: row['updated_at'])
+  end
 end

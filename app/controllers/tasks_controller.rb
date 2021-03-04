@@ -36,26 +36,25 @@ class TasksController < ApplicationController
   end
 
   def new
-    @task = Task.new(task_number: Task.next_number, status: 0)
-  end
-
-  def edit
+    @task = Task.new
   end
 
   def create
     @task = Task.new
+
+    house = nil
+    flat = nil
+    tenant = nil
 
     parameters = task_params
     if parameters[:house_id].length.positive?
       house = House.find(parameters[:house_id])
 
       if parameters[:flat_id].length == 0
-        flat = Flat.new(location: parameters[:flat_location])
+        flat = Flat.new(location: parameters[:flat_location].strip)
         flat.house = house
 
-        if flat.save
-          parameters[:flat_id] = flat.id
-        else
+        unless flat.save
           @task.errors[:flat_id] << 'Wohnung muss angegeben werden'
         end
       else
@@ -69,35 +68,30 @@ class TasksController < ApplicationController
     update_tenant = false
 
     if parameters[:tenant_id].length == 0
-      @tenant = Tenant.new(name: parameters[:tenant_name])
-      @tenant.flat = flat
+      tenant = Tenant.new(name: parameters[:tenant_name].strip)
+      tenant.flat = flat
 
-      if @tenant.save
+      if tenant.save
         update_tenant = true
-        parameters[:tenant_id] = @tenant.id
       else
         @task.errors[:tenant] << 'Mieter muss angegeben werden'
       end
     else
-      @tenant = Tenant.find(parameters[:tenant_id])
+      tenant = Tenant.find(parameters[:tenant_id])
     end
 
-    if parameters[:partner_array].length.positive?
-      partners = parameters[:partner_array].split(';&')
-      partners.map! { |partner| partner.to_i.to_s == partner && Partner.find(partner) ? Partner.find(partner).id : Partner.create(name: partner, company: house.company).id }
+    @task.update(user: @user, company: @user.company, task_number: Task.next_number(@user.company), status: 0, priority: 0, house: house, flat: flat, tenant: tenant, released: false)
 
-      parameters[:partner_array] = partners.join(';&')
-    end
-
-    @task.update(parameters.except(:flat_location, :tenant_name))
-
-    if @task.save && update_tenant
-      redirect_to edit_tenant_path(@tenant), notice: 'Trage eine Telefonnummer für den Mieter ein'
-    elsif @task.save
-      redirect_to @task, notice: 'Auftrag wurde erfolgreich erstellt'
+    if @task.valid? && update_tenant
+      redirect_to task_create_task_path(@task, :update_tenant)
+    elsif @task.valid?
+      redirect_to task_create_task_path(@task, :task_info)
     else
       render :new
     end
+  end
+
+  def edit
   end
 
   def update
@@ -177,17 +171,15 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    parameters = params.require(:task).permit(:task_number, :house_id, :flat_id, :flat_location, :tenant_id, :tenant_name, :location, :partner_array, :user_id, :title, :description, :due_date, :created_at, :priority)
-    parameters[:created_at] = parameters[:created_at].to_datetime
-    parameters[:due_date] = parameters[:due_date].to_datetime
+    parameters = params.require(:task).permit(:task_number, :house_id, :flat_id, :flat_location, :tenant_id, :tenant_name, :location)
 
     return parameters
   end
 
   def authorise_user
     if user_signed_in?
-      redirect_to @task, alert: 'Du kannst den Auftrag nicht bearbeiten' if @task && (@task.user != current_user && !current_user.admin)
-      return if current_user.admin || current_user.can_create_tasks
+      redirect_to @task, alert: 'Du kannst den Auftrag nicht bearbeiten' if @task && (@task.user != @user && !@user.admin)
+      return if @user.admin || @user.can_create_tasks
     end
 
     redirect_to root_path

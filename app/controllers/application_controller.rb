@@ -12,7 +12,8 @@ class ApplicationController < ActionController::Base
 
   def set_company
     if user_signed_in?
-      @company = current_user.company
+      @user = current_user
+      @company = @user.company
       return
     end
 

@@ -1,5 +1,5 @@
 <header>
-  <h1>Objekte <%= link_to icon('fas', 'plus-circle'), new_house_path %></h1>
+  <h1>Objekte <%= link_to icon('fas', 'plus-circle'), new_house_path if current_user.admin || current_user.can_manage_houses %></h1>
 
   <div class="quick-actions">
     <% if user_signed_in? && (current_user.admin || current_user.can_manage_houses) %>
@@ -12,7 +12,7 @@
   <% @houses.each do |house| %>
     <div class="house" id="house-<%= house.id %>" onclick="showFlats()">
       <h2><%= house.object_number %>. <%= house.formatted_address %></h2>
-      <p><%= house.company.name %> - <%= house.user.full_name %></p>
+      <p><%= house.owner.name %> - <%= house.user.full_name %></p>
       <div class="flats hidden">
         <% house.flats.each do |flat| %>
           <div class="flat">

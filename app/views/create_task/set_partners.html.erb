@@ -1,0 +1,63 @@
+<header>
+  <h1>Neuer Auftrag</h1>
+</header>
+
+<%= simple_form_for @task, url: wizard_path, method: :put, defaults: { wrapper_html: {class: 'input-field'} } do |f| %>
+
+  <%= f.input :partner_array, as: :hidden, wrapper_html: {class: ''} %>
+
+  <div class="input-field input">
+    <label for="task_partner_names">Weitergeleitet an</label>
+
+    <input type="text" id="partner-search">
+  </div>
+
+  <div id="added-partners" class="max-width-container"></div>
+
+  <div id="partner-list" class="max-width-container">
+    <% 100.times do %>
+      <% @partners.each do |partner| %>
+        <div class="partner-info" data-id="<%= partner.id %>" onclick="addPartner(this, '<%= partner.name %>', '<%= partner.company_name %>')">
+          <p class="partner-name"><%= partner.name %></p>
+          <p class="partner-company"><%= partner.company_name %></p>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <%= f.button :submit, 'Weiter', id: 'submit-button' %>
+<% end %>
+
+<script>
+  function setLabels() {
+    document.querySelectorAll('.input').forEach(input => {
+      if ((input.querySelector('input') && input.querySelector('input').value) || (input.querySelector('select') && input.querySelector('select').options.selectedIndex != 0) || (input.querySelector('textarea') && input.querySelector('textarea').value)) {
+        input.classList.add('has-value')
+      }
+      else {
+        input.classList.remove('has-value')
+      }
+      input.addEventListener('change', () => {
+        if ((input.querySelector('input') && input.querySelector('input').value) || (input.querySelector('select') && input.querySelector('select').options.selectedIndex != 0) || (input.querySelector('textarea') && input.querySelector('textarea').value)) {
+          input.classList.add('has-value')
+        }
+        else {
+          input.classList.remove('has-value')
+        }
+      })
+    })
+  }
+
+  function addPartner(elem, name, company) {
+    elem.style.display = 'none';
+
+    partner_html = `<div class="added-partner" data-id="${elem.dataset.id}">
+                      <p class="partner-name">${name}</p>
+                      <p class="partner-company">${company}</p>
+                    </div>`
+
+    document.getElementById('added-partners').insertAdjacentHTML('beforeend', partner_html)
+  }
+
+  setLabels()
+</script>

@@ -2,6 +2,7 @@
   <input type="hidden" name="partner[task_id]" value="<%= task.id %>">
   <div class="form-content">
     <%= f.input :name, label: 'Name:', input_html: {oninput: "disableButton(#{partner.id})"} %>
+    <%= f.input :company_name, label: 'Firma:', input_html: {oninput: "disableButton(#{partner.id})"} %>
     <%= f.input :email, label: 'Email:', input_html: {oninput: "disableButton(#{partner.id})"} %>
     <%= f.input :phone_number, label: 'Tel.', input_html: {oninput: "disableButton(#{partner.id})"} %>
   </div>

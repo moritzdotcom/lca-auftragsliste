@@ -1,0 +1,40 @@
+<header>
+  <h1>Neuer Auftrag</h1>
+</header>
+
+<%= simple_form_for @task, url: wizard_path, method: :put, defaults: { wrapper_html: {class: 'input-field'} } do |f| %>
+  <%= f.input :title, label: 'Beschreibung der Tätigkeit' %>
+  <%= f.input :description, label: 'Weitere Bemerkungen' %>
+
+  <div class="input-date">
+    <label for="task_due_date">Zu erledigen bis</label>
+    <input type="date" value="<%= Date.tomorrow %>" name="task[due_date]" id="task_due_date">
+  </div>
+
+  <%= f.input :priority, label: 'Priorität', collection: Task.priority_collection %>
+
+  <%= f.button :submit, 'Weiter', id: 'submit-button' %>
+<% end %>
+
+<script>
+  function setLabels() {
+    document.querySelectorAll('.input').forEach(input => {
+      if ((input.querySelector('input') && input.querySelector('input').value) || (input.querySelector('select') && input.querySelector('select').options.selectedIndex != 0) || (input.querySelector('textarea') && input.querySelector('textarea').value)) {
+        input.classList.add('has-value')
+      }
+      else {
+        input.classList.remove('has-value')
+      }
+      input.addEventListener('change', () => {
+        if ((input.querySelector('input') && input.querySelector('input').value) || (input.querySelector('select') && input.querySelector('select').options.selectedIndex != 0) || (input.querySelector('textarea') && input.querySelector('textarea').value)) {
+          input.classList.add('has-value')
+        }
+        else {
+          input.classList.remove('has-value')
+        }
+      })
+    })
+  }
+
+  setLabels()
+</script>
