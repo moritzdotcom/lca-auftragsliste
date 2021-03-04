@@ -11,6 +11,9 @@ class User < ApplicationRecord
   validates_presence_of :last_name, message: 'Nachname muss angegeben werden'
   validates_presence_of :email, message: 'Email muss angegeben werden'
 
+  scope :for_company, -> (company) { where(company: company) }
+  scope :is_partner_in, -> (company) { where(email: company.partners.pluck(:email).uniq) }
+
   def abbreviated_name
     abbr_name = "#{first_name.first.upcase}#{last_name.first.upcase}"
 

@@ -9,17 +9,17 @@ class Task < ApplicationRecord
   validates :status, inclusion: 0..4
   validates :priority, inclusion: 0..2
   validates_presence_of :house_id, message: 'Objekt muss angegeben werden'
-  validates_presence_of :user_id, message: 'Auftrag braucht einen Verantwortlichen'
-  validates_presence_of :title, message: 'Beschreibung muss angegeben werden'
-  validates_uniqueness_of :task_number, scope: :year, message: 'Auftragsnummer ist schon vergeben'
+  validates_presence_of :user_id, message: 'Auftrag braucht einen Aussteller'
+  validates_presence_of :title, message: 'Beschreibung muss angegeben werden', if: :released?
+  validates_uniqueness_of :task_number, scope: [:year, :company_id], message: 'Auftragsnummer ist schon vergeben', if: :released?
 
   before_validation :set_default_values
 
   scope :for_company, -> (company) { where(company: company) }
   scope :order_by_task_number, -> (asc_or_desc) { order(year: :desc, task_number: asc_or_desc) }
 
-  def self.next_number
-    Task.where(year: Date.today.year).maximum(:task_number).to_i + 1
+  def self.next_number(company)
+    Task.where(year: Date.today.year, company: company).maximum(:task_number).to_i + 1
   end
 
   def self.status_options
@@ -40,6 +40,10 @@ class Task < ApplicationRecord
 
   def self.priority_collection
     Task.priority_options.each_with_index.map { |prio, i| ([prio, i]) }
+  end
+
+  def released?
+    self.released
   end
 
   def humanized_priority
@@ -80,9 +84,9 @@ class Task < ApplicationRecord
     self.partner_names = partners.map { |partner| partner.name }.sort.join(' & ')
     self.status ||= 0
     self.priority ||= 0
-    self.task_number ||= Task.next_number
     self.created_at ||= DateTime.now
     self.year ||= self.created_at.year
-    self.company = self.house.company
+    self.company ||= self.house.company
+    self.task_number ||= Task.next_number(self.company)
   end
 end

@@ -13,7 +13,10 @@ Rails.application.routes.draw do
     put '/update_title', to: 'tasks#update_title'
     put '/update_description', to: 'tasks#update_description'
     get '/new_email', to: 'tasks#new_email'
+
+    resources :create_task
   end
+
 
   get '/calendar', to: 'tasks#calendar'
 

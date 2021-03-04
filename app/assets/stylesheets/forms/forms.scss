@@ -1,6 +1,11 @@
 @import "autocomplete";
 @import "multiple-selection";
 
+.max-width-container {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .input-field {
   position: relative;
   border-bottom: 2px dashed #A3A3A3;
@@ -232,6 +237,39 @@ form {
   font-size: 2rem;
 }
 
+#added-partners {
+  background: white;
+}
+
+#partner-list {
+  background: white;
+  max-height: 50vh;
+  overflow: scroll;
+  border-radius: 10px;
+
+  .partner-info {
+    width: calc(100% - 10px);
+    border-bottom: 1px solid #CCC;
+    padding: 5px;
+    cursor: pointer;
+
+    .partner-name {
+      margin: 0;
+      font-weight: bold;
+    }
+
+    .partner-company {
+      margin: 0;
+      color: #353535;
+      font-weight: light;
+    }
+
+    &:hover {
+      color: green;
+    }
+  }
+}
+
 .partner-names {
   display: flex;
   margin: 0 auto;
@@ -266,35 +304,35 @@ form {
 }
 
 @media only screen and (max-width: 600px) {
-  .input-field, .autocomplete-container, .partner-names, .input-date, .inline-inputs, .form-error-message {
+  .input-field, .autocomplete-container, .partner-names, .input-date, .inline-inputs, .form-error-message, .max-width-container {
     width: 90vw;
   }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-  .input-field, .autocomplete-container, .partner-names, .input-date, .inline-inputs, .form-error-message {
+  .input-field, .autocomplete-container, .partner-names, .input-date, .inline-inputs, .form-error-message, .max-width-container {
     width: 80vw;
   }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-  .input-field, .autocomplete-container, .partner-names, .input-date, .inline-inputs, .form-error-message {
+  .input-field, .autocomplete-container, .partner-names, .input-date, .inline-inputs, .form-error-message, .max-width-container {
     width: 70vw;
   }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
-  .input-field, .autocomplete-container, .partner-names, .input-date, .inline-inputs, .form-error-message {
+  .input-field, .autocomplete-container, .partner-names, .input-date, .inline-inputs, .form-error-message, .max-width-container {
     width: 60vw;
   }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
-  .input-field, .autocomplete-container, .partner-names, .input-date, .inline-inputs, .form-error-message {
+  .input-field, .autocomplete-container, .partner-names, .input-date, .inline-inputs, .form-error-message, .max-width-container {
     width: 50vw;
   }
 }

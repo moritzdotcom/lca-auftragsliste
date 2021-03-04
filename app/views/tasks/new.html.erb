@@ -2,4 +2,97 @@
   <h1>Neuer Auftrag</h1>
 </header>
 
-<%= render 'form', task: @task %>
+<%= simple_form_for @task, defaults: { wrapper_html: {class: 'input-field'} } do |f| %>
+  <%= f.input :house_id, label: 'Objekt', collection: House.order(:object_number).map { |house| ([house.address, house.id]) }, error: 'Objekt muss angegeben werden' %>
+
+  <%= f.input :flat_id, as: :hidden, wrapper_html: {class: ''} %>
+  <div class="input-field input">
+    <label for="task_flat_location">Wohnung</label>
+    <input list="flat_location_autocomplete" id="task_flat_location" name="task[flat_location]" autocomplete="off"/>
+
+    <datalist id="flat_location_autocomplete">
+    </datalist>
+  </div>
+
+  <%= f.input :tenant_id, as: :hidden, wrapper_html: {class: ''} %>
+  <div class="input-field input">
+    <label for="task_tenant_name">Mieter</label>
+    <input type="text" name="task[tenant_name]" id="task_tenant_name">
+  </div>
+
+  <%= f.button :submit, 'Weiter', id: 'submit-button' %>
+<% end %>
+
+<script>
+  function fetchFlats(house_id) {
+    return fetch('/houses/' + house_id + '/flats.json')
+      .then(response => response.json())
+  };
+
+  function setLabels() {
+    document.querySelectorAll('.input').forEach(input => {
+      if ((input.querySelector('input') && input.querySelector('input').value) || (input.querySelector('select') && input.querySelector('select').options.selectedIndex != 0) || (input.querySelector('textarea') && input.querySelector('textarea').value)) {
+        input.classList.add('has-value')
+      }
+      else {
+        input.classList.remove('has-value')
+      }
+      input.addEventListener('change', () => {
+        if ((input.querySelector('input') && input.querySelector('input').value) || (input.querySelector('select') && input.querySelector('select').options.selectedIndex != 0) || (input.querySelector('textarea') && input.querySelector('textarea').value)) {
+          input.classList.add('has-value')
+        }
+        else {
+          input.classList.remove('has-value')
+        }
+      })
+    })
+  }
+
+  setLabels()
+  hiddenFlatInput = document.getElementById('task_flat_id');
+  flatLocationInput = document.getElementById('task_flat_location');
+  flatAutocomplete = document.getElementById('flat_location_autocomplete');
+
+  hiddenTenantInput = document.getElementById('task_tenant_id');
+  tenantNameInput = document.getElementById('task_tenant_name');
+
+  submitButton = document.getElementById('submit-button');
+
+  houseSelector = document.getElementById('task_house_id');
+
+  houseSelector.addEventListener('change', (e) => {
+    flatAutocomplete.innerHTML = ''
+    hiddenTenantInput.value = ''
+    tenantNameInput.value = ''
+
+    fetchFlats(e.target.value)
+      .then(results => {
+        results.forEach(result => {
+          flatAutocomplete.innerHTML += `<option data-value="${result.id}" data-tenant-id="${result.tenant_id || ''}" data-tenant-name="${result.tenant_name || ''}">${result.location}</option>`
+        })
+      })
+  })
+
+  flatLocationInput.addEventListener('input', (e) => {
+    input = e.target;
+    options = flatAutocomplete.querySelectorAll('option');
+    inputValue = input.value;
+
+    hiddenFlatInput.value = ''
+    hiddenTenantInput.value = '';
+    tenantNameInput.value = '';
+    tenantNameInput.parentElement.classList.remove('has-value');
+
+    options.forEach(option => {
+      if (option.innerText == inputValue) {
+        hiddenFlatInput.value = option.dataset.value;
+
+        if (option.dataset.tenantId) {
+          hiddenTenantInput.value = option.dataset.tenantId;
+          tenantNameInput.value = option.dataset.tenantName;
+          tenantNameInput.parentElement.classList.add('has-value');
+        }
+      }
+    })
+  })
+</script>

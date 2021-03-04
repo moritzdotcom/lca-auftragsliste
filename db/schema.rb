@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_02_102507) do
+ActiveRecord::Schema.define(version: 2021_03_04_101546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,7 +76,10 @@ ActiveRecord::Schema.define(version: 2021_03_02_102507) do
     t.bigint "company_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "company_name"
+    t.bigint "user_id"
     t.index ["company_id"], name: "index_partners_on_company_id"
+    t.index ["user_id"], name: "index_partners_on_user_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -97,6 +100,7 @@ ActiveRecord::Schema.define(version: 2021_03_02_102507) do
     t.bigint "company_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "released"
     t.index ["company_id"], name: "index_tasks_on_company_id"
     t.index ["flat_id"], name: "index_tasks_on_flat_id"
     t.index ["house_id"], name: "index_tasks_on_house_id"
@@ -146,6 +150,7 @@ ActiveRecord::Schema.define(version: 2021_03_02_102507) do
   add_foreign_key "houses", "users"
   add_foreign_key "owners", "companies"
   add_foreign_key "partners", "companies"
+  add_foreign_key "partners", "users"
   add_foreign_key "tasks", "companies"
   add_foreign_key "tasks", "flats"
   add_foreign_key "tasks", "houses"

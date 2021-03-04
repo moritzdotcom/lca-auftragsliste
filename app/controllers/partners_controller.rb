@@ -22,7 +22,7 @@ class PartnersController < ApplicationController
   end
 
   def create
-    @partner = Partner.find_by(name: partner_params[:name]) || Partner.new(partner_params[:name])
+    @partner = Partner.find_by(name: partner_params[:name].strip) || Partner.new(partner_params[:name].strip)
 
     if @partner.save
       if partner_params[:task_id]
@@ -67,13 +67,13 @@ class PartnersController < ApplicationController
   end
 
   def partner_params
-    params.require(:partner).permit(:name, :email, :phone_number, :task_id)
+    params.require(:partner).permit(:name, :company_name, :email, :phone_number, :task_id)
   end
 
   def authorise_user
     if user_signed_in?
-      return if action_name == 'create' && partner_params[:task_id] && Task.find(partner_params[:task_id]) && Task.find(partner_params[:task_id]).user == current_user
-      return if current_user.admin || current_user.can_manage_partners
+      return if action_name == 'create' && partner_params[:task_id] && Task.find(partner_params[:task_id]) && Task.find(partner_params[:task_id]).user == @user
+      return if @user.admin || @user.can_manage_partners
     end
 
     redirect_to root_path
