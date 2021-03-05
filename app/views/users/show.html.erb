@@ -1,0 +1,8 @@
+<header>
+  <h1>Dein Profil</h1>
+  <div class="quick-actions">
+    <%= link_to 'Profil bearbeiten', edit_profile_user_path(@user) %>
+    <%= link_to 'Log In Daten bearbeiten', edit_user_registration_path %>
+    <%= link_to 'Abmelden', destroy_user_session_path, method: :delete %>
+  </div>
+</header>

@@ -1,7 +1,14 @@
 Rails.application.routes.draw do
   root to: 'pages#landing'
 
-  devise_for :users
+  devise_for :users, controllers: { registrations: 'users/registrations' }
+
+  resources :users, only: :show do
+    member do
+      get '/edit_profile', to: 'users#edit_profile'
+      patch '/update_profile', to: 'users#update_profile'
+    end
+  end
 
   resources :tenants
   resources :partners

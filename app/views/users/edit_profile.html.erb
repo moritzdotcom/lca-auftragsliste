@@ -2,16 +2,15 @@
   <h1>Profil bearbeiten</h1>
 </header>
 
-<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), defaults: { wrapper_html: {class: 'input-field'} }) do |f| %>
-  <%= f.input :email, autocomplete: "email", label: 'Email' %>
+<%= simple_form_for(@user, url: update_profile_user_path(@user), defaults: { wrapper_html: {class: 'input-field'} }) do |f| %>
   <div class="inline-inputs">
-    <%= f.input :password, autocomplete: "new-password", label: 'Neues Passwort', hint: 'Ausfüllen um Passwort zu ändern' %>
-    <%= f.input :password_confirmation, autocomplete: "new-password", label: 'Passwort bestätigen', hint: 'Ausfüllen um Passwort zu ändern' %>
+    <%= f.input :first_name, autofocus: true, autocomplete: 'given-name', label: 'Vorname' %>
+    <%= f.input :last_name, autocomplete: 'family-name', label: 'Nachname' %>
   </div>
-  <%= f.input :current_password, autocomplete: "current-password", label: 'Passwort', error: 'Muss angegeben werden' %>
+  <%= f.input :phone_number, autocomplete: 'tel', label: 'Telefonnummer' %>
+  <%= f.input :mobile_phone, autocomplete: 'tel', label: 'Mobilnummer' %>
 
   <%= f.submit "Speichern", class: 'btn' %>
-  <%= link_to 'Zurück', @user, class: 'secondary-btn' %>
 <% end %>
 
 <script>
