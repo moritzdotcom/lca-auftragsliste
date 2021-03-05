@@ -1,5 +1,6 @@
 <header>
   <h1>Neuer Auftrag</h1>
+  <%= render 'shared/progress_bar', steps: Task.create_steps, step: 3 %>
 </header>
 
 <%= simple_form_for @task, url: wizard_path, method: :put, defaults: { wrapper_html: {class: 'input-field'} } do |f| %>
@@ -12,16 +13,21 @@
     <input type="text" id="partner-search">
   </div>
 
-  <div id="added-partners" class="max-width-container"></div>
+  <div id="added-partners" class="max-width-container">
+    <% @task.partners.each do |partner| %>
+      <div class="added-partner" data-id="<%= partner.id %>" data-name="<%= partner.name.try(:downcase) %>" data-company="<%= partner.company_name.try(:downcase) %>" onclick="removePartner(this, '<%= partner.name %>', '<%= partner.company_name %>')">
+        <p class="partner-name"><%= partner.name %></p>
+        <p class="partner-company"><%= partner.company_name %></p>
+      </div>
+    <% end %>
+  </div>
 
   <div id="partner-list" class="max-width-container">
-    <% 100.times do %>
-      <% @partners.each do |partner| %>
-        <div class="partner-info" data-id="<%= partner.id %>" onclick="addPartner(this, '<%= partner.name %>', '<%= partner.company_name %>')">
-          <p class="partner-name"><%= partner.name %></p>
-          <p class="partner-company"><%= partner.company_name %></p>
-        </div>
-      <% end %>
+    <% @partners.each do |partner| %>
+      <div class="partner-info" data-name="<%= partner.name.try(:downcase) %>" data-company="<%= partner.company_name.try(:downcase) %>" data-id="<%= partner.id %>" onclick="addPartner(this, '<%= partner.name %>', '<%= partner.company_name %>')">
+        <p class="partner-name"><%= partner.name %></p>
+        <p class="partner-company"><%= partner.company_name %></p>
+      </div>
     <% end %>
   </div>
 
@@ -48,16 +54,61 @@
     })
   }
 
-  function addPartner(elem, name, company) {
-    elem.style.display = 'none';
+  hiddenPartnerInput = document.getElementById('task_partner_array');
 
-    partner_html = `<div class="added-partner" data-id="${elem.dataset.id}">
+  function addPartner(elem, name, company) {
+    partner_html = `<div class="added-partner" data-id="${elem.dataset.id}" data-name="${name.toLowerCase()}" data-company="${company.toLowerCase()}" onclick="removePartner(this, '${name}', '${company}')">
                       <p class="partner-name">${name}</p>
                       <p class="partner-company">${company}</p>
                     </div>`
 
     document.getElementById('added-partners').insertAdjacentHTML('beforeend', partner_html)
+
+    hiddenPartnerInput.value = hiddenPartnerInput.value.split(';&').concat(elem.dataset.id).join(';&')
+
+    elem.style.display = 'none';
   }
 
+  function removePartner(elem, name, company) {
+    partnerElement = document.getElementById('partner-list').querySelector(`.partner-info[data-id="${elem.dataset.id}"]`)
+
+    if (partnerElement) {
+      partnerElement.style.display = 'block';
+    } else {
+      partner_html = `<div class="partner-info" data-id="${elem.dataset.id}" data-name="${name.toLowerCase()}" data-company="${company.toLowerCase()}" onclick="addPartner(this, '${name}', '${company}')">
+                        <p class="partner-name">${name}</p>
+                        <p class="partner-company">${company}</p>
+                      </div>`
+
+      document.getElementById('partner-list').insertAdjacentHTML('beforeend', partner_html)
+    }
+
+    partnerIds = hiddenPartnerInput.value.split(';&')
+    partnerIndex = partnerIds.indexOf(elem.dataset.id)
+
+    if (partnerIndex > -1) {
+      partnerIds.splice(partnerIndex, 1)
+    }
+
+    hiddenPartnerInput.value = partnerIds.join(';&')
+
+    elem.remove();
+  }
+
+  function searchPartner(str) {
+    searchStr = str.toLowerCase();
+
+    document.getElementById('partner-list').querySelectorAll('.partner-info').forEach(partner => {
+      if (partner.dataset.name.includes(searchStr) || partner.dataset.company.includes(searchStr)) {
+        partner.style.display = 'block';
+      } else {
+        partner.style.display = 'none';
+      }
+    })
+  }
+
+  document.getElementById('partner-search').addEventListener('keyup', (e) => {
+    searchPartner(e.target.value);
+  })
   setLabels()
 </script>

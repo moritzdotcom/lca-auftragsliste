@@ -1,5 +1,6 @@
 <header>
   <h1>Neuer Auftrag</h1>
+  <%= render 'shared/progress_bar', steps: Task.create_steps, step: 0 %>
 </header>
 
 <%= simple_form_for @task, defaults: { wrapper_html: {class: 'input-field'} } do |f| %>

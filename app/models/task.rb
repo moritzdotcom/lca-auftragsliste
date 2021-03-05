@@ -30,10 +30,6 @@ class Task < ApplicationRecord
     ['#ACACFF', '#ACFFFF', '#ACFFAC', '#FFACAC', '#ECECEC']
   end
 
-  def humanized_status
-    Task.status_options[status]
-  end
-
   def self.priority_options
     ['!', '!!', '!!!']
   end
@@ -42,8 +38,16 @@ class Task < ApplicationRecord
     Task.priority_options.each_with_index.map { |prio, i| ([prio, i]) }
   end
 
+  def self.create_steps
+    ['Ort', 'Mieter Bearbeiten', 'Inhalt', 'Partner festlegen', 'Partner Bearbeiten']
+  end
+
   def released?
     self.released
+  end
+
+  def humanized_status
+    Task.status_options[status]
   end
 
   def humanized_priority
@@ -60,6 +64,11 @@ class Task < ApplicationRecord
 
   def partners
     self.partner_array ? Partner.where(id: self.partner_array.split(';&')) : []
+  end
+
+  def set_partner_names!
+    p_names = self.partners.map(&:name).sort.join(' & ')
+    self.update(partner_names: p_names)
   end
 
   def generate_pdf!(internal_or_external)

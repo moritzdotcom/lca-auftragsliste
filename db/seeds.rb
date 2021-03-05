@@ -18,7 +18,8 @@ users = [
   { first_name: "Christiane", last_name: "Schlenke", email: "c.schlenke@athome-immo.de", phone_number: '0211 522 884-21', password: 'hallocs', password_confirmation: 'hallocs', company: athome },
   { first_name: "Karen", last_name: "Wensing", email: "k.wensing@athome-immo.de", phone_number: '0211 522 884-22', password: 'hallokw', password_confirmation: 'hallokw', company: athome },
   { first_name: 'Tim', last_name: 'Hentschel', email: 'timhentschel38@gmail.com', password: 'halloth', password_confirmation: 'halloth', company: athome },
-  { first_name: 'Stephan', last_name: 'Schnitzler', email: 'hausmeister.schnitzler@gmail.com', password: 'hallost', password_confirmation: 'hallost', company: athome }
+  { first_name: 'Stephan', last_name: 'Schnitzler', email: 'hausmeister.schnitzler@gmail.com', password: 'hallost', password_confirmation: 'hallost', company: athome },
+  { first_name: 'Gwendoline', last_name: 'Löchner', email: 'g.loechner@athome-immo.com', password: 'hallogl', password_confirmation: 'hallogl', company: athome }
 ]
 
 users.each do |user|

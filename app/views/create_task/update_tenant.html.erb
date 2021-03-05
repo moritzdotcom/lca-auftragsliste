@@ -1,5 +1,6 @@
 <header>
   <h1>Mieter bearbeiten</h1>
+  <%= render 'shared/progress_bar', steps: Task.create_steps, step: 1 %>
 </header>
 
 <%= simple_form_for @tenant, url: wizard_path, method: :put, defaults: { wrapper_html: {class: 'input-field'} } do |f| %>

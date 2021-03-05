@@ -10,7 +10,9 @@ class CreateTaskController < ApplicationController
       @tenant = @task.tenant
       @house_id = @task.house.id
     when :set_partners
-      @partners = Partner.for_company(@company)
+      @partners = Partner.for_company(@company).where.not(id: @task.partners.pluck(:id)).order(name: :asc)
+    when :update_partners
+      @partners = Partner.where(id: params[:partner_ids])
     end
 
     render_wizard
@@ -25,11 +27,26 @@ class CreateTaskController < ApplicationController
       task_params = params.require(:task).permit(:title, :description, :due_date, :priority)
       @task.update(task_params)
     when :set_partners
-      if parameters[:partner_array].length.positive?
-        partners = parameters[:partner_array].split(';&')
-        partners.map! { |partner| partner.to_i.to_s == partner && Partner.find(partner) ? Partner.find(partner).id : Partner.create(name: partner, company: house.company).id }
+      new_partner_ids = []
 
-        parameters[:partner_array] = partners.join(';&')
+      partner_params = params.require(:task).permit(:partner_array)
+
+      if partner_params[:partner_array].length.positive?
+        partners = partner_params[:partner_array].split(';&')
+        partners.map! do |partner|
+          if partner.to_i.to_s == partner && Partner.find(partner)
+            return Partner.find(partner).id
+          else
+            new_partner_id = Partner.create(name: partner, company: @company).id
+            new_partner_ids << new_partner_id
+            return new_partner_id
+          end
+        end
+
+        partner_array = partners.join(';&')
+
+        @task.update(partner_array: partner_array)
+        @task.set_partner_names!
       end
     when :update_partners
 

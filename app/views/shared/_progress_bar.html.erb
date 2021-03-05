@@ -1,0 +1,8 @@
+<div class="progress-bar max-width-container">
+  <% steps.each_with_index do |step_name, ind| %>
+    <div class="progress-bar-step <%= 'active' if step.to_i >= ind %>">
+      <%= icon((step.to_i > ind ? 'fas' : 'far'), 'circle') %><br>
+      <%= step_name %>
+    </div>
+  <% end %>
+</div>

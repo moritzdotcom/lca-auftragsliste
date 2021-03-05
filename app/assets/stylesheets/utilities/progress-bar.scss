@@ -1,0 +1,19 @@
+.progress-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+
+  .progress-bar-step {
+    color: #CCC;
+
+    i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    &.active {
+      color: green;
+    }
+
+  }
+}
