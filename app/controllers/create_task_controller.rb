@@ -2,7 +2,7 @@ class CreateTaskController < ApplicationController
   before_action :set_task, only: [:show, :update]
   include Wicked::Wizard
 
-  steps :update_tenant, :task_info, :set_partners, :update_partners
+  steps :update_tenant, :task_info, :set_partners
 
   def show
     case step
@@ -11,8 +11,6 @@ class CreateTaskController < ApplicationController
       @house_id = @task.house.id
     when :set_partners
       @partners = Partner.for_company(@company).where.not(id: @task.partners.pluck(:id)).order(name: :asc)
-    when :update_partners
-      @partners = Partner.where(id: params[:partner_ids])
     end
 
     render_wizard
@@ -34,22 +32,18 @@ class CreateTaskController < ApplicationController
       if partner_params[:partner_array].length.positive?
         partners = partner_params[:partner_array].split(';&')
         partners.map! do |partner|
-          if partner.to_i.to_s == partner && Partner.find(partner)
-            return Partner.find(partner).id
+          if partner.to_i.to_s == partner && Partner.for_company(@company).find_by(id: partner)
+            partner
           else
-            new_partner_id = Partner.create(name: partner, company: @company).id
-            new_partner_ids << new_partner_id
-            return new_partner_id
+            nil
           end
         end
 
-        partner_array = partners.join(';&')
+        partner_array = partners.compact.join(';&')
 
         @task.update(partner_array: partner_array)
         @task.set_partner_names!
       end
-    when :update_partners
-
     end
 
     render_wizard @task
@@ -63,5 +57,9 @@ class CreateTaskController < ApplicationController
 
   def tenant_params
     params.require(:tenant).permit(:name, :flat_id, :phone_number)
+  end
+
+  def finish_wizard_path(params)
+    task_path(@task)
   end
 end

@@ -22,21 +22,33 @@ class PartnersController < ApplicationController
   end
 
   def create
-    @partner = Partner.find_by(name: partner_params[:name].strip) || Partner.new(partner_params[:name].strip)
+    @partner = Partner.find_by(name: partner_params[:name].strip, company: @company) || Partner.new(name: partner_params[:name].strip, company: @company)
 
-    if @partner.save
-      if partner_params[:task_id]
-        @task = Task.find(partner_params[:task_id])
-        @task.update(partner_array: @task.partner_array + ";&#{@partner.id}", mail_sent: false)
-        redirect_to @task, notice: 'Partner erfolgreich hinzugefügt'
-      else
-        redirect_to @partner, notice: 'Partner erfolgreich erstellt'
+    respond_to do |format|
+      format.html do
+        if @partner.save
+          if partner_params[:task_id]
+            @task = Task.find(partner_params[:task_id])
+            @task.update(partner_array: @task.partner_array + ";&#{@partner.id}", mail_sent: false)
+            redirect_to @task, notice: 'Partner erfolgreich hinzugefügt'
+          else
+            redirect_to @partner, notice: 'Partner erfolgreich erstellt'
+          end
+        else
+          if partner_params[:task_id]
+            redirect_to Task.find(partner_params[:task_id]), alert: @partner.errors.full_messages.join(' & ')
+          else
+            redirect_to @partner, alert: @partner.errors.full_messages.join(' & ')
+          end
+        end
       end
-    else
-      if partner_params[:task_id]
-        redirect_to Task.find(partner_params[:task_id]), alert: @partner.errors.full_messages.join(' & ')
-      else
-        redirect_to @partner, alert: @partner.errors.full_messages.join(' & ')
+
+      format.json do
+        if @partner.save
+          render json: {message: 'Partner Erstellt', partner: @partner}, status: 200
+        else
+          render json: {message: @partner.errors.full_messages}, status: 500
+        end
       end
     end
   end

@@ -13,20 +13,61 @@
     <input type="text" id="partner-search">
   </div>
 
+  <div id="add-partner" class="max-width-container">
+    <div class="flex-container center-start">
+      <p id="new-partner-name"></p>
+      <div class="button" onclick="createPartner()">Partner Anlegen</div>
+    </div>
+  </div>
+
   <div id="added-partners" class="max-width-container">
     <% @task.partners.each do |partner| %>
-      <div class="added-partner" data-id="<%= partner.id %>" data-name="<%= partner.name.try(:downcase) %>" data-company="<%= partner.company_name.try(:downcase) %>" onclick="removePartner(this, '<%= partner.name %>', '<%= partner.company_name %>')">
-        <p class="partner-name"><%= partner.name %></p>
-        <p class="partner-company"><%= partner.company_name %></p>
+      <div class="partner-info flex-container center-start" data-name="<%= partner.name.try(:downcase) %>" data-company="<%= partner.company_name.try(:downcase) %>" data-id="<%= partner.id %>" onclick="removePartner(this, '<%= partner.name %>', '<%= partner.company_name %>')">
+        <% if partner.user %>
+
+          <% if partner.user.profile_picture.attached? %>
+            <%= image_tag partner.user.profile_picture.variant(resize_to_fill: [50, 50, gravity: 'center']), class: 'profile-picture' %>
+          <% else %>
+            <%= image_tag 'default_profile_pic.png', size: "50x50", class: 'profile-picture' %>
+          <% end %>
+
+          <div>
+            <p class="partner-name"><%= partner.name %></p>
+            <p class="partner-company"><%= partner.company_name %></p>
+          </div>
+        <% else %>
+          <div style="width: 50px; height: 50px;"></div>
+          <div>
+            <p class="partner-name"><%= partner.name %></p>
+            <p class="partner-company"><%= partner.company_name %></p>
+          </div>
+        <% end %>
       </div>
     <% end %>
   </div>
 
   <div id="partner-list" class="max-width-container">
     <% @partners.each do |partner| %>
-      <div class="partner-info" data-name="<%= partner.name.try(:downcase) %>" data-company="<%= partner.company_name.try(:downcase) %>" data-id="<%= partner.id %>" onclick="addPartner(this, '<%= partner.name %>', '<%= partner.company_name %>')">
-        <p class="partner-name"><%= partner.name %></p>
-        <p class="partner-company"><%= partner.company_name %></p>
+      <div class="partner-info flex-container center-start" data-name="<%= partner.name.try(:downcase) %>" data-company="<%= partner.company_name.try(:downcase) %>" data-id="<%= partner.id %>" onclick="addPartner(this, '<%= partner.name %>', '<%= partner.company_name %>')">
+        <% if partner.user %>
+
+          <% if partner.user.profile_picture.attached? %>
+            <%= image_tag partner.user.profile_picture.variant(resize_to_fill: [50, 50, gravity: 'center']), class: 'profile-picture' %>
+          <% else %>
+            <%= image_tag 'default_profile_pic.png', size: "50x50", class: 'profile-picture' %>
+          <% end %>
+
+          <div>
+            <p class="partner-name"><%= partner.name %></p>
+            <p class="partner-company"><%= partner.company_name %></p>
+          </div>
+        <% else %>
+          <div style="width: 50px; height: 50px;"></div>
+          <div>
+            <p class="partner-name"><%= partner.name %></p>
+            <p class="partner-company"><%= partner.company_name %></p>
+          </div>
+        <% end %>
       </div>
     <% end %>
   </div>
@@ -57,30 +98,45 @@
   hiddenPartnerInput = document.getElementById('task_partner_array');
 
   function addPartner(elem, name, company) {
-    partner_html = `<div class="added-partner" data-id="${elem.dataset.id}" data-name="${name.toLowerCase()}" data-company="${company.toLowerCase()}" onclick="removePartner(this, '${name}', '${company}')">
-                      <p class="partner-name">${name}</p>
-                      <p class="partner-company">${company}</p>
+    partnerHtml = `<div class="partner-info flex-container center-start" data-id="${elem.dataset.id}" data-name="${name.toLowerCase()}" data-company="${company.toLowerCase()}" onclick="removePartner(this, '${name}', '${company}')">
+                      ${elem.innerHTML}
                     </div>`
 
-    document.getElementById('added-partners').insertAdjacentHTML('beforeend', partner_html)
+    document.getElementById('added-partners').insertAdjacentHTML('beforeend', partnerHtml)
 
-    hiddenPartnerInput.value = hiddenPartnerInput.value.split(';&').concat(elem.dataset.id).join(';&')
+    hiddenPartnerInput.value = hiddenPartnerInput.value.length > 0 ? hiddenPartnerInput.value.split(';&').concat(elem.dataset.id).join(';&') : elem.dataset.id
 
-    elem.style.display = 'none';
+    elem.remove();
+    resetSearch();
+  }
+
+  function addNewPartner(partner) {
+    partnerHtml = `<div class="partner-info flex-container center-start" data-id="${partner.id}" data-name="${partner.name?.toLowerCase()}" data-company="${partner.company_name?.toLowerCase()}" onclick="removePartner(this, '${partner.name}', '${partner.company_name}')">
+                      <div style="width: 50px; height: 50px;"></div>
+                      <div>
+                        <p class="partner-name">${partner.name}</p>
+                        <p class="partner-company">${partner.company_name || ''}</p>
+                      </div>
+                    </div>`
+
+    document.getElementById('added-partners').insertAdjacentHTML('beforeend', partnerHtml)
+
+    hiddenPartnerInput.value = hiddenPartnerInput.value.length > 0 ? hiddenPartnerInput.value.split(';&').concat(partner.id).join(';&') : partner.id
+
+    resetSearch();
   }
 
   function removePartner(elem, name, company) {
     partnerElement = document.getElementById('partner-list').querySelector(`.partner-info[data-id="${elem.dataset.id}"]`)
 
     if (partnerElement) {
-      partnerElement.style.display = 'block';
+      partnerElement.style.display = 'flex';
     } else {
-      partner_html = `<div class="partner-info" data-id="${elem.dataset.id}" data-name="${name.toLowerCase()}" data-company="${company.toLowerCase()}" onclick="addPartner(this, '${name}', '${company}')">
-                        <p class="partner-name">${name}</p>
-                        <p class="partner-company">${company}</p>
+      partnerHtml = `<div class="partner-info flex-container center-start" data-id="${elem.dataset.id}" data-name="${name.toLowerCase()}" data-company="${company.toLowerCase()}" onclick="addPartner(this, '${name}', '${company}')">
+                        ${elem.innerHTML}
                       </div>`
 
-      document.getElementById('partner-list').insertAdjacentHTML('beforeend', partner_html)
+      document.getElementById('partner-list').insertAdjacentHTML('beforeend', partnerHtml)
     }
 
     partnerIds = hiddenPartnerInput.value.split(';&')
@@ -95,16 +151,53 @@
     elem.remove();
   }
 
+  function initPartnerCreate(str) {
+    if (str && str.length > 0) {
+      document.getElementById('add-partner').style.display = 'block';
+      document.getElementById('new-partner-name').innerText = str;
+    } else {
+      document.getElementById('add-partner').style.display = 'none';
+      document.getElementById('new-partner-name').innerText = str;
+    }
+  }
+
+  function createPartner() {
+    newPartnerName = document.getElementById('new-partner-name').innerText;
+
+    if (newPartnerName && newPartnerName.length > 0) {
+      Rails.ajax({
+        url: '/partners.json',
+        type: 'POST',
+        data: `partner[name]=${newPartnerName}`,
+        success: (res) => {
+          console.log(res);
+          addNewPartner(res.partner);
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
+    }
+  }
+
   function searchPartner(str) {
     searchStr = str.toLowerCase();
 
     document.getElementById('partner-list').querySelectorAll('.partner-info').forEach(partner => {
       if (partner.dataset.name.includes(searchStr) || partner.dataset.company.includes(searchStr)) {
-        partner.style.display = 'block';
+        partner.style.display = 'flex';
       } else {
         partner.style.display = 'none';
       }
     })
+
+    initPartnerCreate(str);
+  }
+
+  function resetSearch() {
+    searchPartner('');
+    document.getElementById('partner-search').value = '';
+    setLabels();
   }
 
   document.getElementById('partner-search').addEventListener('keyup', (e) => {

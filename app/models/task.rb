@@ -39,7 +39,7 @@ class Task < ApplicationRecord
   end
 
   def self.create_steps
-    ['Ort', 'Mieter Bearbeiten', 'Inhalt', 'Partner festlegen', 'Partner Bearbeiten']
+    ['Ort', 'Mieter Bearbeiten', 'Inhalt', 'Partner festlegen']
   end
 
   def released?

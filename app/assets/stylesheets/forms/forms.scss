@@ -6,6 +6,37 @@
   margin-right: auto;
 }
 
+.image-input {
+  position: relative;
+
+  .upload-icon {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    font-size: 5rem;
+    color: black;
+    z-index: 100;
+  }
+
+  img {
+    margin: 0 auto;
+    display: block;
+  }
+
+  &:hover {
+    .upload-icon {
+      display: block;
+    }
+
+    img {
+      opacity: 0.5;
+    }
+  }
+}
+
 .input-field {
   position: relative;
   border-bottom: 2px dashed #A3A3A3;
@@ -257,11 +288,30 @@ form {
   font-size: 2rem;
 }
 
-#added-partners {
+#add-partner {
+  display: none;
   background: white;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  padding: 1rem 0;
+
+  #new-partner-name {
+    margin: 0 1rem;
+    font-size: 1.5rem;
+  }
 }
 
-#partner-list {
+#added-partners {
+  margin-bottom: 1rem;
+
+  .partner-info {
+    &:hover {
+      color: red !important;
+    }
+  }
+}
+
+#partner-list, #added-partners {
   background: white;
   max-height: 50vh;
   overflow: scroll;
@@ -275,17 +325,23 @@ form {
 
     .partner-name {
       margin: 0;
+      padding: 0 0 0 15px;
       font-weight: bold;
     }
 
     .partner-company {
       margin: 0;
+      padding: 5px 0 0 15px;
       color: #353535;
       font-weight: light;
     }
 
     &:hover {
-      color: green;
+      color: #00A300;
+    }
+
+    &:nth-last-child(1) {
+      border-bottom: none;
     }
   }
 }

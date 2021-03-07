@@ -2,14 +2,15 @@ class Partner < ApplicationRecord
   belongs_to :company
   belongs_to :user, optional: true
 
+  validates_presence_of :name
   validates_uniqueness_of :phone_number, allow_nil: true, allow_blank: true, message: 'Nummer ist bereits vergeben'
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_nil: true, allow_blank: true
-  validates_uniqueness_of :email, allow_nil: true, allow_blank: true, message: 'Email ist bereits vergeben'
+  validates_uniqueness_of :email, scope: :company_id, allow_nil: true, allow_blank: true, message: 'Email ist bereits vergeben'
 
   scope :for_company, -> (company) { where(company: company) }
   scope :is_no_user, -> { where.not(email: User.pluck(:email)) }
 
-  after_create :check_for_user
+  after_create :check_for_user!
 
   def tasks
     # partner_array edge cases: 1) '1;&11' 2) '11;&1' 3) '11;&1;&111' 4) '1'
@@ -18,7 +19,7 @@ class Partner < ApplicationRecord
     # 3) Task.where('partner_array LIKE ?', "%;&#{self.id};&%") Partner ist in der Mitte des Array
     # 4) Task.where('partner_array IS ?', "#{self.id}")
     # => Task.where('partner_array LIKE ? OR partner_array LIKE ? OR partner_array LIKE ? OR partner_array = ?', "#{self.id};&%", "%;&#{self.id}", "%;&#{self.id};&%", "#{self.id}")
-    Task.where('partner_array LIKE ? OR partner_array LIKE ? OR partner_array LIKE ? OR partner_array = ?', "#{self.id};&%", "%;&#{self.id}", "%;&#{self.id};&%", "#{self.id}")
+    Task.for_company(self.company).where('partner_array LIKE ? OR partner_array LIKE ? OR partner_array LIKE ? OR partner_array = ?', "#{self.id};&%", "%;&#{self.id}", "%;&#{self.id};&%", "#{self.id}")
 
     # Slower but reliable
     # Task.all.filter { |task| task.partner_array && task.partner_array.split(';&').include?(self.id.to_s) }
@@ -28,7 +29,7 @@ class Partner < ApplicationRecord
     self.email && self.email.length.positive? && self.phone_number && self.phone_number.length.positive?
   end
 
-  def check_for_user
+  def check_for_user!
     return unless self.email && self.email['@']
 
     self.update(user: User.find_by(email: self.email))
