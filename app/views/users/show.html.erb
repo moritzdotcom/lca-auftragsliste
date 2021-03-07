@@ -6,3 +6,35 @@
     <%= link_to 'Abmelden', destroy_user_session_path, method: :delete %>
   </div>
 </header>
+
+<section>
+  <h1><%= @user.full_name %></h1>
+  <h3>Beigetreten am: <%= @user.created_at.strftime('%d.%m.%Y') %></h3>
+</section>
+
+<section>
+  <div class="user-profile max-width-container">
+
+    <div class="flex-container flex-wrap">
+      <% if @user.profile_picture.attached? %>
+        <%= image_tag @user.profile_picture.variant(resize_to_fill: [400, 400, gravity: 'center']), class: 'profile-picture' %>
+      <% else %>
+        <%= image_tag 'default_profile_pic.png', size: "400x400", class: 'profile-picture' %>
+      <% end %>
+
+      <div class="user-info">
+        <div class="info-item">
+          <p><i>Firma:</i> <strong><%= @user.company.name %></strong></p>
+        </div>
+        <div class="info-item">
+          <p><i>Telefon:</i> <strong><%= @user.phone_number %></strong></p>
+        </div>
+        <div class="info-item">
+          <p><i>Mobil:</i> <strong><%= @user.mobile_phone %></strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+

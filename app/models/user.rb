@@ -7,6 +7,8 @@ class User < ApplicationRecord
   belongs_to :company
   has_many :tasks
 
+  has_one_attached :profile_picture
+
   validates_presence_of :first_name, message: 'Vorname muss angegeben werden'
   validates_presence_of :last_name, message: 'Nachname muss angegeben werden'
   validates_presence_of :email, message: 'Email muss angegeben werden'

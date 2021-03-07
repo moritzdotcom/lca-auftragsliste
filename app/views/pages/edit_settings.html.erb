@@ -12,7 +12,7 @@
           <h3>Diese Benutzer können Aufträge erstellen</h3>
           <div class="multiple-selection">
             <% User.order(:first_name).each do |user| %>
-              <% if user.admin %>
+              <% if user.superadmin %>
                 <div class="input-group"><input type="checkbox" name="users_can_create_tasks_<%= user.id %>" checked disabled id="checkbox-user-task-<%= user.id %>" value="<%= user.id %>"><label for="checkbox-user-task-<%= user.id %>"><%= user.full_name %></label></div>
               <% elsif user.can_create_tasks %>
                 <div class="input-group"><input type="checkbox" name="users_can_create_tasks_<%= user.id %>" checked id="checkbox-user-task-<%= user.id %>" value="<%= user.id %>"><label for="checkbox-user-task-<%= user.id %>"><%= user.full_name %></label></div>
@@ -27,7 +27,7 @@
           <h3>Diese Benutzer können Objekte bearbeiten</h3>
           <div class="multiple-selection">
             <% User.order(:first_name).each do |user| %>
-              <% if user.admin %>
+              <% if user.superadmin %>
                 <div class="input-group"><input type="checkbox" name="users_can_manage_houses_<%= user.id %>" checked disabled id="checkbox-user-house-<%= user.id %>" value="<%= user.id %>"><label for="checkbox-user-house-<%= user.id %>"><%= user.full_name %></label></div>
               <% elsif user.can_manage_houses %>
                 <div class="input-group"><input type="checkbox" name="users_can_manage_houses_<%= user.id %>" checked id="checkbox-user-house-<%= user.id %>" value="<%= user.id %>"><label for="checkbox-user-house-<%= user.id %>"><%= user.full_name %></label></div>
@@ -42,7 +42,7 @@
           <h3>Diese Benutzer können Partner bearbeiten</h3>
           <div class="multiple-selection">
             <% User.order(:first_name).each do |user| %>
-              <% if user.admin %>
+              <% if user.superadmin %>
                 <div class="input-group"><input type="checkbox" name="users_can_manage_partners_<%= user.id %>" checked disabled id="checkbox-user-partner-<%= user.id %>" value="<%= user.id %>"><label for="checkbox-user-partner-<%= user.id %>"><%= user.full_name %></label></div>
               <% elsif user.can_manage_partners %>
                 <div class="input-group"><input type="checkbox" name="users_can_manage_partners_<%= user.id %>" checked id="checkbox-user-partner-<%= user.id %>" value="<%= user.id %>"><label for="checkbox-user-partner-<%= user.id %>"><%= user.full_name %></label></div>
