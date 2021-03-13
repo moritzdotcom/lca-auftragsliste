@@ -7,7 +7,7 @@
         <label class="string optional" for="partner_name">Name:</label>
         <input list="partner_name_autocomplete" id="partner_name" name="partner[name]" autocomplete="off"/>
         <datalist id="partner_name_autocomplete">
-          <% Partner.all.each do |partner| %>
+          <% Partner.for_company(@company).order(:name).each do |partner| %>
             <option><%= partner.name %></option>
           <% end %>
         </datalist>
