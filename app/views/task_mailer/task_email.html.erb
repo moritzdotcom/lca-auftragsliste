@@ -39,7 +39,7 @@
       }
     </style>
 
-    <% if @partners.count.positive? %>
+    <% if @partners.count > 1 %>
       <p class="bold">Hallo zusammen,</p>
     <% else %>
       <p class="bold">Hallo,</p>
@@ -54,9 +54,9 @@
 
     <p><%= @user.full_name %></p>
 
-    <h3 class="mb-0"><%= @task.company.name %></h3>
-    <p class="mb-0 mt-0">Kittelbachstrasse 10</p>
-    <p class="mt-0">40489 Düsseldorf</p>
+    <h3 class="mb-0"><%= @task.owner.name %></h3>
+    <p class="mb-0 mt-0"><%= @task.owner.address %></p>
+    <p class="mt-0"><%= @task.owner.postal_code %> <%= @task.owner.city %></p>
     <p class="mb-0">Tel. <%= @user.phone_number %></p>
     <% if @user.show_mobile_on_pdf && @user.mobile_phone %>
       <p class="mb-0 mt-0">Mobil: <%= @user.mobile_phone %></p>

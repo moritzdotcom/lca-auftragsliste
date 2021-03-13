@@ -35,6 +35,17 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = false
+  # config.action_mailer.perform_caching = false
+  # config.action_mailer.default_url_options = { host: 'ourtask.de' }
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.smtp_settings = {
+  #   address: LCA_APP_CONFIG[:mail][:address],
+  #   authentication: :plain,
+  #   domain: LCA_APP_CONFIG[:mail][:domain],
+  #   user_name: LCA_APP_CONFIG[:mail][:user_name],
+  #   password: LCA_APP_CONFIG[:mail][:password],
+  #   enable_starttls_auto: true
+  # }
 
   config.action_mailer.perform_caching = false
 

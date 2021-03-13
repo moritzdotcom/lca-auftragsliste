@@ -41,7 +41,7 @@ class CreateTaskController < ApplicationController
 
         partner_array = partners.compact.join(';&')
 
-        @task.update(partner_array: partner_array)
+        @task.update(partner_array: partner_array, released: true, task_number: Task.next_number(@user.company))
         @task.set_partner_names!
       end
     end

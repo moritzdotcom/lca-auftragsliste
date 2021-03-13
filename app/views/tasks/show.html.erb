@@ -7,7 +7,8 @@
     <% if @task.mail_sent %>
       <a class="disabled">Email verschickt ✔︎</a>
     <% else %>
-      <!-- <%= link_to 'Email schicken', task_new_email_path(@task), onclick: 'showLoadingModal()' %> -->
+      <%= link_to 'Interne Email schicken', task_new_email_path(@task, layout: 'internal'), onclick: 'showLoadingModal()' %>
+      <%= link_to 'Externe Email schicken', task_new_email_path(@task, layout: 'external'), onclick: 'showLoadingModal()' %>
     <% end %>
   </div>
 

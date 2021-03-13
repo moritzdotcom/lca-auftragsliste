@@ -10,13 +10,14 @@ header {
     width: 50%;
     min-width: 500px;
     column-gap: 1rem;
+    row-gap: 1rem;
     margin: 1rem auto;
 
     a {
-      width: calc(30% - 20px);
+      // width: calc(30% - 20px);
       text-decoration: none;
       color: white;
-      padding: 5px 10px;
+      padding: 10px 20px;
       border-radius: 10px;
       font-size: 1rem;
       box-shadow: 1px 1px 7px #CCC;

@@ -58,6 +58,7 @@ class PartnersController < ApplicationController
 
   def update
     if @partner.update(partner_params.except(:task_id))
+      @partner.check_for_user!
       if partner_params[:task_id]
         redirect_to Task.find(partner_params[:task_id]), notice: 'Partner wurde aktualisiert'
       else

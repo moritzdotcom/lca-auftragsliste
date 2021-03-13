@@ -1,0 +1,8 @@
+LCA_APP_CONFIG = {
+  mail: {
+    address: '',
+    domain: '',
+    user_name: '',
+    password: ''
+  }
+}

@@ -30,6 +30,7 @@
 
 /public/packs
 /public/packs-test
+/public/tasks_pdf/*
 /node_modules
 /yarn-error.log
 yarn-debug.log*
@@ -37,3 +38,4 @@ yarn-debug.log*
 
 db/tables_csv/*
 TODO.md
+config/lca_app_config.rb

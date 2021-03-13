@@ -15,11 +15,11 @@ class Task < ApplicationRecord
 
   before_validation :set_default_values
 
-  scope :for_company, -> (company) { where(company: company) }
+  scope :for_company, -> (company) { where(company: company, released: true) }
   scope :order_by_task_number, -> (asc_or_desc) { order(year: :desc, task_number: asc_or_desc) }
 
   def self.next_number(company)
-    Task.where(year: Date.today.year, company: company).maximum(:task_number).to_i + 1
+    Task.where(year: Date.today.year, company: company, released: true).maximum(:task_number).to_i + 1
   end
 
   def self.status_options

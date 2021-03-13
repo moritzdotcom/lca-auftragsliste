@@ -67,7 +67,7 @@ class TasksController < ApplicationController
 
     update_tenant = false
 
-    if parameters[:tenant_id].length == 0
+    if parameters[:tenant_id].length == 0 || Tenant.find_by(id: parameters[:tenant_id], name: parameters[:tenant_name].strip).nil?
       tenant = Tenant.new(name: parameters[:tenant_name].strip)
       tenant.flat = flat
 
@@ -77,7 +77,7 @@ class TasksController < ApplicationController
         @task.errors[:tenant] << 'Mieter muss angegeben werden'
       end
     else
-      tenant = Tenant.find(parameters[:tenant_id])
+      tenant = Tenant.find_by(id: parameters[:tenant_id])
     end
 
     @task.update(user: @user, company: @user.company, task_number: Task.next_number(@user.company), status: 0, priority: 0, house: house, flat: flat, tenant: tenant, released: false)
@@ -137,14 +137,21 @@ class TasksController < ApplicationController
   end
 
   def new_email
+    partners = @task.partners
+    partner_mails = partners.map(&:email).compact
+
     if @task.mail_sent
       redirect_to @task, alert: 'Email wurde bereits versendet'
+    elsif partner_mails.length.zero?
+      redirect_to @task, alert: 'Deine Partner haben noch keine Email. Auftrag wurde nicht verschickt'
+    elsif !['internal', 'external'].include?(params[:layout])
+      redirect_to @task, alert: "Unbekanntes Layout: #{params[:layout]}. Auftrag wurde nicht verschickt"
     else
-      TaskMailer.task_email(@task).deliver
+      TaskMailer.task_email(task: @task, partner_emails: partner_mails.join(','), partners: partners, layout: params[:layout]).deliver
       last_update = @task.updated_at
       @task.update(mail_sent: true)
       @task.update(updated_at: last_update)
-      redirect_to @task, notice: 'Email wurde versendet'
+      redirect_to @task, notice: "Email wurde an #{partner_mails.join(', ')} versendet"
     end
   end
 
