@@ -34,6 +34,10 @@ class Partner < ApplicationRecord
 
     self.update(user: User.find_by(email: self.email))
   end
+
+  def set_all_task_names!
+    self.tasks.each { |task| task.set_partner_names! }
+  end
 end
 
 # house_ids = House.pluck(:id)

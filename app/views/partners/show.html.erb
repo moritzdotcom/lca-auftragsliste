@@ -3,6 +3,9 @@
 
   <% if user_signed_in? && (current_user.admin || current_user.can_manage_partners)%>
     <%= simple_form_for @partner, html: {remote: true} do |f| %>
+      <h3 class="form-header">Name</h3>
+      <%= f.input :name, label: false %>
+
       <h3 class="form-header">Email</h3>
       <%= f.input :email, as: :email, label: false %>
 

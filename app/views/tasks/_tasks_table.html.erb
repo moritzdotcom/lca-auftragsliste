@@ -32,7 +32,7 @@
         <div class="table-column show-xl text-center"><%= task.user.abbreviated_name %></div>
         <div class="table-column show-md"><%= task.partner_names %></div>
         <div class="table-column show-sm text-center"><%= task.humanized_status %></div>
-        <div class="table-column show-md text-center"><%= task.humanized_priority %></div>
+        <div class="table-column show-md text-center text-red"><%= task.humanized_priority %></div>
       </div>
       <div class="table-row-expand hidden text-center" id="table-content-<%= task.id %>" style="background: <%= i%2 == 0 ? 'white' : '#F0F0F0' %>">
         <h3>Auftrag Nr. <%= task.prefix_number %></h3>
