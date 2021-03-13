@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   root to: 'pages#landing'
 
+  get '/product', to: 'marketing#product', as: 'marketing_product'
+  get '/about', to: 'marketing#about', as: 'marketing_about'
+  get '/contact', to: 'marketing#contact', as: 'marketing_contact'
+
   devise_for :users, controllers: { registrations: 'users/registrations' }
 
   resources :users, only: :show do

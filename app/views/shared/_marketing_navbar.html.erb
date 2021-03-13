@@ -1,0 +1,7 @@
+<div class="navbar">
+  <%= link_to 'Produkt', marketing_product_path, class: "nav-link #{'active' if controller.controller_name == 'marketing' && controller.action_name == 'product' }" %>
+  <%= link_to 'Über Uns', marketing_about_path, class: "nav-link #{'active' if controller.controller_name == 'marketing' && controller.action_name == 'about' }"  %>
+  <%= link_to 'Kontakt', marketing_contact_path, class: "nav-link #{'active' if controller.controller_name == 'marketing' && controller.action_name == 'contact' }"  %>
+  <%= link_to 'Anmelden', new_user_session_path, class: "nav-link #{'active' if controller.controller_name == 'sessions' }" %>
+  <%= link_to 'Registrieren', new_user_session_path, class: "nav-link #{'active' if controller.controller_name == 'sessions' }"  %>
+</div>
