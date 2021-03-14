@@ -1,0 +1,10 @@
+<header>
+  <h1>Profil Erstellen</h1>
+  <% if params[:company_uuid] %>
+    <%= render 'shared/progress_bar', steps: User.onboarding_steps, step: 1 %>
+  <% else %>
+    <%= render 'shared/progress_bar', steps: User.sign_up_steps, step: 2 %>
+  <% end %>
+</header>
+
+<%= render 'form', user: @user %>

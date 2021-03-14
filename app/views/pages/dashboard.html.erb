@@ -9,18 +9,18 @@
 
 <section>
   <h2>Offene Aufträge pro Haus</h2>
-  <%= column_chart Task.where('status != ? AND status != ?', 2, 4).joins(:house).group(:address).order(:address).count.sort_by {|_key, value| value}.reverse.to_h, download: true %>
+  <%= column_chart @tasks.where('status != ? AND status != ?', 2, 4).joins(:house).group(:address).order(:address).count.sort_by {|_key, value| value}.reverse.to_h, download: true %>
 </section>
 
 <section>
   <h2>Aufträge nach Status</h2>
-  <%= pie_chart Task.where('created_at > ?', 1.month.ago).group(:status).count.sort.map { |arr| [Task.status_options[arr[0]], arr[1]] }.to_h, colors: Task.color_options %>
+  <%= pie_chart @tasks.where('created_at > ?', 1.month.ago).group(:status).count.sort.map { |arr| [Task.status_options[arr[0]], arr[1]] }.to_h, colors: Task.color_options %>
 </section>
 
-<% if @tasks && @tasks.count.positive? %>
+<% if @user_tasks && @user_tasks.count.positive? %>
   <section>
     <h2>Deine Aufträge</h2>
-    <%= render 'tasks/tasks_table', tasks: @tasks %>
+    <%= render 'tasks/tasks_table', tasks: @user_tasks %>
   </section>
 <% end %>
 

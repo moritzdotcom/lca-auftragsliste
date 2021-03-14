@@ -15,6 +15,8 @@ class User < ApplicationRecord
   scope :for_company, -> (company) { where(company: company) }
   scope :is_partner_in, -> (company) { where(email: company.partners.pluck(:email).uniq) }
 
+  after_create :make_admin_if_first_in_company
+
   def abbreviated_name
     abbr_name = "#{first_name.first.upcase}#{last_name.first.upcase}"
 
@@ -30,5 +32,15 @@ class User < ApplicationRecord
 
   def full_name
     "#{first_name.capitalize} #{last_name.capitalize}"
+  end
+
+  def self.sign_up_steps
+    ['Firma Erstellen', 'Registrieren', 'Email bestätigen']
+  end
+
+  private
+
+  def make_admin_if_first_in_company
+    self.update(admin: self.company.users.count == 1)
   end
 end

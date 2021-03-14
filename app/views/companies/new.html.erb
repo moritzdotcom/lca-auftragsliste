@@ -1,0 +1,11 @@
+<header>
+  <h1>Neue Firma</h1>
+  <%= render 'shared/progress_bar', steps: User.sign_up_steps, step: 0 %>
+</header>
+
+<%= simple_form_for @company, defaults: { wrapper_html: {class: 'input-field'} } do |f| %>
+  <%= f.input :name, label: 'Name', error: 'Name muss angegeben werden' %>
+  <%= f.input :email, as: :email, label: 'Email', hint: 'Email des Unternehmens', error: 'Email muss angegeben werden' %>
+
+  <%= f.button :submit, 'Weiter', id: 'submit-button' %>
+<% end %>

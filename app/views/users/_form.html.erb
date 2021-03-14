@@ -1,0 +1,39 @@
+<%= simple_form_for(user, url: update_profile_user_path(user), defaults: { wrapper_html: {class: 'input-field'} }) do |f| %>
+
+  <div class="image-input max-width-container">
+    <div class="upload-icon" onclick="activateFileUpload()">
+      <%= icon('fas', 'upload') %>
+    </div>
+    <% if user.profile_picture.attached? %>
+      <%= image_tag user.profile_picture.variant(resize_to_fill: [400, 400, gravity: 'center']), size: "400x400", class: 'profile-picture', id: 'image-preview', onclick: 'activateFileUpload()' %>
+    <% else %>
+      <%= image_tag 'default_profile_pic.png', size: "400x400", class: 'profile-picture', id: 'image-preview' %>
+    <% end %>
+    <%= f.input :profile_picture, as: :file, label: false, wrapper_html: {class: nil}, input_html: {onchange: 'updateUserImage(this)', style: "display: none"} %>
+  </div>
+
+  <div class="inline-inputs">
+    <%= f.input :first_name, autofocus: true, autocomplete: 'given-name', label: 'Vorname' %>
+    <%= f.input :last_name, autocomplete: 'family-name', label: 'Nachname' %>
+  </div>
+  <%= f.input :phone_number, autocomplete: 'tel', label: 'Telefonnummer' %>
+  <%= f.input :mobile_phone, autocomplete: 'tel', label: 'Mobilnummer' %>
+
+  <%= f.submit "Speichern", class: 'btn' %>
+<% end %>
+
+<script>
+  function updateUserImage(e) {
+    image = document.getElementById('image-preview');
+    if (e.files.length > 0 && image) {
+      image.src = '';
+      image.style.backgroundImage = `url(${URL.createObjectURL(e.files[0])})`;
+      image.style.backgroundPosition = 'center';
+      image.style.backgroundSize = 'cover';
+    }
+  }
+
+  function activateFileUpload() {
+    document.getElementById('user_profile_picture').click();
+  }
+</script>

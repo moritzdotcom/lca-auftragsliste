@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { registrations: 'users/registrations' }
 
-  resources :users, only: :show do
+  resources :users, only: [:show] do
     member do
       get '/edit_profile', to: 'users#edit_profile'
       patch '/update_profile', to: 'users#update_profile'
@@ -16,6 +16,7 @@ Rails.application.routes.draw do
 
   resources :tenants
   resources :partners
+  resources :companies
 
   resources :tasks do
     put '/update_status', to: 'tasks#update_status'

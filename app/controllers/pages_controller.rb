@@ -7,6 +7,7 @@ class PagesController < ApplicationController
   end
 
   def dashboard
+    @tasks = Task.for_company(@company)
   end
 
   def edit_settings
@@ -50,11 +51,11 @@ class PagesController < ApplicationController
   end
 
   def set_user_tasks
-    @partner = Partner.find_by(email: @user.email)
+    @partner = Partner.for_company(@company).find_by(email: @user.email)
     tasks = @user.tasks
     if @partner
       tasks = tasks.or(@partner.tasks)
     end
-    @pagy, @tasks = filter_tasks(tasks)
+    @pagy, @user_tasks = filter_tasks(tasks)
   end
 end

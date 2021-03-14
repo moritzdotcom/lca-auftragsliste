@@ -5,6 +5,8 @@ class Flat < ApplicationRecord
 
   validates :location, presence: true
 
+  scope :for_company, -> (company) { where(company: company) }
+
   def current_tenant
     self.tenants.last
   end

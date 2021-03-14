@@ -7,7 +7,7 @@
     </div>
 
     <datalist id="partner_array">
-      <% Partner.all.each do |partner| %>
+      <% Partner.for_company(@company).each do |partner| %>
         <option data-value="<%= partner.id %>"><%= partner.name %></option>
       <% end %>
     </datalist>

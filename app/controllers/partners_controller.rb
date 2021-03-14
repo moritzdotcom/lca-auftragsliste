@@ -8,9 +8,9 @@ class PartnersController < ApplicationController
   def index
     if params[:search]
       wildcard_search = "%#{params[:search].downcase}%"
-      @partners = Partner.where("LOWER(name) LIKE ? OR LOWER(email) LIKE ?", wildcard_search, wildcard_search).order(:name)
+      @partners = Partner.for_company(@company).where("LOWER(name) LIKE ? OR LOWER(email) LIKE ?", wildcard_search, wildcard_search).order(:name)
     else
-      @partners = Partner.order(:name)
+      @partners = Partner.for_company(@company).order(:name)
     end
   end
 

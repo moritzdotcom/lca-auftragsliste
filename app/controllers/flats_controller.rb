@@ -3,8 +3,8 @@ class FlatsController < ApplicationController
   before_action :set_house, only: [:new, :create]
 
   def index
-    @house = House.find(params[:house_id])
-    @flats = @house.flats
+    @house = House.for_company(@company).find_by(id: params[:house_id])
+    @flats = @house.try(:flats)
 
     respond_to do |format|
       format.html
@@ -35,11 +35,11 @@ class FlatsController < ApplicationController
   private
 
   def set_house
-    @house = House.find(params[:house_id])
+    @house = House.for_company(@company).find(params[:house_id])
   end
 
   def set_flat
-    @flat = Flat.find(params[:id])
+    @flat = Flat.for_company(@company).find(params[:id])
   end
 
   def flat_params

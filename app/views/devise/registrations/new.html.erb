@@ -1,15 +1,21 @@
 <header>
   <h1>Registrieren</h1>
+  <%= render 'shared/progress_bar', steps: User.sign_up_steps, step: 1 %>
 </header>
 
 <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), defaults: { wrapper_html: {class: 'input-field'} }) do |f| %>
+  <%= f.hidden_field :company_id, value: params[:company_id] %>
+
   <div class="inline-inputs">
     <%= f.input :first_name, autofocus: true, autocomplete: 'given-name', label: 'Vorname' %>
     <%= f.input :last_name, autocomplete: 'family-name', label: 'Nachname' %>
   </div>
+
   <%= f.input :phone_number, autocomplete: 'tel', label: 'Telefonnummer' %>
   <%= f.input :mobile_phone, autocomplete: 'tel', label: 'Mobilnummer' %>
+
   <%= f.input :email, autocomplete: "email", label: 'Email' %>
+
   <div class="inline-inputs">
     <%= f.input :password, autocomplete: "new-password", label: 'Passwort' %>
     <%= f.input :password_confirmation, autocomplete: "new-password", label: 'Passwort bestätigen' %>

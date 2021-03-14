@@ -37,6 +37,7 @@ class TasksController < ApplicationController
 
   def new
     @task = Task.new
+    @houses = House.for_company(@company)
   end
 
   def create
@@ -156,7 +157,7 @@ class TasksController < ApplicationController
   end
 
   def calendar
-    @tasks = Task.all
+    @tasks = Task.for_company(@company)
   end
 
   def destroy
