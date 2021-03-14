@@ -4,7 +4,7 @@
 </header>
 
 <%= simple_form_for @task, defaults: { wrapper_html: {class: 'input-field'} } do |f| %>
-  <%= f.input :house_id, label: 'Objekt', collection: House.order(:object_number).map { |house| ([house.address, house.id]) }, error: 'Objekt muss angegeben werden' %>
+  <%= f.input :house_id, label: 'Objekt', collection: @houses.order(:object_number).map { |house| ([house.address, house.id]) }, error: 'Objekt muss angegeben werden' %>
 
   <%= f.input :flat_id, as: :hidden, wrapper_html: {class: ''} %>
   <div class="input-field input">
@@ -25,10 +25,21 @@
 <% end %>
 
 <script>
-  function fetchFlats(house_id) {
-    return fetch('/houses/' + house_id + '/flats.json')
-      .then(response => response.json())
-  };
+  function setFlats(house_id) {
+    flatAutocomplete.innerHTML = ''
+    hiddenTenantInput.value = ''
+    tenantNameInput.value = ''
+
+    Rails.ajax({
+      url: `/houses/${house_id}/flats.json`,
+      type: 'get',
+      success: (results) => {
+        results.forEach(result => {
+          flatAutocomplete.innerHTML += `<option data-value="${result.id}" data-tenant-id="${result.tenant_id || ''}" data-tenant-name="${result.tenant_name || ''}">${result.location}</option>`
+        })
+      }
+    })
+  }
 
   hiddenFlatInput = document.getElementById('task_flat_id');
   flatLocationInput = document.getElementById('task_flat_location');
@@ -42,16 +53,7 @@
   houseSelector = document.getElementById('task_house_id');
 
   houseSelector.addEventListener('change', (e) => {
-    flatAutocomplete.innerHTML = ''
-    hiddenTenantInput.value = ''
-    tenantNameInput.value = ''
-
-    fetchFlats(e.target.value)
-      .then(results => {
-        results.forEach(result => {
-          flatAutocomplete.innerHTML += `<option data-value="${result.id}" data-tenant-id="${result.tenant_id || ''}" data-tenant-name="${result.tenant_name || ''}">${result.location}</option>`
-        })
-      })
+    setFlats(e.target.value);
   })
 
   flatLocationInput.addEventListener('input', (e) => {
