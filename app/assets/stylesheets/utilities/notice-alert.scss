@@ -1,21 +1,25 @@
-.notice, .alert {
+#notice-container {
   position: fixed;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  padding: 0.5rem 1rem;
-  font-size: 1.5rem;
-  border-radius: 5px;
-  opacity: 1;
-  transition: opacity 0.5s ease;
-  z-index: 100;
+
+  .notice, .alert {
+    padding: 0.5rem 1rem;
+    font-size: 1.5rem;
+    border-radius: 5px;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    z-index: 100;
+  }
+
+  .notice {
+    background: #00A300;
+  }
+
+  .alert {
+    background: #FF8888;
+    color: white;
+  }
 }
 
-.notice {
-  background: #00A300;
-}
-
-.alert {
-  background: #FF8888;
-  color: white;
-}

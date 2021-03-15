@@ -14,9 +14,10 @@ class HousesController < ApplicationController
 
   def update
     if @house.update(house_params)
-      redirect_to edit_houses_path(anchor: "house-#{@house.id}"), notice: 'Änderungen wurden gespeichert'
+      # redirect_to edit_houses_path(anchor: "house-#{@house.id}"), notice: 'Änderungen wurden gespeichert'
+      render json: {message: 'Änderungen gespeichert'}, status: 200
     else
-      render :edit_all
+      render json: {message: 'Da ist leider etwas schief gelaufen'}, status: 500
     end
   end
 
