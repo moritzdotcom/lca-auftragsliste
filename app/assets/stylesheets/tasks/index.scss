@@ -110,6 +110,16 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+
+        a {
+          text-decoration: none;
+        }
+      }
+
+      &:hover {
+        a {
+          color: #00A300;
+        }
       }
 
     }

@@ -21,37 +21,19 @@
 
   <div class="table-content">
     <% tasks.each_with_index do |task, i| %>
-      <div class="table-row" onclick="toggleTableContent(<%= task.id %>)" style="background: <%= task.status == 4 ? '#EE585A' : (i%2 == 0 ? 'white' : '#F0F0F0') %>">
-        <div class="table-column show-xs text-center"><%= task.prefix_number %></div>
-        <div class="table-column show-md text-center"><%= task.created_at.strftime('%d.%m.%Y') %></div>
-        <div class="table-column show-xl text-center"><%= task.house.object_number %></div>
-        <div class="table-column show-xs"><%= task.house.address %></div>
-        <div class="table-column show-sm"><%= task.flat.try(:location) || '-' %></div>
-        <div class="table-column show-xl"><%= task.tenant.try(:name) || '-' %></div>
-        <div class="table-column show-xs"><%= task.title %></div>
-        <div class="table-column show-xl text-center"><%= task.user.abbreviated_name %></div>
-        <div class="table-column show-md"><%= task.partner_names %></div>
-        <div class="table-column show-sm text-center"><%= task.humanized_status %></div>
-        <div class="table-column show-md text-center text-red"><%= task.humanized_priority %></div>
-      </div>
-      <div class="table-row-expand hidden text-center" id="table-content-<%= task.id %>" style="background: <%= i%2 == 0 ? 'white' : '#F0F0F0' %>">
-        <h3>Auftrag Nr. <%= task.prefix_number %></h3>
-        <p>Ausgestellt am: <%= task.created_at.strftime('%d/%m/%Y') %> | Fällig am: <%= task.due_date ? task.due_date.strftime('%d/%m/%Y') : 'Offen' %></p>
-        <p><%= task.house.formatted_address %></p>
-        <p><%= task.flat.try(:location) || '-' %> | <%= task.tenant.try(:name) || '-' %></p>
-        <p><%= task.title %></p>
-        <p><%= task.description %></p>
-        <p>Für: <%= task.partner_names %></p>
-        <div class="table-links">
-          <%= link_to 'Anzeigen', task %>
-        </div>
+      <div class="table-row" style="background: <%= task.status == 4 ? '#EE585A' : (i%2 == 0 ? 'white' : '#F0F0F0') %>">
+        <div class="table-column show-xs text-center"><%= link_to task.prefix_number, task %></div>
+        <div class="table-column show-md text-center"><%= link_to task.created_at.strftime('%d.%m.%Y'), task %></div>
+        <div class="table-column show-xl text-center"><%= link_to task.house.object_number, task %></div>
+        <div class="table-column show-xs"><%= link_to task.house.address, task %></div>
+        <div class="table-column show-sm"><%= link_to task.flat.try(:location) || '-', task %></div>
+        <div class="table-column show-xl"><%= link_to task.tenant.try(:name) || '-', task %></div>
+        <div class="table-column show-xs"><%= link_to task.title, task %></div>
+        <div class="table-column show-xl text-center"><%= link_to task.user.abbreviated_name, task %></div>
+        <div class="table-column show-md"><%= link_to task.partner_names, task %></div>
+        <div class="table-column show-sm text-center"><%= link_to task.humanized_status, task %></div>
+        <div class="table-column show-md text-center text-red"><%= link_to task.humanized_priority, task %></div>
       </div>
     <% end %>
   </div>
 </div>
-
-<script>
-  function toggleTableContent(id) {
-    document.getElementById(`table-content-${id}`).classList.toggle('hidden');
-  }
-</script>
