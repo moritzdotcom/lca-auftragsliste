@@ -34,6 +34,10 @@ class User < ApplicationRecord
     "#{first_name.capitalize} #{last_name.capitalize}"
   end
 
+  def can_edit_task(task)
+    self.superadmin || self.company == task.company && (self.admin || task.user == self)
+  end
+
   def self.sign_up_steps
     ['Firma Erstellen', 'Registrieren', 'Email bestätigen']
   end

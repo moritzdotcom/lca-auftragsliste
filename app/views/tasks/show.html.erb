@@ -13,32 +13,26 @@
   </div>
 
   <div class="header-forms">
-    <% if user_signed_in? && (current_user.admin || current_user == @task.user) %>
-      <form class="due-date-form" id="due-date-form" action="/tasks/<%= @task.id %>/update_due_date" accept-charset="UTF-8" data-remote="true" method="post">
+    <% if @user.can_edit_task(@task) %>
+      <form>
         <h3 class="form-title">Fällig am</h3>
-        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-        <input type="hidden" name="_method" value="put">
         <div class="input">
-          <input type="date" value="<%= @task.due_date.strftime('%Y-%m-%d') if @task.due_date %>" name="task[due_date]" id="task_due_date">
+          <input type="date" value="<%= @task.due_date.strftime('%Y-%m-%d') if @task.due_date %>" name="task[due_date]" ajax-submit data-ajax-url="/tasks/<%= @task.id %>" data-ajax-type="put">
         </div>
       </form>
 
-      <form class="status-form" id="status-form" action="/tasks/<%= @task.id %>/update_status" accept-charset="UTF-8" data-remote="true" method="post">
+      <form>
         <h3 class="form-title">Status</h3>
-        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-        <input type="hidden" name="_method" value="put">
-        <select class="select optional" name="task[status]" id="task_status">
+        <select class="select optional" name="task[status]" ajax-submit data-ajax-url="/tasks/<%= @task.id %>" data-ajax-type="put">
           <% Task.status_options.each_with_index do |status, i| %>
             <option value="<%= i %>" <%= 'selected' if @task.status == i %>><%= status %></option>
           <% end %>
         </select>
       </form>
 
-      <form class="priority-form" id="priority-form" action="/tasks/<%= @task.id %>/update_priority" accept-charset="UTF-8" data-remote="true" method="post">
+      <form>
         <h3 class="form-title">Priorität</h3>
-        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-        <input type="hidden" name="_method" value="put">
-        <select class="select optional" name="task[priority]" id="task_priority">
+        <select class="select optional" name="task[priority]" ajax-submit data-ajax-url="/tasks/<%= @task.id %>" data-ajax-type="put">
           <% Task.priority_collection.each do |prio| %>
             <option value="<%= prio.last %>" <%= 'selected' if @task.priority == prio.last %>><%= prio.first %></option>
           <% end %>
@@ -84,22 +78,18 @@
 
 <section>
   <h2>Beschreibung der Tätigkeit</h2>
-  <% if user_signed_in? && (current_user.admin || current_user == @task.user) %>
-    <form class="title-form" id="title-form" action="/tasks/<%= @task.id %>/update_title" accept-charset="UTF-8" data-remote="true" method="post">
-      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-      <input type="hidden" name="_method" value="put">
+  <% if @user.can_edit_task(@task) %>
+    <form>
       <div class="input-field">
-        <input type="text" value="<%= @task.title %>" name="task[title]" id="task_title">
+        <input type="text" value="<%= @task.title %>" name="task[title]" id="task_title" ajax-submit data-ajax-url="/tasks/<%= @task.id %>" data-ajax-type="put">
       </div>
     </form>
 
     <h2>Weitere Bemerkungen</h2>
 
-    <form class="description-form" id="description-form" action="/tasks/<%= @task.id %>/update_description" accept-charset="UTF-8" data-remote="true" method="post">
-      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-      <input type="hidden" name="_method" value="put">
+    <form>
       <div class="input-field">
-        <textarea name="task[description]" id="task_description"><%= @task.description %></textarea>
+        <textarea name="task[description]" id="task_description" ajax-submit data-ajax-url="/tasks/<%= @task.id %>" data-ajax-type="put"><%= @task.description %></textarea>
       </div>
     </form>
   <% else %>
@@ -131,41 +121,6 @@
 </section>
 
 <script>
-  statusForm = document.getElementById('status-form');
-  statusSelector = document.getElementById('task_status');
-
-  statusSelector.addEventListener('input', () => {
-    statusForm.submit();
-  })
-
-  priorityForm = document.getElementById('priority-form');
-  prioritySelector = document.getElementById('task_priority');
-
-  prioritySelector.addEventListener('input', () => {
-    priorityForm.submit();
-  })
-
-  dueDateForm = document.getElementById('due-date-form');
-  dueDateSelector = document.getElementById('task_due_date');
-
-  dueDateSelector.addEventListener('blur', () => {
-    dueDateForm.submit();
-  })
-
-  titleForm = document.getElementById('title-form');
-  titleSelector = document.getElementById('task_title');
-
-  titleSelector.addEventListener('blur', () => {
-    titleForm.submit();
-  })
-
-  descriptionForm = document.getElementById('description-form');
-  descriptionSelector = document.getElementById('task_description');
-
-  descriptionSelector.addEventListener('blur', () => {
-    descriptionForm.submit();
-  })
-
   function disableButton(id) {
     button = document.getElementById(`partner-button-${id}`)
     button.disabled = false;

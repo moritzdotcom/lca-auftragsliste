@@ -97,44 +97,14 @@ class TasksController < ApplicationController
 
   def update
     respond_to do |format|
-      if @task.update(task_params)
-        format.html { redirect_to @task, notice: 'Task was successfully updated.' }
+      if @task.update(update_params) && @user.can_edit_task(@task)
+        format.html { redirect_to @task, notice: 'Auftrag gespeichert' }
         format.json { render :show, status: :ok, location: @task }
       else
         format.html { render :edit }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end
-  end
-
-  def update_status
-    status_params = params.require(:task).permit(:status)
-    @task.update(status_params)
-    redirect_to @task, notice: 'Status gespeichert'
-  end
-
-  def update_priority
-    priority_params = params.require(:task).permit(:priority)
-    @task.update(priority_params)
-    redirect_to @task, notice: 'Priorität gespeichert'
-  end
-
-  def update_due_date
-    due_date_params = params.require(:task).permit(:due_date)
-    @task.update(due_date_params)
-    redirect_to @task, notice: 'Fälligkeit gespeichert'
-  end
-
-  def update_title
-    title_params = params.require(:task).permit(:title)
-    @task.update(title_params)
-    redirect_to @task, notice: 'Beschreibung gespeichert'
-  end
-
-  def update_description
-    description_params = params.require(:task).permit(:description)
-    @task.update(description_params)
-    redirect_to @task, notice: 'Weitere Bemerkungen gespeichert'
   end
 
   def new_email
@@ -182,6 +152,10 @@ class TasksController < ApplicationController
     parameters = params.require(:task).permit(:task_number, :house_id, :flat_id, :flat_location, :tenant_id, :tenant_name, :location)
 
     return parameters
+  end
+
+  def update_params
+    params.require(:task).permit(:due_date, :status, :priority, :title, :description)
   end
 
   def authorise_user

@@ -4,14 +4,14 @@
 
 <form class="settings-form" action="/settings" accept-charset="UTF-8" data-remote="true" method="post">
   <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-  <% if current_user.admin %>
+  <% if @user.admin %>
     <section>
       <h2>Zugriffsrechte</h2>
       <div class="settings-inline">
         <div class="input">
           <h3>Diese Benutzer können Aufträge erstellen</h3>
           <div class="multiple-selection">
-            <% User.order(:first_name).each do |user| %>
+            <% User.for_company(@company).order(:first_name).each do |user| %>
               <% if user.superadmin %>
                 <div class="input-group"><input type="checkbox" name="users_can_create_tasks_<%= user.id %>" checked disabled id="checkbox-user-task-<%= user.id %>" value="<%= user.id %>"><label for="checkbox-user-task-<%= user.id %>"><%= user.full_name %></label></div>
               <% elsif user.can_create_tasks %>
@@ -26,7 +26,7 @@
         <div class="input">
           <h3>Diese Benutzer können Objekte bearbeiten</h3>
           <div class="multiple-selection">
-            <% User.order(:first_name).each do |user| %>
+            <% User.for_company(@company).order(:first_name).each do |user| %>
               <% if user.superadmin %>
                 <div class="input-group"><input type="checkbox" name="users_can_manage_houses_<%= user.id %>" checked disabled id="checkbox-user-house-<%= user.id %>" value="<%= user.id %>"><label for="checkbox-user-house-<%= user.id %>"><%= user.full_name %></label></div>
               <% elsif user.can_manage_houses %>
@@ -41,7 +41,7 @@
         <div class="input">
           <h3>Diese Benutzer können Partner bearbeiten</h3>
           <div class="multiple-selection">
-            <% User.order(:first_name).each do |user| %>
+            <% User.for_company(@company).order(:first_name).each do |user| %>
               <% if user.superadmin %>
                 <div class="input-group"><input type="checkbox" name="users_can_manage_partners_<%= user.id %>" checked disabled id="checkbox-user-partner-<%= user.id %>" value="<%= user.id %>"><label for="checkbox-user-partner-<%= user.id %>"><%= user.full_name %></label></div>
               <% elsif user.can_manage_partners %>
@@ -60,20 +60,20 @@
     <h2>Design</h2>
     <h3 class="form-title">Aufträge pro Seite</h3>
     <div class="input-field">
-      <input type="number" value="<%= current_user.table_settings %>" name="table_settings">
+      <input type="number" value="<%= @user.table_settings || 20 %>" name="table_settings">
     </div>
 
     <h3 class="form-title">Navbar Farbe</h3>
     <input type="hidden" value="#FFF" name="navbar_color_settings" id="navbar-text-selector">
     <div class="input color-input">
-      <input type="color" value="#222233" id="navbar-color-selector" name="navbar_bg_settings">
+      <input type="color" value="<%= @user.navbar_bg_settings || '#222233' %>" id="navbar-color-selector" name="navbar_bg_settings">
     </div>
     <input type="button" class="btn" id="reset-navbar-settings" value="Zurücksetzen">
 
-    <% if current_user.mobile_phone && current_user.mobile_phone.length.positive? %>
+    <% if @user.mobile_phone && @user.mobile_phone.length.positive? %>
       <div class="input">
         <label for="show-mobile-on-pdf">Meine Handynummer in Aufträgen anzeigen</label>
-        <% if current_user.show_mobile_on_pdf %>
+        <% if @user.show_mobile_on_pdf %>
           <input type="checkbox" checked id="show-mobile-on-pdf" name="show_mobile_on_pdf">
         <% else %>
           <input type="checkbox" id="show-mobile-on-pdf" name="show_mobile_on_pdf">

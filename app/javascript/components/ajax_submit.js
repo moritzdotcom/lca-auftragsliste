@@ -11,7 +11,7 @@ document.addEventListener('turbolinks:load', () => {
           addNotice({class: 'notice', message: res.message});
         },
         error: (err) => {
-          addNotice({class: 'alert', message: res.message});
+          addNotice({class: 'alert', message: err.message});
         }
       })
     })
