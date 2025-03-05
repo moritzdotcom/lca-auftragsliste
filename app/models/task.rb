@@ -63,7 +63,7 @@ class Task < ApplicationRecord
   end
 
   def partners
-    self.partner_array ? Partner.where(id: self.partner_array.split(';&')) : []
+    self.partner_array ? Partner.where(id: self.partner_array.split(';&')).sort : []
   end
 
   def set_partner_names!

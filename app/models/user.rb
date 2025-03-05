@@ -20,10 +20,10 @@ class User < ApplicationRecord
   def abbreviated_name
     abbr_name = "#{first_name.first.upcase}#{last_name.first.upcase}"
 
-    if %w(SS AH HH NS HJ KZ SA).include?(abbr_name)
+    if %w(SS AH HH HJ KZ SA).include?(abbr_name)
       first_name.chars[1..].each do |char|
         abbr_name = "#{first_name.first.upcase}#{char.upcase}"
-        return abbr_name unless %w(SS AH HH NS HJ KZ SA).include?(abbr_name)
+        return abbr_name unless %w(SS AH HH HJ KZ SA).include?(abbr_name)
       end
     end
 
